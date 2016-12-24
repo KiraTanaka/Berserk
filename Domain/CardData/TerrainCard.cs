@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.CardData
 {
-    /// <summary>
-    /// Управляет процессом игры.
-    /// </summary>
-    public class Game
+    public abstract class TerrainCard : Card
     {
     }
 }

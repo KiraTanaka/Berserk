@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,10 +41,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game.cs" />
-    <Compile Include="ICard.cs" />
+    <Compile Include="BoardData\BattleField.cs" />
+    <Compile Include="BoardData\CardPlace.cs" />
+    <Compile Include="BoardData\PlayerCardPlace.cs" />
+    <Compile Include="CardData\ArtifactCard.cs" />
+    <Compile Include="CardData\AttackLevel.cs" />
+    <Compile Include="CardData\CreatureCard.cs" />
+    <Compile Include="CardData\Currency.cs" />
+    <Compile Include="CardData\EquipmentCard.cs" />
+    <Compile Include="CardData\IDescriptable.cs" />
+    <Compile Include="CardData\IEvaluable.cs" />
+    <Compile Include="CardData\IFeatureable.cs" />
+    <Compile Include="CardData\TerrainCard.cs" />
+    <Compile Include="GameData\Context.cs" />
+    <Compile Include="GameData\Game.cs" />
+    <Compile Include="CardData\Card.cs" />
+    <Compile Include="GameData\IRules.cs" />
+    <Compile Include="BoardData\PlayerCardPlaceCollectionExtension.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="IState.cs" />
+    <Compile Include="GameData\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +69,7 @@
       <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
