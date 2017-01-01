@@ -41,14 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoardData\BattleFieldInfo.cs" />
+    <Compile Include="BoardData\CardSetInfo.cs" />
     <Compile Include="BoardData\BattleField.cs" />
-    <Compile Include="BoardData\CardPlace.cs" />
-    <Compile Include="BoardData\PlayerCardPlace.cs" />
+    <Compile Include="BoardData\CardSet.cs" />
+    <Compile Include="BoardData\PlayerCardSetInfo.cs" />
+    <Compile Include="BoardData\PlayerCardSet.cs" />
+    <Compile Include="BoardData\PlayerSet.cs" />
     <Compile Include="CardData\ArtifactCard.cs" />
     <Compile Include="CardData\AttackLevel.cs" />
     <Compile Include="CardData\CreatureCard.cs" />
     <Compile Include="CardData\Currency.cs" />
     <Compile Include="CardData\EquipmentCard.cs" />
+    <Compile Include="CardData\ICard.cs" />
     <Compile Include="CardData\IDescriptable.cs" />
     <Compile Include="CardData\IEvaluable.cs" />
     <Compile Include="CardData\IFeatureable.cs" />
@@ -56,6 +61,7 @@
     <Compile Include="GameData\Context.cs" />
     <Compile Include="GameData\Game.cs" />
     <Compile Include="CardData\Card.cs" />
+    <Compile Include="GameData\GameInfo.cs" />
     <Compile Include="GameData\IRules.cs" />
     <Compile Include="BoardData\PlayerCardPlaceCollectionExtension.cs" />
     <Compile Include="IPlayer.cs" />

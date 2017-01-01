@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.CardData
 {
-    public abstract class Card
+    public abstract class Card : ICard
     {
+        public Guid PlayerId { get; set; }
         public Point Position { get; set; }
     }
 }

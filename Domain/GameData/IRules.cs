@@ -4,6 +4,6 @@
     {
         int FieldRows { get; set; }
         int FieldColumns { get; set; }
-        int StartCardsAmount { get; set; }
+        int PlayerCardsAmount { get; set; }
     }
 }

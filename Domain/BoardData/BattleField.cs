@@ -6,13 +6,18 @@ using System.Threading.Tasks;
 
 namespace Domain.BoardData
 {
-    public class BattleField<TCard> : CardPlace<TCard>
+    public class BattleField
     {
         public int[,] Field { get; }
 
         public BattleField(int rows, int columns)
         {
             Field = new int[rows, columns];
+        }
+
+        public BattleFieldInfo GetInfo()
+        {
+            return new BattleFieldInfo();
         }
     }
 }

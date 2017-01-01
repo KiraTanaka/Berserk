@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Domain.BoardData;
-using Domain.CardData;
 
 namespace Domain.GameData
 {
@@ -11,60 +11,61 @@ namespace Domain.GameData
     public class Game
     {
         private readonly IRules _rules;
-        private readonly List<CardPlace<Card>> _cardSet;
-        private readonly BattleField<Card> _battleField;
-        private readonly List<PlayerCardPlace<Card>> _desks;
-        private readonly List<PlayerCardPlace<Card>> _utilityAreas;
-        private readonly List<PlayerCardPlace<Card>> _cemeteries;
-        private readonly List<Player> _players;
+        private readonly CardSet _cardSet;
+        private readonly BattleField _battleField;
+        private readonly List<PlayerSet> _playerSets;
 
-        public Game(List<CardPlace<Card>> cardSet, IRules rules)
+        public Game(CardSet cardSet, IRules rules)
         {
             _rules = rules;
             _cardSet = cardSet;
-            _battleField = new BattleField<Card>(_rules.FieldRows, _rules.FieldColumns);
-            _desks = new List<PlayerCardPlace<Card>>();
-            _utilityAreas = new List<PlayerCardPlace<Card>>();
-            _cemeteries = new List<PlayerCardPlace<Card>>();
-            _players = new List<Player>();
+            _battleField = new BattleField(rules.FieldRows, rules.FieldColumns);
+            _playerSets = new List<PlayerSet>();
         }
 
         public void Attach(Player p)
         {
-            _players.Add(p);
+            _playerSets.Add(new PlayerSet(p));
         }
 
         public void Start()
         {
-            FillPlayerCardPlaces();
             DealCards();
-        }
-
-        private void FillPlayerCardPlaces()
-        {
-            _players.ForEach(player =>
-            {
-                _desks.AddEmpty(player.Id);
-                _utilityAreas.AddEmpty(player.Id);
-                _cemeteries.AddEmpty(player.Id);
-            });
+            PlayGame();
         }
 
         private void DealCards()
         {
-            for (var i = 0; i < _rules.StartCardsAmount; i++)
+            for (var i = 0; i < _rules.PlayerCardsAmount; i++)
             {
-                LetPlayersSelectCards();
+                ForEachPlayer(playerSet =>
+                {
+                    var selectedCard = playerSet.SelectCard(_cardSet);
+                    playerSet.DealCard(selectedCard);
+                });
+            }
+        }
+        
+        private void PlayGame()
+        {
+            ForEachPlayer(playerSet =>
+            {
+                playerSet.Move(GetGameInfo());
+            });
+        }
+
+        private void ForEachPlayer(Action<PlayerSet> action)
+        {
+            foreach (var playerSet in _playerSets)
+            {
+                action(playerSet);
             }
         }
 
-        private void LetPlayersSelectCards()
+        private GameInfo GetGameInfo()
         {
-            foreach (var player in _players)
-            {
-                var selectedCard = player.SelectCard(_cardSet);
-                _desks.PushFirst(player.Id, selectedCard);
-            }
+            PlayerSetInfo[] playerSetsInfos = _playerSets.Select(x => x.GetInfo()).ToArray();
+            return new GameInfo(_battleField.GetInfo(), _cardSet.GetInfo(), playerSetsInfos);
         }
     }
 }

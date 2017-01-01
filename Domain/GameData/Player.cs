@@ -17,7 +17,12 @@ namespace Domain.GameData
             _context = context;
         }
 
-        public Card SelectCard(List<CardPlace<Card>> cardSet)
+        public ICard SelectCard(CardSet cardSet)
+        {
+            throw new NotImplementedException();
+        }
+
+        public GameInfo Move(GameInfo gameInfo)
         {
             throw new NotImplementedException();
         }
