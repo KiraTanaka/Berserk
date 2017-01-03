@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Domain.BoardData;
 using Domain.CardData;
 
@@ -9,11 +8,14 @@ namespace Domain.GameData
     {
         public Guid Id { get; }
 
-        private readonly Context _context;
+        public string Name { get; }
 
-        public Player(Context context)
+        private readonly IPlayerContext _context;
+
+        public Player(Guid id, string name, IPlayerContext context)
         {
-            Id = Guid.NewGuid();
+            Id = id;
+            Name = name;
             _context = context;
         }
 
@@ -22,9 +24,18 @@ namespace Domain.GameData
             throw new NotImplementedException();
         }
 
-        public GameInfo Move(GameInfo gameInfo)
+        public PlayerMove Move(GameInfo gameInfo)
         {
-            throw new NotImplementedException();
+            return _context.Move(gameInfo, Id);
+        }
+
+        public PlayerInfo GetInfo()
+        {
+            return new PlayerInfo
+            {
+                Id = Id,
+                Name = Name
+            };
         }
     }
 }

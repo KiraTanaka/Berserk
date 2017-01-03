@@ -12,20 +12,15 @@ namespace Domain.GameData
     {
         private readonly IRules _rules;
         private readonly CardSet _cardSet;
-        private readonly BattleField _battleField;
         private readonly List<PlayerSet> _playerSets;
+        private readonly BattleField _battleField;
 
-        public Game(CardSet cardSet, IRules rules)
+        public Game(IRules rules, CardSet cardSet, List<PlayerSet> playerSets)
         {
             _rules = rules;
             _cardSet = cardSet;
+            _playerSets = playerSets;
             _battleField = new BattleField(rules.FieldRows, rules.FieldColumns);
-            _playerSets = new List<PlayerSet>();
-        }
-
-        public void Attach(Player p)
-        {
-            _playerSets.Add(new PlayerSet(p));
         }
 
         public void Start()

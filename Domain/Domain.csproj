@@ -48,6 +48,7 @@
     <Compile Include="BoardData\PlayerCardSetInfo.cs" />
     <Compile Include="BoardData\PlayerCardSet.cs" />
     <Compile Include="BoardData\PlayerSet.cs" />
+    <Compile Include="BoardData\PlayerSetInfo.cs" />
     <Compile Include="CardData\ArtifactCard.cs" />
     <Compile Include="CardData\AttackLevel.cs" />
     <Compile Include="CardData\CreatureCard.cs" />
@@ -58,15 +59,17 @@
     <Compile Include="CardData\IEvaluable.cs" />
     <Compile Include="CardData\IFeatureable.cs" />
     <Compile Include="CardData\TerrainCard.cs" />
-    <Compile Include="GameData\Context.cs" />
+    <Compile Include="GameData\IPlayerContext.cs" />
     <Compile Include="GameData\Game.cs" />
     <Compile Include="CardData\Card.cs" />
     <Compile Include="GameData\GameInfo.cs" />
     <Compile Include="GameData\IRules.cs" />
     <Compile Include="BoardData\PlayerCardPlaceCollectionExtension.cs" />
-    <Compile Include="IPlayer.cs" />
-    <Compile Include="IState.cs" />
     <Compile Include="GameData\Player.cs" />
+    <Compile Include="GameData\PlayerInfo.cs" />
+    <Compile Include="GameData\PlayerMove.cs" />
+    <Compile Include="GameData\PlayerStorage.cs" />
+    <Compile Include="GameData\Rules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,7 +78,9 @@
       <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

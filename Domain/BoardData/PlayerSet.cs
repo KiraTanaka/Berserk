@@ -32,7 +32,7 @@ namespace Domain.BoardData
             return _player.SelectCard(cardSet);
         }
 
-        public GameInfo Move(GameInfo gameInfo)
+        public PlayerMove Move(GameInfo gameInfo)
         {
             return _player.Move(gameInfo);
         }
