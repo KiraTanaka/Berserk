@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Domain.BoardData;
+using Domain.CardData;
 using Domain.GameData;
 using Newtonsoft.Json;
 
@@ -12,16 +13,24 @@ namespace Application.Net
     {
         private readonly List<Player> _players;
         private readonly HashSet<PlayerMove> _moves;
-        private readonly Action<List<PlayerSet>> _startGame;
+        private readonly Action<IEnumerable<Player>> _startGame;
 
         private GameInfo _gameInfo;
         private Guid _playerTurn;
+        private ExpectationEnum _expectation;
 
-        public GameContext(Action<List<PlayerSet>> startGame)
+        public GameContext(Action<IEnumerable<Player>> startGame)
         {
             _players = new List<Player>();
             _moves = new HashSet<PlayerMove>();
             _startGame = startGame;
+        }
+        
+        public ICard SelectCard(GameInfo gameInfo, CardSet cardSet, Guid playerId)
+        {
+            _playerTurn = playerId;
+
+            throw new NotImplementedException();
         }
 
         public PlayerMove Move(GameInfo gameInfo, Guid playerId)
@@ -31,6 +40,7 @@ namespace Application.Net
 
             _gameInfo = gameInfo;
             _playerTurn = playerId;
+            _expectation = ExpectationEnum.Move;
 
             while (true)
             {
@@ -45,40 +55,50 @@ namespace Application.Net
 
         public string ParseRequest(string request)
         {
-            var userRequest = JsonConvert.DeserializeObject<UserRequest>(request);
+            var userRequest = JsonConvert.DeserializeObject<Request>(request);
             if (userRequest == null)
-            {
-                return GameResponce.Error("Incorrect request").ToJson();
-            }
-            if (userRequest.Registration && _players.Count < 2)
-            {
-                _players.Add(new Player(userRequest.UserId, userRequest.Name, this));
-                if (_players.Count == 2)
-                {
-                    var playerSets = _players.Select(x => new PlayerSet(x)).ToList();
-                    _startGame(playerSets);
-                    return GameResponce.Success($"Player {userRequest.Name} is registered. Game is started").ToJson();
-                }
-                return GameResponce.Success($"Player {userRequest.Name} is registered. Wait for another player").ToJson();
-            }
-            if (userRequest.Registration && _players.Count >= 2)
-            {
-                return GameResponce.Error("All players are registered").ToJson();
-            }
+                return Responce.Error("Incorrect request").ToJson();
+            if (userRequest.Registration)
+                return GetRegistrationResult(userRequest);
             if (_players.All(x => x.Id != userRequest.UserId))
-            {
-                return GameResponce.Error("Unknown player").ToJson();
-            }
-            if (userRequest.UserId != _playerTurn)
-            {
-                return GameResponce.Error("Not your turn").ToJson();
-            }
-            if (userRequest.Move != null)
-            {
-                lock(_moves) _moves.Add(userRequest.Move);
-                return GameResponce.Success("Move added").ToJson();
-            }
-            return GameResponce.Success(_gameInfo).ToJson();
+                return Responce.Error("Unknown player").ToJson();
+            if (_playerTurn != userRequest.UserId)
+                return Responce.Error("Another player's turn").ToJson();
+            if (_expectation == ExpectationEnum.ChooseCard)
+                return GetChooseCardResult(userRequest);
+            if (_expectation == ExpectationEnum.Move)
+                return GetMoveResult(userRequest);
+            return Responce.Error("Incorrect request").ToJson();
+        }
+
+        private string GetRegistrationResult(Request request)
+        {
+            if (_players.Count == 2)
+                return Responce.Error("All players are registered").ToJson();
+
+            var player = new Player(request.UserId, request.Name, this);
+            _players.Add(player);
+
+            if (_players.Count != 2)
+                return Responce.Success($"Player {player} registered").ToJson();
+
+            _startGame(_players);
+            return Responce.Success($"Player {player} registered. Game is started").ToJson();
+        }
+        
+        private string GetChooseCardResult(Request userRequest)
+        {
+            return userRequest.Card == null 
+                ? Responce.Error("Please choose the card", _gameInfo).ToJson() 
+                : Responce.Success($"Card {userRequest.Card} chosen").ToJson();
+        }
+
+        private string GetMoveResult(Request userRequest)
+        {
+            if (userRequest.Move == null)
+                return Responce.Error("Please move", _gameInfo).ToJson();
+            _moves.Add(userRequest.Move);
+            return Responce.Success("Moved").ToJson();
         }
     }
 }

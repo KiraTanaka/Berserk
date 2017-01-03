@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Application.Net;
 using Domain.BoardData;
@@ -12,20 +14,24 @@ namespace Application
     {
         public static void Main(string[] args)
         {
-            var appSettings = ConfigurationManager.AppSettings;
-            var host = appSettings["host"];
-            var port = int.Parse(appSettings["port"]);
-            var path = appSettings["path"];
+            var settings = ConfigurationManager.AppSettings;
+            var host = settings["host"];
+            var port = int.Parse(settings["port"]);
+            var path = settings["path"];
 
-            var gameContext = new GameContext(StartGame);
+            var context = new GameContext(StartGame);
             var uri = ServerHttpConnection.BuildHttpUri(host, port, path);
-            Task.Run(() => new ServerHttpConnection().Listen(uri, gameContext.ParseRequest));
+            Task.Run(() => new ServerHttpConnection().Listen(uri, context.ParseRequest));
             Console.ReadLine();
         }
 
-        private static void StartGame(List<PlayerSet> playerSets)
+        private static void StartGame(IEnumerable<Player> players)
         {
-            new Game(new Rules(), new CardSet(), playerSets).Start();
+            var rules = new Rules();
+            var cards = new CardSet();
+            var playerSets = players.Select(x => new PlayerSet(x)).ToList();
+            var game = new Game(rules, cards, playerSets);
+            new Thread(() => game.Start()).Start();
         }
     }
 }

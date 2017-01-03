@@ -27,9 +27,9 @@ namespace Domain.BoardData
             _desk.Push(card);
         }
 
-        public ICard SelectCard(CardSet cardSet)
+        public ICard SelectCard(GameInfo gameInfo, CardSet cardSet)
         {
-            return _player.SelectCard(cardSet);
+            return _player.SelectCard(gameInfo, cardSet);
         }
 
         public PlayerMove Move(GameInfo gameInfo)

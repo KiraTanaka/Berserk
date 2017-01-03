@@ -35,7 +35,7 @@ namespace Domain.GameData
             {
                 ForEachPlayer(playerSet =>
                 {
-                    var selectedCard = playerSet.SelectCard(_cardSet);
+                    var selectedCard = playerSet.SelectCard(GetGameInfo(), _cardSet);
                     playerSet.DealCard(selectedCard);
                 });
             }

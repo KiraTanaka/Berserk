@@ -19,9 +19,9 @@ namespace Domain.GameData
             _context = context;
         }
 
-        public ICard SelectCard(CardSet cardSet)
+        public ICard SelectCard(GameInfo gameInfo, CardSet cardSet)
         {
-            throw new NotImplementedException();
+            return _context.SelectCard(gameInfo, cardSet, Id);
         }
 
         public PlayerMove Move(GameInfo gameInfo)
@@ -37,5 +37,7 @@ namespace Domain.GameData
                 Name = Name
             };
         }
+
+        public override string ToString() => $"{nameof(Player)}: Id={Id}, Name={Name}";
     }
 }
