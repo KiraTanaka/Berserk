@@ -26,7 +26,7 @@ namespace Application.Net
             _startGame = startGame;
         }
         
-        public ICard SelectCard(GameInfo gameInfo, CardSet cardSet, Guid playerId)
+        public IBaseCard SelectCard(GameInfo gameInfo, CardSet cardSet, Guid playerId)
         {
             _playerTurn = playerId;
 

@@ -22,12 +22,12 @@ namespace Domain.BoardData
             _cemetery = new PlayerCardSet(player.Id);
         }
 
-        public void DealCard(ICard card)
+        public void DealCard(IBaseCard card)
         {
             _desk.Push(card);
         }
 
-        public ICard SelectCard(GameInfo gameInfo, CardSet cardSet)
+        public IBaseCard SelectCard(GameInfo gameInfo, CardSet cardSet)
         {
             return _player.SelectCard(gameInfo, cardSet);
         }

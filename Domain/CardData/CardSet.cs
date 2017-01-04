@@ -1,31 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Domain.CardData;
+using Domain.BoardData;
 
-namespace Domain.BoardData
+namespace Domain.CardData
 {
     /// <summary>
     /// Any card storage.
     /// </summary>
-    public class CardSet
+    public class CardSet : ICardSet
     {
-        private readonly HashSet<ICard> _cards = new HashSet<ICard>();
+        private readonly HashSet<IBaseCard> _cards = new HashSet<IBaseCard>();
 
-        public void Push(ICard card)
+        public void Push(IBaseCard card)
         {
             _cards.Add(card);
         }
         
-        public ICard Pull()
+        public IBaseCard Pull()
         {
             var last = _cards.LastOrDefault(); // TODO null
             _cards.Remove(last);
             return last;
         }
 
-        public CardSetInfo GetInfo()
-        {
-            return new CardSetInfo(_cards.ToArray());
-        }
+        public IBaseCard[] GetSet() => _cards.ToArray();
     }
 }

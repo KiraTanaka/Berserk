@@ -18,19 +18,19 @@ namespace Domain.BoardData
             _cardSet = new CardSet();
         }
 
-        public void Push(ICard card)
+        public void Push(IBaseCard card)
         {
             _cardSet.Push(card);
         }
 
-        public ICard Pull()
+        public IBaseCard Pull()
         {
             return _cardSet.Pull();
         }
 
         public PlayerCardSetInfo GetInfo()
         {
-            return new PlayerCardSetInfo(PlayerId, _cardSet.GetInfo());
+            return new PlayerCardSetInfo(PlayerId, _cardSet.GetSet());
         }
     }
 }

@@ -1,16 +1,17 @@
 ﻿using Domain.BoardData;
+using Domain.CardData;
 
 namespace Domain.GameData
 {
     public struct GameInfo
     {
         public BattleFieldInfo BattleFieldInfo { get; }
-        public CardSetInfo CardSetInfo { get; }
+        public IBaseCard[] CardSetInfo { get; }
         public PlayerSetInfo[] PlayerSetInfos { get; }
 
         public GameInfo(
-            BattleFieldInfo battleFieldInfo, 
-            CardSetInfo cardSetInfo, 
+            BattleFieldInfo battleFieldInfo,
+            IBaseCard[] cardSetInfo, 
             PlayerSetInfo[] playerSetInfos)
         {
             BattleFieldInfo = battleFieldInfo;

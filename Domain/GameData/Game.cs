@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Domain.BoardData;
+using Domain.CardData;
 
 namespace Domain.GameData
 {
@@ -60,7 +61,7 @@ namespace Domain.GameData
         private GameInfo GetGameInfo()
         {
             PlayerSetInfo[] playerSetsInfos = _playerSets.Select(x => x.GetInfo()).ToArray();
-            return new GameInfo(_battleField.GetInfo(), _cardSet.GetInfo(), playerSetsInfos);
+            return new GameInfo(_battleField.GetInfo(), _cardSet.GetSet(), playerSetsInfos);
         }
     }
 }
