@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="BoardData\BattleFieldInfo.cs" />
     <Compile Include="BoardData\BattleField.cs" />
-    <Compile Include="CardData\CardSet.cs" />
+    <Compile Include="CardData\CardDeck.cs" />
     <Compile Include="BoardData\PlayerCardSetInfo.cs" />
     <Compile Include="BoardData\PlayerCardSet.cs" />
     <Compile Include="BoardData\PlayerSet.cs" />

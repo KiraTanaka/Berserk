@@ -10,9 +10,5 @@ namespace Domain.CardData
         Currency Cost { get; }
         ElementEnum Element { get; }
         Feature Feature { get; }
-
-        // ReSharper disable once NonReadonlyMemberInGetHashCode
-//        int GetHashCode() => Guid.GetHashCode();
-//        bool Equals(object obj) => (obj as IBaseCard)?.Guid == Guid;
     }
 }

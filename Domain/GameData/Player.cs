@@ -19,7 +19,7 @@ namespace Domain.GameData
             _context = context;
         }
 
-        public IBaseCard SelectCard(GameInfo gameInfo, CardSet cardSet)
+        public IBaseCard SelectCard(GameInfo gameInfo, ICardSet cardSet)
         {
             return _context.SelectCard(gameInfo, cardSet, Id);
         }

@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumerableTypeExtension.cs" />
     <Compile Include="Net\ExpectationEnum.cs" />
     <Compile Include="Net\GameContext.cs" />
     <Compile Include="Net\Responce.cs" />

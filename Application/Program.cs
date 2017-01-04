@@ -17,53 +17,40 @@ namespace Application
     {
         public static void Main(string[] args)
         {
-            const string path = @"E:\Projects\kontur\Berserk\Plugins";
-            var dllPaths = Directory.GetFiles(path, "*.dll");
-
-            foreach (var dllPath in dllPaths)
-                ExecutePluginFromDll(dllPath);
-
-            //            var settings = ConfigurationManager.AppSettings;
-            //            var host = settings["host"];
-            //            var port = int.Parse(settings["port"]);
-            //            var path = settings["path"];
-            //
-            //            var context = new GameContext(StartGame);
-            //            var uri = ServerHttpConnection.BuildHttpUri(host, port, path);
-            //            Task.Run(() => new ServerHttpConnection().Listen(uri, context.ParseRequest));
+            var settings = ConfigurationManager.AppSettings;
+            var host = settings["host"];
+            var port = int.Parse(settings["port"]);
+            var path = settings["path"];
+            
+            var context = new GameContext(RunGameCallback);
+            var uri = ServerHttpConnection.BuildHttpUri(host, port, path);
+            Task.Run(() => new ServerHttpConnection().Listen(uri, context.ParseRequest));
             Console.ReadLine();
         }
 
-        private static void ExecutePluginFromDll(string dllPath)
+        private static void RunGameCallback(IEnumerable<Player> players)
         {
-            var assembly = Assembly.LoadFrom(dllPath);
+            const string path = @"E:\Projects\kontur\Berserk\Plugins";
+            var dllPaths = Directory.GetFiles(path, "*.dll");
 
-            var plugins = assembly.ExportedTypes
-                .Where(IsCardSet)
-                .Select(GetInstance)
+            var exportedTypes = dllPaths
+                .Select(Assembly.LoadFrom)
+                .SelectMany(x => x.ExportedTypes)
                 .ToList();
 
-            var cards = plugins.SelectMany(x => x.GetSet()).ToList();
+            var cards = exportedTypes
+                .SelectInstancesOf<ICardSet>()
+                .SelectMany(x => x.GetSet())
+                .ToList();
+
             cards.ForEach(x => Console.WriteLine(x.Name));
-            //plugins.ForEach(x => Console.WriteLine(x.Name));
-        }
 
-        private static bool IsCardSet(Type t)
-        {
-            return typeof(ICardSet).IsAssignableFrom(t)
-                && t.GetConstructor(Type.EmptyTypes) != null;
-        }
+            var rules = exportedTypes
+                .SelectInstancesOf<IRules>()
+                .FirstOrDefault();
 
-        private static ICardSet GetInstance(Type t)
-        {
-            return (ICardSet)Activator.CreateInstance(t);
-        }
-
-        private static void StartGame(IEnumerable<Player> players)
-        {
-            var rules = new Rules();
-            var cards = new CardSet();
-            var playerSets = players.Select(x => new PlayerSet(x)).ToList();
+            Console.WriteLine($"Rows={rules?.FieldRows}, Columns={rules?.FieldColumns}, Cards={rules?.PlayerCardsAmount}");
+            var playerSets = players.Select(x => new PlayerSet(x, new CardDeck(cards))).ToList();
             var game = new Game(rules, cards, playerSets);
             new Thread(() => game.Start()).Start();
         }

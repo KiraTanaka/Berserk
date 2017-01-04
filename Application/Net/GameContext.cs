@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Domain.BoardData;
 using Domain.CardData;
 using Domain.GameData;
 using Newtonsoft.Json;
@@ -13,20 +12,20 @@ namespace Application.Net
     {
         private readonly List<Player> _players;
         private readonly HashSet<PlayerMove> _moves;
-        private readonly Action<IEnumerable<Player>> _startGame;
+        private readonly Action<IEnumerable<Player>> _runGameCallback;
 
         private GameInfo _gameInfo;
         private Guid _playerTurn;
         private ExpectationEnum _expectation;
 
-        public GameContext(Action<IEnumerable<Player>> startGame)
+        public GameContext(Action<IEnumerable<Player>> runGameCallback)
         {
             _players = new List<Player>();
             _moves = new HashSet<PlayerMove>();
-            _startGame = startGame;
+            _runGameCallback = runGameCallback;
         }
         
-        public IBaseCard SelectCard(GameInfo gameInfo, CardSet cardSet, Guid playerId)
+        public IBaseCard SelectCard(GameInfo gameInfo, ICardSet cardSet, Guid playerId)
         {
             _playerTurn = playerId;
 
@@ -82,7 +81,7 @@ namespace Application.Net
             if (_players.Count != 2)
                 return Responce.Success($"Player {player} registered").ToJson();
 
-            _startGame(_players);
+            _runGameCallback(_players);
             return Responce.Success($"Player {player} registered. Game is started").ToJson();
         }
         

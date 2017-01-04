@@ -2,8 +2,8 @@
 {
     public interface IRules
     {
-        int FieldRows { get; set; }
-        int FieldColumns { get; set; }
-        int PlayerCardsAmount { get; set; }
+        int FieldRows { get; }
+        int FieldColumns { get; }
+        int PlayerCardsAmount { get; }
     }
 }

@@ -10,27 +10,27 @@ namespace Domain.BoardData
     public class PlayerCardSet
     {
         public Guid PlayerId { get; }
-        private readonly CardSet _cardSet;
+        private readonly CardDeck _cardDeck;
 
-        public PlayerCardSet(Guid playerId)
+        public PlayerCardSet(Guid playerId, CardDeck cardDeck)
         {
             PlayerId = playerId;
-            _cardSet = new CardSet();
+            _cardDeck = cardDeck;
         }
 
         public void Push(IBaseCard card)
         {
-            _cardSet.Push(card);
+            _cardDeck.Push(card);
         }
 
         public IBaseCard Pull()
         {
-            return _cardSet.Pull();
+            return _cardDeck.Pull();
         }
 
         public PlayerCardSetInfo GetInfo()
         {
-            return new PlayerCardSetInfo(PlayerId, _cardSet.GetSet());
+            return new PlayerCardSetInfo(PlayerId, _cardDeck.GetSet());
         }
     }
 }

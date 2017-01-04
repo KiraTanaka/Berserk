@@ -14,12 +14,12 @@ namespace Domain.BoardData
         private readonly PlayerCardSet _utilityArea;
         private readonly PlayerCardSet _cemetery;
 
-        public PlayerSet(Player player)
+        public PlayerSet(Player player, CardDeck deck)
         {
             _player = player;
-            _desk = new PlayerCardSet(player.Id);
-            _utilityArea = new PlayerCardSet(player.Id);
-            _cemetery = new PlayerCardSet(player.Id);
+            _desk = new PlayerCardSet(player.Id, deck);
+            _utilityArea = new PlayerCardSet(player.Id, deck);
+            _cemetery = new PlayerCardSet(player.Id, deck);
         }
 
         public void DealCard(IBaseCard card)
@@ -27,7 +27,7 @@ namespace Domain.BoardData
             _desk.Push(card);
         }
 
-        public IBaseCard SelectCard(GameInfo gameInfo, CardSet cardSet)
+        public IBaseCard SelectCard(GameInfo gameInfo, ICardSet cardSet)
         {
             return _player.SelectCard(gameInfo, cardSet);
         }
