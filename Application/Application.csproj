@@ -48,9 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnumerableTypeExtension.cs" />
-    <Compile Include="Net\ExpectationEnum.cs" />
-    <Compile Include="Net\GameContext.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Net\StageEnum.cs" />
+    <Compile Include="Net\HttpGameContext.cs" />
     <Compile Include="Net\Responce.cs" />
     <Compile Include="Net\Request.cs" />
     <Compile Include="Program.cs" />

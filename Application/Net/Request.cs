@@ -8,7 +8,7 @@ namespace Application.Net
         public Guid UserId { get; set; }
         public string Name { get; set; }
         public PlayerMove Move { get; set; }
-        public string Card { get; set; }
+        public Guid SelectedCard { get; set; }
         public bool Registration { get; set; }
     }
 }

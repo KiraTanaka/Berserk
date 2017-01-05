@@ -1,41 +1,28 @@
 ﻿using System;
-using Domain.BoardData;
-using Domain.CardData;
 
 namespace Domain.GameData
 {
     public class Player
     {
         public Guid Id { get; }
-
         public string Name { get; }
+        private readonly IGameContext _context;
 
-        private readonly IPlayerContext _context;
-
-        public Player(Guid id, string name, IPlayerContext context)
+        public Player(Guid id, string name, IGameContext context)
         {
             Id = id;
             Name = name;
             _context = context;
         }
 
-        public IBaseCard SelectCard(GameInfo gameInfo, ICardSet cardSet)
+        public Guid SelectCard(GameInfo gameInfo)
         {
-            return _context.SelectCard(gameInfo, cardSet, Id);
+            return _context.SelectCard(Id, gameInfo);
         }
 
         public PlayerMove Move(GameInfo gameInfo)
         {
-            return _context.Move(gameInfo, Id);
-        }
-
-        public PlayerInfo GetInfo()
-        {
-            return new PlayerInfo
-            {
-                Id = Id,
-                Name = Name
-            };
+            return _context.Move(Id, gameInfo);
         }
 
         public override string ToString() => $"{nameof(Player)}: Id={Id}, Name={Name}";

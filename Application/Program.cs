@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using Application.Net;
 using Domain.CardData;
@@ -21,16 +19,12 @@ namespace Application
             var port = int.Parse(settings["port"]);
             var path = settings["path"];
             
-            var context = new GameContext(RunGameCallback);
+            var context = new HttpGameContext();
             var uri = ServerHttpConnection.BuildHttpUri(host, port, path);
             Task.Run(() => new ServerHttpConnection().Listen(uri, context.ParseRequest));
-            Console.ReadLine();
-        }
 
-        private static void RunGameCallback(IEnumerable<Player> players)
-        {
-            const string path = @"E:\Projects\kontur\Berserk\Plugins";
-            var dllPaths = Directory.GetFiles(path, "*.dll");
+            const string dllFolderPath = @"E:\Projects\kontur\Berserk\Plugins";
+            var dllPaths = Directory.GetFiles(dllFolderPath, "*.dll");
 
             var exportedTypes = dllPaths
                 .Select(Assembly.LoadFrom)
@@ -49,8 +43,10 @@ namespace Application
                 .FirstOrDefault();
 
             Console.WriteLine($"Rows={rules?.FieldRows}, Columns={rules?.FieldColumns}, Cards={rules?.PlayerCardsAmount}");
-            var game = new Game(rules, cards, players);
-            new Thread(() => game.Start()).Start();
+
+            new Game(rules, cards, context);
+
+            Console.ReadLine();
         }
     }
 }

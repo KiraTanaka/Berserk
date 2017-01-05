@@ -43,31 +43,31 @@
   <ItemGroup>
     <Compile Include="BoardData\BattleFieldInfo.cs" />
     <Compile Include="BoardData\BattleField.cs" />
+    <Compile Include="CardData\AttackEnum.cs" />
+    <Compile Include="CardData\CardActionEnum.cs" />
     <Compile Include="CardData\CardDeck.cs" />
     <Compile Include="BoardData\PlayerCardSetInfo.cs" />
-    <Compile Include="BoardData\PlayerCardSet.cs" />
+    <Compile Include="BoardData\PlayerCardDeck.cs" />
     <Compile Include="BoardData\PlayerZone.cs" />
     <Compile Include="BoardData\PlayerSetInfo.cs" />
+    <Compile Include="CardData\DefenceEnum.cs" />
     <Compile Include="CardData\IArtifactCard.cs" />
     <Compile Include="CardData\Attack.cs" />
     <Compile Include="CardData\EquipmentEnum.cs" />
-    <Compile Include="CardData\Feature.cs" />
+    <Compile Include="CardData\CardAction.cs" />
     <Compile Include="CardData\ICardSet.cs" />
     <Compile Include="CardData\ICreatureCard.cs" />
     <Compile Include="CardData\Currency.cs" />
     <Compile Include="CardData\ElementEnum.cs" />
     <Compile Include="CardData\IEquipmentCard.cs" />
     <Compile Include="CardData\ITerrainCard.cs" />
-    <Compile Include="GameData\IPlayerContext.cs" />
+    <Compile Include="GameData\IGameContext.cs" />
     <Compile Include="GameData\Game.cs" />
     <Compile Include="CardData\IBaseCard.cs" />
     <Compile Include="GameData\GameInfo.cs" />
     <Compile Include="GameData\IRules.cs" />
     <Compile Include="GameData\Player.cs" />
-    <Compile Include="GameData\PlayerInfo.cs" />
     <Compile Include="GameData\PlayerMove.cs" />
-    <Compile Include="GameData\PlayerStorage.cs" />
-    <Compile Include="GameData\Rules.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

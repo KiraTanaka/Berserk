@@ -2,9 +2,8 @@
 {
     public interface ICreatureCard : IBaseCard
     {
-        int Health { get; }
-        int Range { get; }
-        Attack Attack { get; }
-        string Moto { get; }
+        int Health { get; set; }
+        int Range { get; set; }
+        Attack Attack { get; set; }
     }
 }

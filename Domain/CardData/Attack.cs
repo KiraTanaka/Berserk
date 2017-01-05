@@ -1,16 +1,21 @@
-﻿namespace Domain.CardData
+﻿using System.Collections.Generic;
+
+namespace Domain.CardData
 {
     public class Attack
     {
-        public int Low { get; set; }
-        public int Mid { get; set; }
-        public int High { get; set; }
+        private readonly Dictionary<AttackEnum, int> _values;
+
+        public int this[AttackEnum option] => _values[option];
 
         public Attack(int low, int mid, int high)
         {
-            Low = low;
-            Mid = mid;
-            High = high;
+            _values = new Dictionary<AttackEnum, int>
+            {
+                [AttackEnum.Low] = low,
+                [AttackEnum.Mid] = mid,
+                [AttackEnum.High] = high
+            };
         }
     }
 }

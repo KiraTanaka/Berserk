@@ -1,8 +1,8 @@
 ﻿namespace Application.Net
 {
-    public enum ExpectationEnum
+    public enum StageEnum
     {
-        ChooseCard,
+        SelectCard,
         Move
     }
 }

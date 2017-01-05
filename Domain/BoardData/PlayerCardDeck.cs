@@ -7,30 +7,27 @@ namespace Domain.BoardData
     /// Любое хранилище для карт игрока.
     /// Предполагается колода, кладбише, вспомогательная зона
     /// </summary>
-    public class PlayerCardSet
+    public class PlayerCardDeck
     {
         public Guid PlayerId { get; }
         private readonly CardDeck _cardDeck;
 
-        public PlayerCardSet(Guid playerId, CardDeck cardDeck)
+        public PlayerCardDeck(Guid playerId, CardDeck cardDeck)
         {
             PlayerId = playerId;
             _cardDeck = cardDeck;
         }
 
         public void Push(IBaseCard card)
-        {
-            _cardDeck.Push(card);
-        }
+            => _cardDeck.Push(card);
+
+        public IBaseCard Pull(Guid cardId)
+            => _cardDeck.Pull(cardId);
 
         public IBaseCard Pull()
-        {
-            return _cardDeck.Pull();
-        }
+            => _cardDeck.Pull();
 
         public PlayerCardSetInfo GetInfo()
-        {
-            return new PlayerCardSetInfo(PlayerId, _cardDeck.GetSet());
-        }
+            => new PlayerCardSetInfo(PlayerId, _cardDeck.GetSet());
     }
 }

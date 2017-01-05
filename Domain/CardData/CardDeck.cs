@@ -25,7 +25,13 @@ namespace Domain.CardData
         {
             _cards.Add(new HashSetCardWrapper(card));
         }
-        
+
+        public IBaseCard Pull(Guid cardId)
+        {
+            var card = _cards.FirstOrDefault(x => x.Card?.Id == cardId);
+            return Remove(card);
+        }
+
         public IBaseCard Pull()
         {
             var card = _cards.LastOrDefault(); // TODO null
@@ -41,7 +47,7 @@ namespace Domain.CardData
         private IBaseCard Remove(HashSetCardWrapper card)
         {
             _cards.Remove(card);
-            return card.Card;
+            return card?.Card;
         }
 
         public CardDeck[] SplitRandom(int parts)
@@ -64,20 +70,10 @@ namespace Domain.CardData
             }
 
             public override int GetHashCode()
-            {
-                return Card?.Id == null || Card.Name == null
-                    ? 0
-                    : Card.Id.GetHashCode() * 3 + Card.Name.GetHashCode() * 7;
-            }
+                => Card?.Id.GetHashCode() ?? 0;
 
             public override bool Equals(object obj)
-            {
-                var otherCard = (obj as HashSetCardWrapper)?.Card;
-                return Card != null
-                       && otherCard != null
-                       && otherCard.Id == Card.Id
-                       && otherCard.Name == Card.Name;
-            }
+                => (obj as HashSetCardWrapper)?.Card?.Id == Card?.Id;
         }
     }
 }

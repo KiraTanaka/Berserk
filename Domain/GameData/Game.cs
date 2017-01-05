@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Domain.BoardData;
 using Domain.CardData;
@@ -12,57 +11,41 @@ namespace Domain.GameData
     /// </summary>
     public class Game
     {
-        private readonly IRules _rules;
         private readonly CardDeck _cardDeck;
         private readonly List<PlayerZone> _playerZones;
         private readonly BattleField _battleField;
 
-        public Game(IRules rules, IEnumerable<IBaseCard> cards, IEnumerable<Player> players)
+        public Game(IRules rules, IEnumerable<IBaseCard> cards, IGameContext context)
         {
-            _rules = rules;
             _cardDeck = new CardDeck(cards);
-            _playerZones = GetPlayerZones(players.ToArray(), _cardDeck);
+            _playerZones = GetPlayerZones(rules, context.GetPlayers().ToArray(), _cardDeck);
             _battleField = new BattleField(rules.FieldRows, rules.FieldColumns);
-        }
-        
-        private static List<PlayerZone> GetPlayerZones(Player[] players, CardDeck cardDeck)
-        {
-            var playerDecks = cardDeck.SplitRandom(players.Length);
-            return players.Select((player, i) => new PlayerZone(player, playerDecks[i])).ToList();
-        }
 
-        public void Start()
-        {
-            DealCards();
+            Console.WriteLine("Game loaded");
+            //DealCards(rules.PlayerCardsAmount);
             PlayGame();
         }
-
-        private void DealCards()
+        
+        private static List<PlayerZone> GetPlayerZones(IRules rules, Player[] players, CardDeck cardDeck)
         {
-            for (var i = 0; i < _rules.PlayerCardsAmount; i++)
-            {
-                ForEachPlayer(playerSet =>
+            var playerDecks = cardDeck.SplitRandom(players.Length);
+            return players.Select((player, i) =>
+                new PlayerZone(rules, player, playerDecks[i])).ToList();
+        }
+
+        private void DealCards(int playerCardsAmount)
+        {
+            for (var i = 0; i < playerCardsAmount; i++)
+                _playerZones.ForEach(x =>
                 {
-                    var selectedCard = playerSet.SelectCard(GetGameInfo(), _cardDeck);
-                    playerSet.DealCard(selectedCard);
+                    var selectedCard = x.SelectCard(GetGameInfo());
+                    x.DealCard(selectedCard);
                 });
-            }
         }
         
         private void PlayGame()
         {
-            ForEachPlayer(playerSet =>
-            {
-                playerSet.Move(GetGameInfo());
-            });
-        }
-
-        private void ForEachPlayer(Action<PlayerZone> action)
-        {
-            foreach (var playerSet in _playerZones)
-            {
-                action(playerSet);
-            }
+            _playerZones.ForEach(x => x.Move(GetGameInfo()));
         }
 
         private GameInfo GetGameInfo()

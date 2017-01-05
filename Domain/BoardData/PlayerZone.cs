@@ -1,4 +1,5 @@
-﻿using Domain.CardData;
+﻿using System;
+using Domain.CardData;
 using Domain.GameData;
 
 namespace Domain.BoardData
@@ -10,16 +11,20 @@ namespace Domain.BoardData
     public class PlayerZone
     {
         private readonly Player _player;
-        private readonly PlayerCardSet _desk;
-        private readonly PlayerCardSet _utilityArea;
-        private readonly PlayerCardSet _cemetery;
+        private readonly PlayerCardDeck _desk;
+        private readonly PlayerCardDeck _utilityArea;
+        private readonly PlayerCardDeck _cemetery;
+        private readonly Currency _gold;
+        private readonly Currency _silver;
 
-        public PlayerZone(Player player, CardDeck playerDeck)
+        public PlayerZone(IRules rules, Player player, CardDeck playerDeck)
         {
             _player = player;
-            _desk = new PlayerCardSet(player.Id, playerDeck);
-            _utilityArea = new PlayerCardSet(player.Id, playerDeck);
-            _cemetery = new PlayerCardSet(player.Id, playerDeck);
+            _desk = new PlayerCardDeck(player.Id, playerDeck);
+            _utilityArea = new PlayerCardDeck(player.Id, playerDeck);
+            _cemetery = new PlayerCardDeck(player.Id, playerDeck);
+            _gold = Currency.Gold(rules.GoldAmount);
+            _silver = Currency.Silver(rules.SilverAmount);
         }
 
         public void DealCard(IBaseCard card)
@@ -27,9 +32,11 @@ namespace Domain.BoardData
             _desk.Push(card);
         }
 
-        public IBaseCard SelectCard(GameInfo gameInfo, ICardSet cardSet)
+        public IBaseCard SelectCard(GameInfo gameInfo)
         {
-            return _player.SelectCard(gameInfo, cardSet);
+            var selected = _player.SelectCard(gameInfo);
+            var selectesCard = _desk.Pull(selected);
+            return selectesCard;
         }
 
         public PlayerMove Move(GameInfo gameInfo)
