@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Net;
-using Domain.BoardData;
 using Domain.CardData;
 using Domain.GameData;
 
@@ -50,8 +49,7 @@ namespace Application
                 .FirstOrDefault();
 
             Console.WriteLine($"Rows={rules?.FieldRows}, Columns={rules?.FieldColumns}, Cards={rules?.PlayerCardsAmount}");
-            var playerSets = players.Select(x => new PlayerSet(x, new CardDeck(cards))).ToList();
-            var game = new Game(rules, cards, playerSets);
+            var game = new Game(rules, cards, players);
             new Thread(() => game.Start()).Start();
         }
     }

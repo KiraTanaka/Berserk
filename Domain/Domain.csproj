@@ -46,7 +46,7 @@
     <Compile Include="CardData\CardDeck.cs" />
     <Compile Include="BoardData\PlayerCardSetInfo.cs" />
     <Compile Include="BoardData\PlayerCardSet.cs" />
-    <Compile Include="BoardData\PlayerSet.cs" />
+    <Compile Include="BoardData\PlayerZone.cs" />
     <Compile Include="BoardData\PlayerSetInfo.cs" />
     <Compile Include="CardData\IArtifactCard.cs" />
     <Compile Include="CardData\Attack.cs" />

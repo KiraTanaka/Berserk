@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Domain.BoardData;
 using Domain.CardData;
@@ -13,15 +14,21 @@ namespace Domain.GameData
     {
         private readonly IRules _rules;
         private readonly CardDeck _cardDeck;
-        private readonly List<PlayerSet> _playerSets;
+        private readonly List<PlayerZone> _playerZones;
         private readonly BattleField _battleField;
 
-        public Game(IRules rules, IEnumerable<IBaseCard> cardSet, List<PlayerSet> playerSets)
+        public Game(IRules rules, IEnumerable<IBaseCard> cards, IEnumerable<Player> players)
         {
             _rules = rules;
-            _cardDeck = new CardDeck(cardSet);
-            _playerSets = playerSets;
+            _cardDeck = new CardDeck(cards);
+            _playerZones = GetPlayerZones(players.ToArray(), _cardDeck);
             _battleField = new BattleField(rules.FieldRows, rules.FieldColumns);
+        }
+        
+        private static List<PlayerZone> GetPlayerZones(Player[] players, CardDeck cardDeck)
+        {
+            var playerDecks = cardDeck.SplitRandom(players.Length);
+            return players.Select((player, i) => new PlayerZone(player, playerDecks[i])).ToList();
         }
 
         public void Start()
@@ -50,9 +57,9 @@ namespace Domain.GameData
             });
         }
 
-        private void ForEachPlayer(Action<PlayerSet> action)
+        private void ForEachPlayer(Action<PlayerZone> action)
         {
-            foreach (var playerSet in _playerSets)
+            foreach (var playerSet in _playerZones)
             {
                 action(playerSet);
             }
@@ -60,7 +67,7 @@ namespace Domain.GameData
 
         private GameInfo GetGameInfo()
         {
-            PlayerSetInfo[] playerSetsInfos = _playerSets.Select(x => x.GetInfo()).ToArray();
+            PlayerSetInfo[] playerSetsInfos = _playerZones.Select(x => x.GetInfo()).ToArray();
             return new GameInfo(_battleField.GetInfo(), _cardDeck.GetSet(), playerSetsInfos);
         }
     }

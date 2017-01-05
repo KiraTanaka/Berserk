@@ -7,19 +7,19 @@ namespace Domain.BoardData
     /// Представляет собой набор данных связанных с игроком.
     /// Игрок, колода, вспомогательная территория, кладбище.
     /// </summary>
-    public class PlayerSet
+    public class PlayerZone
     {
         private readonly Player _player;
         private readonly PlayerCardSet _desk;
         private readonly PlayerCardSet _utilityArea;
         private readonly PlayerCardSet _cemetery;
 
-        public PlayerSet(Player player, CardDeck deck)
+        public PlayerZone(Player player, CardDeck playerDeck)
         {
             _player = player;
-            _desk = new PlayerCardSet(player.Id, deck);
-            _utilityArea = new PlayerCardSet(player.Id, deck);
-            _cemetery = new PlayerCardSet(player.Id, deck);
+            _desk = new PlayerCardSet(player.Id, playerDeck);
+            _utilityArea = new PlayerCardSet(player.Id, playerDeck);
+            _cemetery = new PlayerCardSet(player.Id, playerDeck);
         }
 
         public void DealCard(IBaseCard card)
