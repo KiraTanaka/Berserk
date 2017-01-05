@@ -19,7 +19,7 @@ namespace Application
             var port = int.Parse(settings["port"]);
             var path = settings["path"];
             
-            var context = new HttpGameContext();
+            var context = new HttpContext();
             var uri = ServerHttpConnection.BuildHttpUri(host, port, path);
             Task.Run(() => new ServerHttpConnection().Listen(uri, context.ParseRequest));
 
@@ -33,7 +33,7 @@ namespace Application
 
             var cards = exportedTypes
                 .SelectInstancesOf<ICardSet>()
-                .SelectMany(x => x.GetSet())
+                .SelectMany(x => x)
                 .ToList();
 
             cards.ForEach(x => Console.WriteLine(x.Name));

@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using Domain.CardData;
 
 namespace Domain.GameData
 {
     /// <summary>
     /// Управляет взаимодействием элементов игры.
     /// </summary>
-    public interface IGameContext
+    public interface IContext
     {
         /// <summary>
-        /// Passes an information about the game and returns player's move.
+        /// Передает информацию об игре и возвращает ход пользователя.
         /// </summary>
         PlayerMove Move(Guid player, GameInfo gameInfo);
 
         /// <summary>
-        /// Passes an information about the game and returns player's selected card guid.
+        /// Передает информацию об игре и возвращает ID карты выбранной пользовтелем.
         /// </summary>
         Guid SelectCard(Guid player, GameInfo gameInfo);
 
-        /// <summary>
-        /// Returns players of current game.
-        /// </summary>
         IEnumerable<Player> GetPlayers();
     }
 }

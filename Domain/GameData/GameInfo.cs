@@ -1,22 +1,12 @@
 ﻿using Domain.BoardData;
-using Domain.CardData;
 
 namespace Domain.GameData
 {
-    public struct GameInfo
+    /// <summary>
+    /// Класс для передачи информации об игре клиенту.
+    /// </summary>
+    public class GameInfo
     {
-        public BattleFieldInfo BattleFieldInfo { get; }
-        public IBaseCard[] CardSetInfo { get; }
-        public PlayerSetInfo[] PlayerSetInfos { get; }
-
-        public GameInfo(
-            BattleFieldInfo battleFieldInfo,
-            IBaseCard[] cardSetInfo, 
-            PlayerSetInfo[] playerSetInfos)
-        {
-            BattleFieldInfo = battleFieldInfo;
-            CardSetInfo = cardSetInfo;
-            PlayerSetInfos = playerSetInfos;
-        }
+        public PlayerZoneInfo[] PlayerZoneInfos { get; set; }
     }
 }

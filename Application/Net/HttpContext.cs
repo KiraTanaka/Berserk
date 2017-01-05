@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Application.Net
 {
-    public class HttpGameContext : IGameContext
+    public class HttpContext : IContext
     {
         private readonly List<Player> _players = new List<Player>();
         private ContextState _state;
@@ -55,11 +55,10 @@ namespace Application.Net
         {
             if (userRequest.Move == null)
                 return Responce.Error("Please move", _state.GameInfo).ToJson();
-           // _moves.Add(userRequest.Move);
             return Responce.Success("Moved").ToJson();
         }
 
-        // IGameContext
+        // IContext
 
         public Guid SelectCard(Guid player, GameInfo gameInfo)
         {
@@ -82,9 +81,9 @@ namespace Application.Net
             _state.ExpectedPlayer = player;
             _state.Stage = StageEnum.Move;
 
-            while (true)
-            {
-            }
+            return ReturnWhenReady(
+                () => _state.ExpectedPlayer == player,
+                () => _state.Move);
         }
 
         public IEnumerable<Player> GetPlayers()

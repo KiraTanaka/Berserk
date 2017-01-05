@@ -2,13 +2,16 @@
 
 namespace Domain.GameData
 {
+    /// <summary>
+    /// Пользовтаель участвующий в игре.
+    /// </summary>
     public class Player
     {
         public Guid Id { get; }
         public string Name { get; }
-        private readonly IGameContext _context;
+        private readonly IContext _context;
 
-        public Player(Guid id, string name, IGameContext context)
+        public Player(Guid id, string name, IContext context)
         {
             Id = id;
             Name = name;
@@ -25,6 +28,7 @@ namespace Domain.GameData
             return _context.Move(Id, gameInfo);
         }
 
-        public override string ToString() => $"{nameof(Player)}: Id={Id}, Name={Name}";
+        public override string ToString() 
+            => $"{nameof(Player)}: Id={Id}, Name={Name}";
     }
 }

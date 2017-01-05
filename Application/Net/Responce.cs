@@ -24,7 +24,8 @@ namespace Application.Net
         public static Responce Success(string message, GameInfo gameInfo)
             => new Responce { IsValid = true, Message = message, GameInfo = gameInfo };
 
-        public string ToJson() => JsonConvert.SerializeObject(this);
+        public string ToJson() 
+            => JsonConvert.SerializeObject(this);
 
         public override string ToString()
             => $"{nameof(Responce)}: IsValid={IsValid}, Message={Message}";

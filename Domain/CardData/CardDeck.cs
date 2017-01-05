@@ -5,46 +5,45 @@ using System.Linq;
 namespace Domain.CardData
 {
     /// <summary>
-    /// Any card storage.
+    /// Любая колода карт.
     /// </summary>
-    public class CardDeck : ICardSet
+    public class CardDeck
     {
-        private readonly HashSet<HashSetCardWrapper> _cards; // TODO карты могут повторяться
+        private readonly HashSet<HashSetCardWrapper> _cards;
         private readonly Random _random = new Random();
 
-        public CardDeck(IEnumerable<IBaseCard> cards)
+        public CardDeck(IEnumerable<ICard> cards)
         {
             _cards = new HashSet<HashSetCardWrapper>();
             foreach (var card in cards)
                 _cards.Add(new HashSetCardWrapper(card));
         }
 
-        public int Rest => _cards.Count;
+        public int Rest
+            => _cards.Count;
 
-        public void Push(IBaseCard card)
-        {
-            _cards.Add(new HashSetCardWrapper(card));
-        }
+        public CardInfo[] GetInfo()
+            => _cards.Select(x => new CardInfo(x.Card)).ToArray();
 
-        public IBaseCard Pull(Guid cardId)
-        {
-            var card = _cards.FirstOrDefault(x => x.Card?.Id == cardId);
-            return Remove(card);
-        }
-
-        public IBaseCard Pull()
+        public ICard Pull()
         {
             var card = _cards.LastOrDefault(); // TODO null
-            return Remove(card);
+            return Pull(card);
         }
 
-        public IBaseCard PullRandom()
+        public ICard Pull(Guid cardId)
+        {
+            var card = _cards.FirstOrDefault(x => x.Card?.Id == cardId);
+            return Pull(card);
+        }
+
+        public ICard PullRandom()
         {
             var card = _cards.ElementAtOrDefault(_random.Next(_cards.Count));
-            return Remove(card);
+            return Pull(card);
         }
 
-        private IBaseCard Remove(HashSetCardWrapper card)
+        private ICard Pull(HashSetCardWrapper card)
         {
             _cards.Remove(card);
             return card?.Card;
@@ -52,19 +51,17 @@ namespace Domain.CardData
 
         public CardDeck[] SplitRandom(int parts)
         {
-            var splitted = new List<List<IBaseCard>>();
-            for (var i = 0; i < parts; i++) splitted.Add(new List<IBaseCard>());
+            var splitted = new List<List<ICard>>();
+            for (var i = 0; i < parts; i++) splitted.Add(new List<ICard>());
             for (var i = 0; i < Rest;  i++) splitted.ForEach(x => x.Add(PullRandom()));
             return splitted.Select(x => new CardDeck(x)).ToArray();
         }
-
-        public IBaseCard[] GetSet() => _cards.Select(x => x.Card).ToArray();
-
+        
         private class HashSetCardWrapper
         {
-            public readonly IBaseCard Card;
+            public readonly ICard Card;
 
-            public HashSetCardWrapper(IBaseCard card)
+            public HashSetCardWrapper(ICard card)
             {
                 Card = card;
             }

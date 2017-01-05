@@ -44,11 +44,11 @@ namespace Application.Net
 
                     var buffer = new byte[BufferSize];
                     var read = context.Request.InputStream.Read(buffer, 0, BufferSize);
-                    var userRequestData = Encoding.Default.GetString(buffer, 0, read);
+                    var userRequestData = Encoding.UTF8.GetString(buffer, 0, read);
 
                     var userResponce = userRequestCallback(userRequestData);
 
-                    buffer = Encoding.Default.GetBytes(userResponce);
+                    buffer = Encoding.UTF8.GetBytes(userResponce);
                     context.Response.ContentLength64 = buffer.Length;
                     context.Response.OutputStream.Write(buffer, 0, buffer.Length);
                 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Net;
+using Domain.CardData;
 using Newtonsoft.Json;
 
 namespace Client
@@ -33,7 +34,7 @@ namespace Client
             Thread.Sleep(500);
             Registration(connection, userId2);
 
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
             Move(connection, userId1);
 
             Thread.Sleep(500);
@@ -49,7 +50,7 @@ namespace Client
                 Registration = false,
                 Move = null
             };
-            Task.Run(() => connection.PostAsync(request, Callback));
+            Task.Run(() => connection.PostAsync(request, x => Callback(x, userId)));
         }
 
         private static void Registration(ClientHttpConnection connection, Guid userId)
@@ -61,13 +62,30 @@ namespace Client
                 Registration = true,
                 Move = null
             };
-            Task.Run(() => connection.PostAsync(request, Callback));
+            Task.Run(() => connection.PostAsync(request, x => Callback(x, userId)));
         }
 
-        private static void Callback(string response)
+        private static void Callback(string response, Guid userId)
         {
-            var serverResponse = JsonConvert.DeserializeObject<Responce>(response);
-            Console.WriteLine(serverResponse);
+            try
+            {
+                var serverResponse = JsonConvert.DeserializeObject<Responce>(response);
+                var playerZone = serverResponse?.GameInfo?.PlayerZoneInfos?.FirstOrDefault(x => x.PlayerId == userId);
+                var cards = playerZone?.Desk;
+                if (cards != null)
+                {
+                    Console.WriteLine("Your cards:");
+                    foreach (var card in cards)
+                    {
+                        Console.WriteLine(card.Name);
+                    }
+                }
+                Console.WriteLine(serverResponse);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
     }
 }

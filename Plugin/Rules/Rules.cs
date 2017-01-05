@@ -7,7 +7,6 @@ namespace Plugin.Rules
         public int FieldRows => 6;
         public int FieldColumns => 5;
         public int PlayerCardsAmount => 3;
-        public int GoldAmount => 25;
-        public int SilverAmount => 24;
+        public int CurrencyAmount => 25;
     }
 }

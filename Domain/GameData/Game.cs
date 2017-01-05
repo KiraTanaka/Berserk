@@ -11,14 +11,13 @@ namespace Domain.GameData
     /// </summary>
     public class Game
     {
-        private readonly CardDeck _cardDeck;
         private readonly List<PlayerZone> _playerZones;
         private readonly BattleField _battleField;
 
-        public Game(IRules rules, IEnumerable<IBaseCard> cards, IGameContext context)
+        public Game(IRules rules, IEnumerable<ICard> cards, IContext context)
         {
-            _cardDeck = new CardDeck(cards);
-            _playerZones = GetPlayerZones(rules, context.GetPlayers().ToArray(), _cardDeck);
+            var cardDeck = new CardDeck(cards);
+            _playerZones = GetPlayerZones(rules, context.GetPlayers().ToArray(), cardDeck);
             _battleField = new BattleField(rules.FieldRows, rules.FieldColumns);
 
             Console.WriteLine("Game loaded");
@@ -50,8 +49,10 @@ namespace Domain.GameData
 
         private GameInfo GetGameInfo()
         {
-            PlayerSetInfo[] playerSetsInfos = _playerZones.Select(x => x.GetInfo()).ToArray();
-            return new GameInfo(_battleField.GetInfo(), _cardDeck.GetSet(), playerSetsInfos);
+            return new GameInfo
+            {
+                PlayerZoneInfos = _playerZones.Select(x => x.GetInfo()).ToArray()
+            };
         }
     }
 }
