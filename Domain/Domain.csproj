@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A430EDFC-F2D7-47E9-9BA8-D284E2BBEE1F}</ProjectGuid>
+    <ProjectGuid>{6F1D91A5-32EF-4A40-BE60-6EB2CC7BCD7F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Domain</RootNamespace>
@@ -32,7 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,34 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoardData\BattleFieldInfo.cs" />
-    <Compile Include="BoardData\BattleField.cs" />
-    <Compile Include="CardData\AttackEnum.cs" />
-    <Compile Include="CardData\CardDeck.cs" />
-    <Compile Include="BoardData\PlayerZone.cs" />
-    <Compile Include="BoardData\PlayerZoneInfo.cs" />
-    <Compile Include="CardData\CardInfo.cs" />
-    <Compile Include="CardData\DefenceEnum.cs" />
-    <Compile Include="CardData\Attack.cs" />
-    <Compile Include="CardData\CardAction.cs" />
-    <Compile Include="CardData\ICardSet.cs" />
-    <Compile Include="GameData\IContext.cs" />
-    <Compile Include="GameData\Game.cs" />
-    <Compile Include="CardData\ICard.cs" />
-    <Compile Include="GameData\GameInfo.cs" />
-    <Compile Include="GameData\IRules.cs" />
-    <Compile Include="GameData\Player.cs" />
-    <Compile Include="GameData\PlayerMove.cs" />
+    <Compile Include="CardDeck.cs" />
+    <Compile Include="CardExtension.cs" />
+    <Compile Include="CardTypeEnum.cs" />
+    <Compile Include="ElementEnum.cs" />
+    <Compile Include="GameState.cs" />
+    <Compile Include="Card.cs" />
+    <Compile Include="IRules.cs" />
+    <Compile Include="Player.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Result.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
-      <Project>{36097841-aedd-4e2f-9a94-cfd06e2caa1d}</Project>
+      <Project>{eefb0bba-fa5b-4f52-ac1d-b51002b54c2a}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
