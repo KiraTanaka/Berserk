@@ -22,8 +22,8 @@ namespace Application.Models
             var player1 = storage.FindById<User>(players.Item1).FirstOrDefault();
             var player2 = storage.FindById<User>(players.Item2).FirstOrDefault();
 
-            var deck1 = _cards.Where(x => player1.Cards.Contains(x.Id)).ToList();
-            var deck2 = _cards.Where(x => player2.Cards.Contains(x.Id)).ToList();
+            var deck1 = _cards.Where(x => player1.CardList.Contains(x.Id)).ToList();
+            var deck2 = _cards.Where(x => player2.CardList.Contains(x.Id)).ToList();
         }
     }
 }

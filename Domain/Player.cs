@@ -9,15 +9,18 @@ namespace Domain
     public class Player
     {
         public User User { get; set; }
-        public int Money { get; set; }
+        public int Currency { get; set; }
         public CardDeck Cemetery { get; set; }
         public CardDeck FullDeck { get; set; }
         public CardDeck ActiveDeck { get; set; }
-        
+
+        private readonly IRules _rules;
+
         public Player(User user, CardDeck fullDeck, IRules rules)
         {
+            _rules = rules;
             User = user;
-            Money = rules.PlayerMoneyAmount;
+            Currency = rules.PlayerStartMoneyAmount;
             FullDeck = fullDeck;
             ActiveDeck = new CardDeck();
             for (var i = 0; i < rules.PlayerStartActiveDeckSize; i++)
@@ -26,6 +29,19 @@ namespace Domain
                 if (card == null) break;
                 ActiveDeck.PushTop(card);
             }
+        }
+
+        public bool AddMoney()
+        {
+            if (_rules.PlayerMaxMoneyAmount >= Currency) return false;
+            Currency++;
+            return true;
+        }
+
+        public void DealCard()
+        {
+            var card = FullDeck.PullTop();
+            ActiveDeck.PushTop(card);
         }
 
         public void RedealCards(int[] indexes)

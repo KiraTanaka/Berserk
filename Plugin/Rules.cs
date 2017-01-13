@@ -5,6 +5,6 @@ namespace Plugin
     public class Rules : IRules
     {
         public int PlayerStartActiveDeckSize { get; set; } = 4;
-        public int PlayerMoneyAmount { get; set; } = 20;
+        public int PlayerStartMoneyAmount { get; set; } = 20;
     }
 }

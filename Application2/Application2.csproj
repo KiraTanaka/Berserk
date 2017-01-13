@@ -44,8 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TypeExtensions.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="TypeExtensions.cs" />
+    <Compile Include="GameConsole.cs" />
     <Compile Include="IStorage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

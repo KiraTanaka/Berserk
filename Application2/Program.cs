@@ -13,7 +13,7 @@ namespace Application2
     {
         static void Main(string[] args)
         {
-            new Game();
+            new GameConsole().Run(new StorageMock());
             Console.ReadLine();
         }
     }

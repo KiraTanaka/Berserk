@@ -16,12 +16,12 @@ namespace Application.Models
                 new User
                 {
                     Id = 1,
-                    Cards = new[] { 87299, 91307 }
+                    CardList = new[] { 87299, 91307 }
                 },
                 new User
                 {
                     Id = 2,
-                    Cards = new[] { 95453, 95455 }
+                    CardList = new[] { 95453, 95455 }
                 }
             };
         }

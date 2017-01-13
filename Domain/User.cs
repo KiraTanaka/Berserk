@@ -10,7 +10,7 @@ namespace Domain
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public IEnumerable<int> Cards { get; set; }
+        public IEnumerable<int> CardList { get; set; }
 
         public int Money { get; set; }
         public CardDeck Cemetery { get; set; }
