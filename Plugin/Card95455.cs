@@ -20,12 +20,12 @@ namespace Plugin
             Hire = state =>
             {
                 Helper.StandartHiring(state);
-                User hiringUser = state.HiringUser;
-                ICard card = hiringUser.Cemetery.PullRandom();
-                hiringUser.Deck.PushRandom(card);
-                User anotherUser = state.AnotherUser;
-                ICard card2 = anotherUser.Cemetery.PullRandom();
-                anotherUser.Deck.PushRandom(card2);
+                Player movingPlayer = state.MovingPlayer;
+                ICard card = movingPlayer.Cemetery.PullRandom();
+                movingPlayer.ActiveDeck.PushRandom(card);
+                Player waitingPlayer = state.WaitingPlayer;
+                ICard card2 = waitingPlayer.Cemetery.PullRandom();
+                waitingPlayer.ActiveDeck.PushRandom(card2);
                 return Result.GetSuccess();
             };
             Attack = Helper.StandartAttack;

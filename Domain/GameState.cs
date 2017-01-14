@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Domain
 {
@@ -11,7 +7,7 @@ namespace Domain
         public ICard ActionCard { get; set; }
         public IEnumerable<ICard> TargetCards { get; set; }
         public ICard HiringCard { get; set; }
-        public User HiringUser { get; set; }
-        public User AnotherUser { get; set; }
+        public Player MovingPlayer { get; set; }
+        public Player WaitingPlayer { get; set; }
     }
 }

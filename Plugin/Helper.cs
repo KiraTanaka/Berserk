@@ -12,8 +12,8 @@ namespace Plugin
         public static void StandartHiring(GameState state)
         {
             ICard hiringCard = state.HiringCard;
-            User user = state.HiringUser;
-            user.Money = user.Money - hiringCard.Cost;
+            Player player = state.MovingPlayer;
+            player.Money = player.Money - hiringCard.Cost;
         }
 
         public static Result StandartHiring2(GameState state)

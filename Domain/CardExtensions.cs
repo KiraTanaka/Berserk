@@ -1,6 +1,8 @@
-﻿namespace Domain
+﻿using System;
+
+namespace Domain
 {
-    public static class CardExtension
+    public static class CardExtensions
     {
         public static ICard HurtBy(this ICard card, int value)
         {
@@ -33,6 +35,13 @@
         public static bool IsAlive(this ICard card)
         {
             return card.Health > 0;
+        }
+
+        public static Result Action(this ICard card, ActionEnum actionOption, GameState state)
+        {
+            if (actionOption == ActionEnum.Simple) return card.Attack(state);
+            if (actionOption == ActionEnum.Feature) return card.Feature(state);
+            throw new NotImplementedException($"State {state} is not implemented");
         }
     }
 }

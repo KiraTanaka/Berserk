@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace Domain
 {
@@ -21,5 +17,6 @@ namespace Domain
         Func<GameState, Result> Feature { get; set; }
         string EquipementType { get; set; }
         bool Closed { get; set; }
+        ICard Clone();
     }
 }

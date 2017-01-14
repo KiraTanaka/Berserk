@@ -1,49 +1,122 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Domain;
 
 namespace Application2
 {
     public abstract class Game
     {
-        protected IStorage Storage;
-        protected List<ICard> Cards;
-        protected IRules Rules;
-        protected bool GameInProgress;
+        private readonly IStorage _storage;
+        private readonly IRules _rules;
+        private readonly List<ICard> _cards;
 
-        public void Run(IStorage storage)
+        protected Game(IStorage storage, IRules rules, List<ICard> cards)
         {
-            Storage = storage;
+            _storage = storage;
+            _rules = rules;
+            _cards = cards;
+        }
 
-            var types = ImportTypes().ToList();
-            Cards = types.SelectInstancesOf<ICard>().ToList();
-            Rules = types.SelectInstancesOf<IRules>()?.FirstOrDefault();
-            
-            var users   = LoadUsers();
-            var players = LoadPlayers(users).ToList();
-            var player  = SelectFirst(players);
-            OfferToChangeCards(players);
-            while (GameInProgress)
+        public void Run()
+        {
+            var users = ConnectUsers();
+            var players = CreatePlayers(users).ToList();
+            ShowPlayers(players);
+            // OfferToChangeCards(players);
+            // AddPlayersCardAndMoney(players);
+
+            while (true)
             {
-                Play(players);
+                if (players.All(x => x.IsAlive()))
+                {
+                    players.ForEach(x => Move(x.Id, players));
+                }
+                else
+                {
+                    var winner = players.FirstOrDefault(x => x.IsAlive());
+                    ShowWinner(winner);
+                    break;
+                }
             }
         }
 
-        public abstract IEnumerable<Type> ImportTypes();
+        private IEnumerable<User> ConnectUsers()
+        {
+            int id1 = ConnectUser();
+            int id2 = ConnectUser();
+            User user1 = _storage.FindById<User>(id1).First();
+            User user2 = _storage.FindById<User>(id2).First();
+            return new[] {user1, user2};
+        }
 
-        public abstract IEnumerable<User> LoadUsers();
+        public abstract int ConnectUser();
 
-        public abstract IEnumerable<Player> LoadPlayers(IEnumerable<User> users);
+        private IEnumerable<Player> CreatePlayers(IEnumerable<User> users)
+        {
+            var players = new List<Player>();
+            users.ForEach(user =>
+            {
+                var playerCards = user.CardList
+                    .Select(id => _cards.FirstOrDefault(x => x.Id == id)?.Clone()).ToList();
+                players.Add(new Player(user, playerCards, _rules));
+            });
+            return players;
+        }
 
-        public abstract Player SelectFirst(IEnumerable<Player> players);
+        public abstract void ShowPlayers(IEnumerable<Player> players);
 
         public abstract void OfferToChangeCards(IEnumerable<Player> players);
 
-        public abstract void Play(IEnumerable<Player> players);
+        private static void AddPlayersCardAndMoney(IEnumerable<Player> players)
+        {
+            players.ForEach(x =>
+            {
+                x.AddMoney();
+                x.DealCard();
+            });
+        }
+
+        public void Move(int currentId, IEnumerable<Player> players)
+        {
+            var playersArr = players.ToArray();
+            Player movingPlayer = playersArr.First(x => x.Id == currentId);
+            Player waitingPlayer = playersArr.First(x => x.Id != currentId);
+
+            ShowInfo(movingPlayer, waitingPlayer);
+
+            ICard actionCard = GetActionCard(movingPlayer);
+            IEnumerable<ICard> targetCards = GetTargetCards(waitingPlayer);
+            ActionEnum actionWay = GetAttackWay();
+
+            InformAboutAttack(actionCard, targetCards, actionWay);
+
+            var state = new GameState
+            {
+                ActionCard = actionCard,
+                TargetCards = targetCards,
+                MovingPlayer = movingPlayer,
+                WaitingPlayer = waitingPlayer
+            };
+            Result result = actionCard.Action(actionWay, state);
+
+            ShowActionResult(result, waitingPlayer);
+        }
+
+        public abstract void ShowInfo(Player current, Player another);
+
+        public abstract ICard GetActionCard(Player actionPlayer);
+
+        public abstract IEnumerable<ICard> GetTargetCards(Player targetPlayer);
+
+        public abstract ActionEnum GetAttackWay();
+
+        public abstract void InformAboutAttack(
+            ICard actionCard, IEnumerable<ICard> targetCards, ActionEnum actionWay);
+
+        public abstract void ShowActionResult(Result result, Player targetPlayer);
+
+        public abstract void ShowWinner(Player winner);
     }
 }
+

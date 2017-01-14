@@ -1,31 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain
 {
     public class Player
     {
-        public User User { get; set; }
-        public int Currency { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Money { get; set; }
         public CardDeck Cemetery { get; set; }
         public CardDeck FullDeck { get; set; }
         public CardDeck ActiveDeck { get; set; }
+        public List<ICard> CardsInGame { get; set; }
+        public ICard Hero { get; set; }
 
         private readonly IRules _rules;
 
-        public Player(User user, CardDeck fullDeck, IRules rules)
+        public Player(User user, ICollection<ICard> cards, IRules rules)
         {
             _rules = rules;
-            User = user;
-            Currency = rules.PlayerStartMoneyAmount;
-            FullDeck = fullDeck;
+            Id = user.Id;
+            Name = user.Name;
+            Money = rules.PlayerStartMoneyAmount;
+
+            CardsInGame = new List<ICard>();
+
+            Hero = cards.FirstOrDefault(x => x.Type == CardTypeEnum.Hero);
+            cards.Remove(Hero);
+            FullDeck = new CardDeck(cards);
+
             ActiveDeck = new CardDeck();
             for (var i = 0; i < rules.PlayerStartActiveDeckSize; i++)
             {
-                var card = fullDeck.PullTop();
+                var card = FullDeck.PullTop();
                 if (card == null) break;
                 ActiveDeck.PushTop(card);
             }
@@ -33,8 +40,8 @@ namespace Domain
 
         public bool AddMoney()
         {
-            if (_rules.PlayerMaxMoneyAmount >= Currency) return false;
-            Currency++;
+            if (_rules.PlayerMaxMoneyAmount >= Money) return false;
+            Money++;
             return true;
         }
 
@@ -50,6 +57,11 @@ namespace Domain
             FullDeck.PushBottom(removedCards);
             var newCards = FullDeck.PullTop(indexes.Length);
             ActiveDeck.PushTop(newCards);
+        }
+
+        public bool IsAlive()
+        {
+            return Hero.IsAlive();
         }
     }
 }

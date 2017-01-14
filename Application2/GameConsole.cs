@@ -1,170 +1,182 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using Domain;
-using Microsoft.Build.Tasks;
 
 namespace Application2
 {
     public class GameConsole : Game
     {
-        public override IEnumerable<Type> ImportTypes()
+        public GameConsole(IStorage storage, IRules rules, List<ICard> cards)
+            : base(storage, rules, cards)
         {
-            const string dllFolderPath = @"E:\Projects\kontur\Berserk\Plugins";
-            var dllPaths = Directory.GetFiles(dllFolderPath, "*.dll");
-            return dllPaths.Select(Assembly.LoadFrom).SelectMany(x => x.ExportedTypes);
         }
 
-        public override IEnumerable<User> LoadUsers()
+        private int _num = 1;
+        public override int ConnectUser()
         {
-            var users = new List<User>();
             Console.Write("Enter player ID > ");
-            while (true)
-            {
-                var read = Console.ReadLine();
-                int id;
-                var parsed = int.TryParse(read, out id);
-                if (parsed)
-                {
-                    var player = Storage.FindById<User>(id)?.FirstOrDefault();
-                    if (player == null)
-                    {
-                        Console.Write("Unknown player. Enter player ID > ");
-                    }
-                    else
-                    {
-                        users.Add(player);
-                        Console.WriteLine($"User {player.Name} connected");
-                        Console.WriteLine();
-                        if (users.Count < 2)
-                        {
-                            Console.Write("Enter another player ID > ");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Users connected");
-                            Console.WriteLine();
-                            return users;
-                        }
-                    }
-                }
-                else
-                {
-                    Console.Write("Incorrect ID. Enter player ID > ");
-                }
-            }
+            return _num++;// ReadNumber();
         }
 
-        public override IEnumerable<Player> LoadPlayers(IEnumerable<User> users)
+        public override void ShowPlayers(IEnumerable<Player> players)
         {
-            var players = new List<Player>();
-
-            foreach (var user in users)
-            {
-                var playerCards = user.CardList.Select(id => Cards.FirstOrDefault(x => x.Id == id)).ToList();
-
-                var deck = new CardDeck(playerCards);
-                var player = new Player(user, deck, Rules);
-
-                players.Add(player);
-                Console.WriteLine($"Player {player.User.Name} with {player.FullDeck.Rest} cards added");
-            }
-
-            return players;
+            Console.WriteLine();
+            players.ForEach(x => Console.WriteLine($"Player {x.Name} with {x.FullDeck.Rest} cards added"));
         }
-
-        public override Player SelectFirst(IEnumerable<Player> players)
-        {
-            var playersArr = players.ToArray();
-            var firstPlayerIndex = new Random().Next(playersArr.Length);
-            return playersArr[firstPlayerIndex];
-        }
-
+        
         public override void OfferToChangeCards(IEnumerable<Player> players)
         {
             foreach (var player in players)
             {
-                var activeDeck = new StringBuilder();
-                var counter = 0;
-                foreach (var card in player.ActiveDeck)
-                    activeDeck.Append($"{counter++} {card.Name}, ");
-
-                var fullDeck = new StringBuilder();
-                foreach (var card in player.FullDeck)
-                    fullDeck.Append($"{card.Name}, ");
-
                 Console.WriteLine();
-                Console.WriteLine($"Player {player.User.Name}");
+                Console.WriteLine($"Player {player.Name}");
                 Console.WriteLine("Full deck cards:");
-                Console.WriteLine(fullDeck);
+                Console.WriteLine(player.FullDeck.ToStringAsList(true));
                 Console.WriteLine("Active deck cards:");
-                Console.WriteLine(activeDeck);
+                Console.WriteLine(player.ActiveDeck.ToStringAsList(true));
                 Console.Write("Enter numbers of cards you want to change > ");
 
-                var answer = Console.ReadLine();
-                if (string.IsNullOrEmpty(answer))
-                    continue;
+                var toMove = ReadNumbers();
+                if (toMove.Length == 0) continue;
+                player.RedealCards(toMove);
 
-                while (true)
+                Console.WriteLine("Your cards now:");
+                Console.WriteLine("Full deck cards:");
+                Console.WriteLine(player.FullDeck.ToStringAsList(true));
+                Console.WriteLine("Active deck cards:");
+                Console.WriteLine(player.ActiveDeck.ToStringAsList(true));
+            }
+        }
+
+        public override void ShowInfo(Player current, Player another)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"{current.Name} info ---------------------------------------");
+            Console.WriteLine("Your info:");
+            Console.WriteLine(current.ToStringInfo());
+            Console.WriteLine("Your active deck:");
+            Console.WriteLine(current.ActiveDeck.ToStringAsList(true));
+
+            Console.WriteLine($"{another.Name} info:");
+            Console.WriteLine(another.ToStringInfo());
+        }
+
+        public override void ShowWinner(Player winner)
+        {
+            Console.WriteLine($"Player {winner.Name} win");
+        }
+
+        public override ICard GetActionCard(Player actionPlayer)
+        {
+            Console.Write("Enter your card > ");
+            var index = ReadNumber();
+            return SelectCard(index, actionPlayer, actionPlayer.ActiveDeck);
+        }
+
+        public override IEnumerable<ICard> GetTargetCards(Player targetPlayer)
+        {
+            Console.Write("Enter target cards > ");
+            var indexes = ReadNumbers();
+            return SelectCards(indexes, targetPlayer, targetPlayer.CardsInGame);
+        }
+
+        public override ActionEnum GetAttackWay()
+        {
+            Console.Write("Enter attack way > ");
+            var attackWay = ReadNumber();
+            return (ActionEnum) attackWay;
+        }
+
+        public override void ShowActionResult(Result result, Player another)
+        {
+            Console.WriteLine($"Success: {result.Success}, Message: {result.Message}");
+            Console.WriteLine(another.Hero.Health);
+        }
+
+        public override void InformAboutAttack(
+            ICard actionCard, IEnumerable<ICard> targetCards, ActionEnum actionWay)
+        {
+            Console.WriteLine($"You card {actionCard.Name} is going to attack {targetCards.ToStringNames()}");
+        }
+
+        private static List<ICard> SelectCards(int[] indexes, Player player, IEnumerable<ICard> cards)
+        {
+            var result = new List<ICard>();
+            indexes.ForEach(x => result.Add(SelectCard(x, player, cards)));
+            return result;
+        }
+
+        private static ICard SelectCard(int index, Player player, IEnumerable<ICard> cards)
+        {
+            return index == 0 ? player.Hero : cards.ElementAt(index-1);
+        }
+
+        private static int ReadNumber()
+        {
+            while (true)
+            {
+                var numbers = ReadNumbers();
+                if (numbers.Length == 0) Console.Write("Incorrect imput, try again > ");
+                else return numbers[0];
+            }
+        }
+
+        private static int[] ReadNumbers()
+        {
+            return ReadNumbers(Console.ReadLine, Console.Write);
+        }
+
+        private static int[] ReadNumbers(Func<string> source, Action<string> errorTarget)
+        {
+            while (true)
+            {
+                try
                 {
-                    var splitted = answer.Split(' ').Select(x => int.Parse(x.Trim())).ToArray();
-                    try
-                    {
-                        player.RedealCards(splitted);
-
-                        activeDeck = new StringBuilder();
-                        counter = 0;
-                        foreach (var card in player.ActiveDeck)
-                            activeDeck.Append($"{counter++} {card.Name}, ");
-
-                        fullDeck = new StringBuilder();
-                        foreach (var card in player.FullDeck)
-                            fullDeck.Append($"{card.Name}, ");
-
-                        Console.WriteLine("Ok your cards now:");
-                        Console.WriteLine("Full deck cards:");
-                        Console.WriteLine(fullDeck);
-                        Console.WriteLine("Active deck cards:");
-                        Console.WriteLine(activeDeck);
-
-                        break;
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("Incorrect input");
-                    }
+                    var read = (source() ?? "").Trim();
+                    var splitted = read.Split(new [] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                    return splitted.Select(int.Parse).ToArray();
+                }
+                catch (Exception)
+                {
+                    errorTarget("Incorrect imput, try again > ");
                 }
             }
         }
+    }
 
-        private bool _isFirstMove = true;
-
-        public override void Play(IEnumerable<Player> players)
+    public static class Extensions
+    {
+        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
-            if (_isFirstMove)
-            {
-                _isFirstMove = false;
-                AddPlayersCardAndMoney(players);
-                Move();
-            }
-            Move();
+            foreach (var item in enumerable) action(item);
         }
 
-        private void AddPlayersCardAndMoney(IEnumerable<Player> players)
+        public static string ToStringAsList(this IEnumerable<ICard> deck, bool markers)
         {
-            foreach (var player in players)
-            {
-                player.AddMoney();
-                player.DealCard();
-            }
+            var deckStr = new StringBuilder();
+            var counter = 1;
+            deck.ForEach(x => deckStr.Append(markers ? $"{counter++} {x.Name}\n" : $"{x.Name}\n"));
+            return deckStr.ToString();
         }
 
-        private void Move()
+        public static string ToStringNames(this IEnumerable<ICard> deck)
         {
-            
+            var deckStr = new StringBuilder();
+            deck.ForEach(x => deckStr.Append($"{x.Name}, "));
+            return deckStr.ToString();
+        }
+
+        public static string ToStringInfo(this Player player)
+        {
+            var sb = new StringBuilder();
+            sb.Append($"User: {player.Name}\n");
+            sb.Append($"Hero: {player.Hero.Name}\n");
+            sb.Append($"Health: {player.Hero.Health}\n");
+            sb.Append($"Money: {player.Money}\n");
+            sb.Append($"Cards on board:\n{player.CardsInGame.ToStringAsList(true)}");
+            return sb.ToString();
         }
     }
 }

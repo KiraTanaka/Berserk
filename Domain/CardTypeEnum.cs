@@ -2,8 +2,8 @@
 {
     public enum CardTypeEnum
     {
-        Hero,
         Creature,
+        Hero,
         Equipment,
         Spell,
         Event

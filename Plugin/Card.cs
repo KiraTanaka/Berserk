@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Domain;
 
 namespace Plugin
@@ -22,5 +18,24 @@ namespace Plugin
         public Func<GameState, Result> Feature { get; set; }
         public string EquipementType { get; set; }
         public bool Closed { get; set; }
+        public ICard Clone()
+        {
+            return new Card
+            {
+                Id = Id,
+                Name = Name,
+                Health = Health,
+                Attack = Attack,
+                Type = Type,
+                Desriprion = Desriprion,
+                Feature = Feature,
+                Closed = Closed,
+                Power = Power,
+                Cost = Cost,
+                Hire = Hire,
+                Element = Element,
+                EquipementType = EquipementType
+            };
+        }
     }
 }
