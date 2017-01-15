@@ -57,7 +57,7 @@ namespace Domain.Process
             var players = new List<Player>();
             users.ForEach(user =>
             {
-                var playerCards = Enumerable.Select<int, Card>(user.CardList, id => _cards.FirstOrDefault(x => x.Id == id)?.Clone()).ToList();
+                var playerCards = user.CardList.Select(id => _cards.FirstOrDefault(x => x.Id == id)?.Clone()).ToList();
                 players.Add(new Player(user.Name, playerCards, _rules));
             });
             return players;
@@ -68,6 +68,11 @@ namespace Domain.Process
         public abstract void OfferToChangeCards(IEnumerable<Player> players);
 
         public void Move(Guid currentId, IEnumerable<Player> players)
+        {
+            while (!GetValue(currentId, players).Success) {}
+        }
+
+        private MoveResult GetValue(Guid currentId, IEnumerable<Player> players)
         {
             var playersArr = players.ToArray();
             Player movingPlayer = playersArr.First(x => x.Id == currentId);
@@ -90,21 +95,25 @@ namespace Domain.Process
             };
             MoveResult moveResult = actionCard.Action(actionWay, state);
 
-            ShowActionResult(moveResult, waitingPlayer);
+            movingPlayer.AfterMove();
+
+            ShowActionResult(moveResult);
+
+            return moveResult;
         }
 
         public abstract void ShowInfo(Player current, Player another);
 
         public abstract Card GetActionCard(Player actionPlayer);
 
-        public abstract IEnumerable<Card> GetTargetCards(Player targetPlayer);
+        public abstract List<Card> GetTargetCards(Player targetPlayer);
 
         public abstract CardActionEnum GetAttackWay();
 
         public abstract void InformAboutAttack(
             Card actionCard, IEnumerable<Card> targetCards, CardActionEnum actionWay);
 
-        public abstract void ShowActionResult(MoveResult moveResult, Player targetPlayer);
+        public abstract void ShowActionResult(MoveResult moveResult);
 
         public abstract void ShowWinner(Player winner);
     }

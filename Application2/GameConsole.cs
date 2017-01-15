@@ -55,14 +55,36 @@ namespace Application2
         public override void ShowInfo(Player current, Player another)
         {
             Console.WriteLine();
-            Console.WriteLine($"{current.Name} info ---------------------------------------");
-            Console.WriteLine("Your info:");
-            Console.WriteLine(current.ToStringInfo());
-            Console.WriteLine("Your active deck:");
-            Console.WriteLine(current.ActiveDeck.ToStringAsList(true));
+            Console.WriteLine("------------------------- GAME STATE -------------------------");
+            Console.WriteLine("{0}\t\t\t\t\t\t{1}", "CURRENT", "ANOTHER");
+            Console.WriteLine("{0}\t\t\t\t\t\t{1}", current.Name, another.Name);
+            Console.WriteLine("{0}\t{1}\t\t\t\t\t{2}\t{3}", current.Hero.Name, current.Hero.Health, another.Hero.Name, another.Hero.Health);
+            
+            var currentCardsInGame = CardsToLine(current.CardsInGame);
+            var anotherCardsInGame = CardsToLine(another.CardsInGame);
+            Console.WriteLine("{0}", "Cards in game (Power/Health)");
+            Console.WriteLine("{0}\t\t\t\t\t\t{1}", currentCardsInGame.Item1, anotherCardsInGame.Item1);
+            Console.WriteLine("{0}\t\t\t\t\t\t{1}", currentCardsInGame.Item2, anotherCardsInGame.Item2);
 
-            Console.WriteLine($"{another.Name} info:");
-            Console.WriteLine(another.ToStringInfo());
+            var currentActiveDeck = CardsToLine(current.ActiveDeck);
+            Console.WriteLine("{0}", "Cards on hands (Power/Health)");
+            Console.WriteLine("{0}", currentActiveDeck.Item1);
+            Console.WriteLine("{0}", currentActiveDeck.Item2);
+
+            Console.WriteLine();
+        }
+
+        private static Tuple<string, string> CardsToLine(IEnumerable<Card> cards)
+        {
+            var v = 1;
+            var header = new StringBuilder();
+            var line = new StringBuilder();
+            cards.ForEach(x =>
+            {
+                header.Append($"{v++}\t");
+                line.Append($"{x.Power}/{x.Health}\t");
+            });
+            return new Tuple<string, string>(header.ToString(), line.ToString());
         }
 
         public override void ShowWinner(Player winner)
@@ -77,7 +99,7 @@ namespace Application2
             return SelectCard(index, actionPlayer, actionPlayer.ActiveDeck);
         }
 
-        public override IEnumerable<Card> GetTargetCards(Player targetPlayer)
+        public override List<Card> GetTargetCards(Player targetPlayer)
         {
             Console.Write("Enter target cards > ");
             var indexes = ReadNumbers();
@@ -91,10 +113,9 @@ namespace Application2
             return (CardActionEnum) attackWay;
         }
 
-        public override void ShowActionResult(MoveResult moveResult, Player another)
+        public override void ShowActionResult(MoveResult moveResult)
         {
             Console.WriteLine($"Success: {moveResult.Success}, Message: {moveResult.Message}");
-            Console.WriteLine(another.Hero.Health);
         }
 
         public override void InformAboutAttack(
@@ -103,16 +124,22 @@ namespace Application2
             Console.WriteLine($"You card {actionCard.Name} is going to attack {targetCards.ToStringNames()}");
         }
 
-        private static List<Card> SelectCards(int[] indexes, Player player, IEnumerable<Card> cards)
+        private static List<Card> SelectCards(int[] indexes, Player player, Card[] cards)
         {
             var result = new List<Card>();
-            indexes.ForEach(x => result.Add(SelectCard(x, player, cards)));
+            indexes.ForEach(x =>
+            {
+                var card = SelectCard(x, player, cards);
+                if (card != null) result.Add(card);
+            });
             return result;
         }
 
-        private static Card SelectCard(int index, Player player, IEnumerable<Card> cards)
+        private static Card SelectCard(int index, Player player, Card[] cards)
         {
-            return index == 0 ? player.Hero : cards.ElementAt(index-1);
+            if (index >= 0 || index < cards.Length)
+                return index == 0 ? player.Hero : cards.ElementAt(index-1);
+            return null;
         }
 
         private static int ReadNumber()
@@ -163,17 +190,6 @@ namespace Application2
             var deckStr = new StringBuilder();
             deck.ForEach(x => deckStr.Append($"{x.Name}, "));
             return deckStr.ToString();
-        }
-
-        public static string ToStringInfo(this Player player)
-        {
-            var sb = new StringBuilder();
-            sb.Append($"User: {player.Name}\n");
-            sb.Append($"Hero: {player.Hero.Name}\n");
-            sb.Append($"Health: {player.Hero.Health}\n");
-            sb.Append($"Money: {player.Money}\n");
-            sb.Append($"Cards on board:\n{player.CardsInGame.ToStringAsList(true)}");
-            return sb.ToString();
         }
     }
 }
