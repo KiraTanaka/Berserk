@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Infrastructure;
 
@@ -9,47 +10,44 @@ namespace Domain
     /// <summary>
     /// Колода карт.
     /// </summary>
-    public class CardDeck : IEnumerable<ICard>
+    public class CardDeck : IEnumerable<Card>
     {
-        private List<ICard> _cards;
+        private ImmutableList<Card> _cards;
         
         public CardDeck()
         {
-            _cards = new List<ICard>();
+            _cards = ImmutableList<Card>.Empty;
         }
 
-        public CardDeck(IEnumerable<ICard> cards)
+        public CardDeck(IEnumerable<Card> cards)
         {
-            _cards = cards.Shuffle().ToList();
+            _cards = cards.Shuffle().ToImmutableList();
         }
 
-        public ICard this[int i] => _cards[i];
+        public Card this[int i] => _cards[i];
 
-        /// <summary>
-        /// Остаток карт в колоде.
-        /// </summary>
-        public int Rest => _cards.Count;
-
+        public int Count => _cards.Count;
+        
         /// <summary>
         /// Добавляет карту в указанное место в колоде.
         /// </summary>
-        public void Push(ICard card, int index)
+        public void Push(Card card, int index)
         {
-            _cards.Insert(index, card);
+            _cards = _cards.Insert(index, card);
         }
 
         /// <summary>
         /// Добавляет карту на верх колоды.
         /// </summary>
-        public void PushTop(ICard card)
+        public void PushTop(Card card)
         {
-            _cards.Add(card);
+            _cards = _cards.Add(card);
         }
 
         /// <summary>
         /// Добавляет карты на верх колоды.
         /// </summary>
-        public void PushTop(IEnumerable<ICard> cards)
+        public void PushTop(IEnumerable<Card> cards)
         {
             cards.ForEach(PushTop);
         }
@@ -57,7 +55,7 @@ namespace Domain
         /// <summary>
         /// Добавляет карту на низ колоды.
         /// </summary>
-        public void PushBottom(ICard card)
+        public void PushBottom(Card card)
         {
             Push(card, 0);
         }
@@ -65,7 +63,7 @@ namespace Domain
         /// <summary>
         /// Добавляет карты на низ колоды.
         /// </summary>
-        public void PushBottom(IEnumerable<ICard> cards)
+        public void PushBottom(IEnumerable<Card> cards)
         {
             cards.ForEach(PushBottom);
         }
@@ -73,61 +71,59 @@ namespace Domain
         /// <summary>
         /// Добавляет карту в случайное место в колоде
         /// </summary>
-        public void PushRandom(ICard card)
+        public void PushRandom(Card card)
         {
-            var index = RandomHelper.Next(Rest);
-            Push(card, index);
+            Push(card, RandomHelper.Next(Count));
         }
 
         /// <summary>
         /// Возвращает карту с указанным индексом и удаляет ее из колоды.
         /// </summary>
-        public ICard Pull(int index)
+        public Card Pull(int index)
         {
             var card = _cards[index];
-            _cards.RemoveAt(index);
+            _cards = _cards.RemoveAt(index);
             return card;
         }
 
         /// <summary>
         /// Возвращает карты с указанными индексами и удаляет их из колоды.
         /// </summary>
-        public IEnumerable<ICard> Pull(int[] indexes)
+        public IEnumerable<Card> Pull(int[] indexes)
         {
             var result = indexes.Select(x => _cards[x]).ToList();
-            _cards = _cards.Where((val, i) => !indexes.Contains(i)).ToList();
+            _cards = _cards.Where((val, i) => !indexes.Contains(i)).ToImmutableList();
             return result;
         }
 
         /// <summary>
         /// Возращает карту с верха колоды и удаляет ее.
         /// </summary>
-        public ICard PullTop()
+        public Card PullTop()
         {
-            if (Rest == 0) throw new ArgumentException("Deck is empty");
+            if (Count == 0) throw new ArgumentException("Deck is empty");
             var card = _cards.Last();
-            _cards.RemoveAt(Rest - 1); // List.Remove сортирует коллекцию
+            _cards = _cards.RemoveAt(Count - 1); // List.Remove сортирует коллекцию
             return card;
         }
 
         /// <summary>
         /// Возращает указанное количество карт с верха колоды и удаляет их.
         /// </summary>
-        public IEnumerable<ICard> PullTop(int amount)
+        public IEnumerable<Card> PullTop(int amount)
         {
-            if (amount > Rest) throw new ArgumentException($"Deck rest={Rest}, required={amount}");
-            var result = new List<ICard>();
-            amount.ForEach(() => result.Add(PullTop()));
+            if (amount > Count) throw new ArgumentException($"Deck rest={Count}, required={amount}");
+            var result = new List<Card>();
+            amount.ForLoop(i => result.Add(PullTop()));
             return result;
         }
 
         /// <summary>
         /// Возращает случайную карту и удаляет ее из колоды.
         /// </summary>
-        public ICard PullRandom()
+        public Card PullRandom()
         {
-            var index = RandomHelper.Next(Rest);
-            return Pull(index);
+            return Pull(RandomHelper.Next(Count));
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -135,10 +131,15 @@ namespace Domain
             return GetEnumerator();
         }
 
-        public IEnumerator<ICard> GetEnumerator()
+        public IEnumerator<Card> GetEnumerator()
         {
             foreach (var card in _cards)
                 yield return card;
+        }
+
+        public CardDeck Clone()
+        {
+            return new CardDeck {_cards = _cards};
         }
     }
 }

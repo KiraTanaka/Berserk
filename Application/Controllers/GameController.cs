@@ -11,7 +11,7 @@ namespace Application.Controllers
 {
     public class GameController : ApiController
     {
-        private readonly IEnumerable<ICard> _cards;
+        private readonly IEnumerable<Card> _cards;
         private readonly IStorage _storage;
 
         public GameController()
@@ -23,7 +23,7 @@ namespace Application.Controllers
                 .Select(Assembly.LoadFrom)
                 .SelectMany(x => x.ExportedTypes);
 
-            _cards = exportedTypes.SelectInstancesOf<ICard>();
+            _cards = exportedTypes.SelectInstancesOf<Card>();
             _storage = new StorageMock();
         }
 

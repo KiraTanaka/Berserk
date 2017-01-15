@@ -9,9 +9,9 @@ namespace Application2
     {
         private readonly IStorage _storage;
         private readonly IRules _rules;
-        private readonly List<ICard> _cards;
+        private readonly List<Card> _cards;
 
-        protected Game(IStorage storage, IRules rules, List<ICard> cards)
+        protected Game(IStorage storage, IRules rules, List<Card> cards)
         {
             _storage = storage;
             _rules = rules;
@@ -59,7 +59,7 @@ namespace Application2
             {
                 var playerCards = user.CardList
                     .Select(id => _cards.FirstOrDefault(x => x.Id == id)?.Clone()).ToList();
-                players.Add(new Player(user, playerCards, _rules));
+                players.Add(new Player(user.Name, playerCards, _rules));
             });
             return players;
         }
@@ -77,7 +77,7 @@ namespace Application2
             });
         }
 
-        public void Move(int currentId, IEnumerable<Player> players)
+        public void Move(Guid currentId, IEnumerable<Player> players)
         {
             var playersArr = players.ToArray();
             Player movingPlayer = playersArr.First(x => x.Id == currentId);
@@ -85,8 +85,8 @@ namespace Application2
 
             ShowInfo(movingPlayer, waitingPlayer);
 
-            ICard actionCard = GetActionCard(movingPlayer);
-            IEnumerable<ICard> targetCards = GetTargetCards(waitingPlayer);
+            Card actionCard = GetActionCard(movingPlayer);
+            IEnumerable<Card> targetCards = GetTargetCards(waitingPlayer);
             ActionEnum actionWay = GetAttackWay();
 
             InformAboutAttack(actionCard, targetCards, actionWay);
@@ -105,14 +105,14 @@ namespace Application2
 
         public abstract void ShowInfo(Player current, Player another);
 
-        public abstract ICard GetActionCard(Player actionPlayer);
+        public abstract Card GetActionCard(Player actionPlayer);
 
-        public abstract IEnumerable<ICard> GetTargetCards(Player targetPlayer);
+        public abstract IEnumerable<Card> GetTargetCards(Player targetPlayer);
 
         public abstract ActionEnum GetAttackWay();
 
         public abstract void InformAboutAttack(
-            ICard actionCard, IEnumerable<ICard> targetCards, ActionEnum actionWay);
+            Card actionCard, IEnumerable<Card> targetCards, ActionEnum actionWay);
 
         public abstract void ShowActionResult(Result result, Player targetPlayer);
 

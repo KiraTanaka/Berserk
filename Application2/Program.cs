@@ -14,7 +14,7 @@ namespace Application2
             var storage = new StorageMock();
             var types = ImportTypes().ToList();
             var rules = types.SelectInstancesOf<IRules>()?.FirstOrDefault();
-            var cards = types.SelectInstancesOf<ICard>().ToList();
+            var cards = types.SelectInstancesOf<Card>().ToList();
 
             new GameConsole(storage, rules, cards).Run();
             Console.ReadLine();

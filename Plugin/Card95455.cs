@@ -17,17 +17,6 @@ namespace Plugin
             Cost = 2;
             Power = 2;
             Health = 2;
-            Hire = state =>
-            {
-                Helper.StandartHiring(state);
-                Player movingPlayer = state.MovingPlayer;
-                ICard card = movingPlayer.Cemetery.PullRandom();
-                movingPlayer.ActiveDeck.PushRandom(card);
-                Player waitingPlayer = state.WaitingPlayer;
-                ICard card2 = waitingPlayer.Cemetery.PullRandom();
-                waitingPlayer.ActiveDeck.PushRandom(card2);
-                return Result.GetSuccess();
-            };
             Attack = Helper.StandartAttack;
             Feature = state => Result.GetSuccess();
         }

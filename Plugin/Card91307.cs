@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Domain;
 
 namespace Plugin
@@ -20,28 +16,27 @@ namespace Plugin
             Health = 3;
             Power = 4;
             Desriprion = "Последний удар (сражается так, как если бы у существа противника был Первый Удар).";
-            Hire = Helper.StandartHiring2;
             Attack = DoAttack;
             Feature = x => Result.GetError("Нет особенности");
         }
 
         private static Result DoAttack(GameState state)
         {
-            ICard actionCard = state.ActionCard;
+            Card actionCard = state.ActionCard;
             if (actionCard.Closed)
                 return Result.GetSuccess();
 
-            ICard targetCard = state.TargetCards.FirstOrDefault();
+            Card targetCard = state.TargetCards.FirstOrDefault();
             if (targetCard == null)
                 return Result.GetError("Нужно выбрать цель");
 
-            actionCard.HurtBy(targetCard.Power);
+            actionCard.Hurt(targetCard.Power);
             targetCard.Close();
 
             if (actionCard.Closed || !actionCard.IsAlive())
                 return Result.GetSuccess();
 
-            targetCard.HurtBy(actionCard.Power);
+            targetCard.Hurt(actionCard.Power);
             return Result.GetSuccess();
         }
     }

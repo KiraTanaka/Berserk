@@ -15,15 +15,14 @@ namespace Plugin
             Cost = 2;
             Power = 1;
             Health = 3;
-            Hire = Helper.StandartHiring2;
             Attack = Helper.StandartAttack;
             Feature = state =>
             {
-                ICard actionCard = state.ActionCard;
+                Card actionCard = state.ActionCard;
                 if (actionCard.Closed)
                     return Result.GetSuccess();
 
-                ICard targetCard = state.TargetCards.FirstOrDefault();
+                Card targetCard = state.TargetCards.FirstOrDefault();
                 if (targetCard == null)
                     return Result.GetError("Нужно выбрать цель");
 

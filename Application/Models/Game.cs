@@ -11,10 +11,10 @@ namespace Application.Models
 {
     public class Game
     {
-        private readonly List<ICard> _cards;
+        private readonly List<Card> _cards;
         private readonly IStorage _storage;
 
-        public Game(IEnumerable<ICard> cards, Tuple<int, int> players, IStorage storage)
+        public Game(IEnumerable<Card> cards, Tuple<int, int> players, IStorage storage)
         {
             _cards = cards.ToList();
             _storage = storage;

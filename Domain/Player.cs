@@ -1,67 +1,153 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using Infrastructure;
 
 namespace Domain
 {
+    /// <summary>
+    /// Immutable.
+    /// </summary>
     public class Player
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public int Money { get; set; }
-        public CardDeck Cemetery { get; set; }
-        public CardDeck FullDeck { get; set; }
-        public CardDeck ActiveDeck { get; set; }
-        public List<ICard> CardsInGame { get; set; }
-        public ICard Hero { get; set; }
+        public Guid Id { get; private set; }
+        public string Name { get; private set; }
+        public int Money { get; private set; }
 
-        private readonly IRules _rules;
+        /// <summary>
+        /// Герой.
+        /// </summary>
+        public Card Hero { get; private set; }
 
-        public Player(User user, ICollection<ICard> cards, IRules rules)
+        /// <summary>
+        /// Карты на столе.
+        /// </summary>
+        public Card[] CardsInGame => _cardsInGame.ToArray();
+        private ImmutableList<Card> _cardsInGame;
+
+        /// <summary>
+        /// Полная колода игрока.
+        /// </summary>
+        public Card[] FullDeck => _fullDeck.ToArray();
+        private CardDeck _fullDeck;
+
+        /// <summary>
+        /// Колода активных карт.
+        /// </summary>
+        public Card[] ActiveDeck => _activeDeck.ToArray();
+        private CardDeck _activeDeck;
+
+        /// <summary>
+        /// Колода - кладбище.
+        /// </summary>
+        public Card[] Cemetery => _cemetery.ToArray();
+        private CardDeck _cemetery;
+
+        private IRules _rules;
+
+        private Player()
         {
-            _rules = rules;
-            Id = user.Id;
-            Name = user.Name;
+        }
+        
+        public Player(string name, ICollection<Card> cards, IRules rules)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
             Money = rules.PlayerStartMoneyAmount;
 
-            CardsInGame = new List<ICard>();
+            _rules = rules;
 
+            _cardsInGame = ImmutableList<Card>.Empty;
             Hero = cards.FirstOrDefault(x => x.Type == CardTypeEnum.Hero);
             cards.Remove(Hero);
-            FullDeck = new CardDeck(cards);
 
-            ActiveDeck = new CardDeck();
+            _fullDeck = new CardDeck(cards);
+            _cemetery = new CardDeck();
+            _activeDeck = new CardDeck();
             for (var i = 0; i < rules.PlayerStartActiveDeckSize; i++)
             {
-                var card = FullDeck.PullTop();
+                var card = _fullDeck.PullTop();
                 if (card == null) break;
-                ActiveDeck.PushTop(card);
+                _activeDeck.PushTop(card);
             }
         }
 
-        public bool AddMoney()
+        /// <summary>
+        /// Добавляет игроку денег и возращает его копию.
+        /// Количество добавленных денег зависит от правил.
+        /// Если количество денег максимально, то оно не увеличится.
+        /// Максимальное количество денег зависит от правил.
+        /// </summary>
+        public Player AddMoney()
         {
-            if (_rules.PlayerMaxMoneyAmount >= Money) return false;
-            Money++;
-            return true;
+            var player = Clone();
+            if (_rules.PlayerMaxMoneyAmount < Money) player.Money += _rules.PlayerAddMoneyAmount;
+            return player;
         }
 
-        public void DealCard()
+        /// <summary>
+        /// Добавляет игроку карт и возращает его копию.
+        /// Количество добавленных карт зависит от правил.
+        /// </summary>
+        public Player DealCard()
         {
-            var card = FullDeck.PullTop();
-            ActiveDeck.PushTop(card);
+            var player = Clone();
+            _rules.PlayerAddMoneyAmount.ForLoop(i =>
+            {
+                var card = player._fullDeck.PullTop();
+                player._activeDeck.PushTop(card);
+            });
+            return player;
         }
 
-        public void RedealCards(int[] indexes)
+        /// <summary>
+        /// Заменяет карты с указанными индексами в активной колоде,
+        /// на другие карты случайным образом, и возращает копию игрока.
+        /// </summary>
+        public Player RedealCards(int[] indexes)
         {
-            var removedCards = ActiveDeck.Pull(indexes);
-            FullDeck.PushBottom(removedCards);
-            var newCards = FullDeck.PullTop(indexes.Length);
-            ActiveDeck.PushTop(newCards);
+            var player = Clone();
+            var removedCards = player._activeDeck.Pull(indexes);
+            player._fullDeck.PushBottom(removedCards);
+            var newCards = player._fullDeck.PullTop(indexes.Length);
+            player._activeDeck.PushTop(newCards);
+            return player;
+        }
+
+        /// <summary>
+        /// Карты с указанными индексами перемещаются из активной колоды в
+        /// игровую, и возращается копия игрока.
+        /// </summary>
+        public Player Hire(int[] indexes)
+        {
+            var player = Clone();
+            var cards = player._activeDeck.Pull(indexes).ToList();
+            cards.ForEach(x => Money -= x.Cost);
+            if (Money < 0) return this;
+            player._cardsInGame.AddRange(cards);
+            return player;
         }
 
         public bool IsAlive()
         {
             return Hero.IsAlive();
+        }
+
+        public Player Clone()
+        {
+            return new Player
+            {
+                Id = Id,
+                Name = Name,
+                Money = Money,
+                Hero = Hero.Clone(),
+                _rules = _rules,
+                _cardsInGame = _cardsInGame,
+                _fullDeck = _fullDeck.Clone(),
+                _activeDeck = _activeDeck.Clone(),
+                _cemetery = _cemetery.Clone()
+            };
         }
     }
 }

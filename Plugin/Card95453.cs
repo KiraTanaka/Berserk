@@ -16,26 +16,21 @@ namespace Plugin
             Cost = 4;
             Power = 2;
             Health = 2;
-            Hire = x =>
-            {
-                Helper.StandartHiring(x);
-                return new Result();
-            };
             Attack = DoAttack;
-            Feature = x => Result.GetError("Нет особенности"); ;
+            Feature = x => Result.GetError("Нет особенности");
         }
 
         private static Result DoAttack(GameState state)
         {
-            ICard actionCard = state.ActionCard;
+            Card actionCard = state.ActionCard;
             if (actionCard.Closed)
                 return Result.GetSuccess();
 
-            ICard targetCard = state.TargetCards.FirstOrDefault();
+            Card targetCard = state.TargetCards.FirstOrDefault();
             if (targetCard == null)
                 return Result.GetError("Нужно выбрать цель");
 
-            targetCard.HurtBy(actionCard.Power);
+            targetCard.Hurt(actionCard.Power);
             return Result.GetSuccess();
         }
     }

@@ -33,9 +33,9 @@ namespace Infrastructure
             foreach (var item in enumerable) action(item);
         }
 
-        public static void ForEach(this int limit, Action action)
+        public static void ForLoop(this int limit, Action<int> action)
         {
-            for (var i = 0; i < limit; i++) action();
+            for (var i = 0; i < limit; i++) action(i);
         }
     }
 }
