@@ -1,4 +1,4 @@
-﻿namespace Infrastructure
+﻿namespace Infrastructure.Cloneable
 {
     public interface ICloneable<out T>
     {

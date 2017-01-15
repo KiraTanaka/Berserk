@@ -1,4 +1,4 @@
-﻿namespace Domain
+﻿namespace Domain.Process
 {
     public interface IRules
     {

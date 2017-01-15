@@ -4,29 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain;
+using Domain.Cards;
+using Domain.Process;
 
 namespace Plugin
 {
     class Helper
     {
-        public static Result StandartAttack(GameState state)
+        public static MoveResult StandartAttack(GameState state)
         {
             Card actionCard = state.ActionCard;
             if (actionCard.Closed)
-                return Result.GetSuccess();
+                return MoveResult.GetSuccess();
 
             Card targetCard = state.TargetCards.FirstOrDefault();
             if (targetCard == null)
-                return Result.GetError("Нужно выбрать цель");
+                return MoveResult.GetError("Нужно выбрать цель");
 
             targetCard.Hurt(actionCard.Power);
             actionCard.Close();
 
             if (targetCard.Closed || !targetCard.IsAlive())
-                return Result.GetSuccess();
+                return MoveResult.GetSuccess();
 
             actionCard.Hurt(targetCard.Power);
-            return Result.GetSuccess();
+            return MoveResult.GetSuccess();
         }
     }
 }

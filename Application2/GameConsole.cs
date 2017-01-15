@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Domain;
-using Infrastructure;
+using Domain.Cards;
+using Domain.Process;
+using Infrastructure.Loop;
 
 namespace Application2
 {
@@ -83,21 +84,21 @@ namespace Application2
             return SelectCards(indexes, targetPlayer, targetPlayer.CardsInGame);
         }
 
-        public override ActionEnum GetAttackWay()
+        public override CardActionEnum GetAttackWay()
         {
             Console.Write("Enter attack way > ");
             var attackWay = ReadNumber();
-            return (ActionEnum) attackWay;
+            return (CardActionEnum) attackWay;
         }
 
-        public override void ShowActionResult(Result result, Player another)
+        public override void ShowActionResult(MoveResult moveResult, Player another)
         {
-            Console.WriteLine($"Success: {result.Success}, Message: {result.Message}");
+            Console.WriteLine($"Success: {moveResult.Success}, Message: {moveResult.Message}");
             Console.WriteLine(another.Hero.Health);
         }
 
         public override void InformAboutAttack(
-            Card actionCard, IEnumerable<Card> targetCards, ActionEnum actionWay)
+            Card actionCard, IEnumerable<Card> targetCards, CardActionEnum actionWay)
         {
             Console.WriteLine($"You card {actionCard.Name} is going to attack {targetCards.ToStringNames()}");
         }

@@ -1,16 +1,14 @@
-﻿using System;
-
-namespace Infrastructure
+﻿namespace Infrastructure.Random
 {
     public static class RandomHelper
     {
         private static int _seed = GetSeed();
-        private static int GetSeed() => new Random().Next(int.MaxValue);
+        private static int GetSeed() => new System.Random().Next(int.MaxValue);
 
-        public static Random GetRandomInstance()
+        public static System.Random GetRandomInstance()
         {
             if (_seed == int.MaxValue) _seed = GetSeed(); // TODO потокобезопасно?
-            return new Random(_seed++);
+            return new System.Random(_seed++);
         }
 
         public static int Next(int maxValue)

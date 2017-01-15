@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Infrastructure;
+using Domain.Cards;
+using Infrastructure.Loop;
 
-namespace Domain
+namespace Domain.Process
 {
     public abstract class Game
     {
@@ -24,7 +25,6 @@ namespace Domain
             var players = CreatePlayers(users).ToList();
             ShowPlayers(players);
             // OfferToChangeCards(players);
-            // AddPlayersCardAndMoney(players);
 
             while (true)
             {
@@ -57,7 +57,7 @@ namespace Domain
             var players = new List<Player>();
             users.ForEach(user =>
             {
-                var playerCards = user.CardList.Select(id => _cards.FirstOrDefault(x => x.Id == id)?.Clone()).ToList();
+                var playerCards = Enumerable.Select<int, Card>(user.CardList, id => _cards.FirstOrDefault(x => x.Id == id)?.Clone()).ToList();
                 players.Add(new Player(user.Name, playerCards, _rules));
             });
             return players;
@@ -66,15 +66,6 @@ namespace Domain
         public abstract void ShowPlayers(IEnumerable<Player> players);
 
         public abstract void OfferToChangeCards(IEnumerable<Player> players);
-
-        private static void AddPlayersCardAndMoney(IEnumerable<Player> players)
-        {
-            players.ForEach(x =>
-            {
-                x.AddMoney();
-                x.AddCards();
-            });
-        }
 
         public void Move(Guid currentId, IEnumerable<Player> players)
         {
@@ -86,7 +77,7 @@ namespace Domain
 
             Card actionCard = GetActionCard(movingPlayer);
             IEnumerable<Card> targetCards = GetTargetCards(waitingPlayer);
-            ActionEnum actionWay = GetAttackWay();
+            CardActionEnum actionWay = GetAttackWay();
 
             InformAboutAttack(actionCard, targetCards, actionWay);
 
@@ -97,9 +88,9 @@ namespace Domain
                 MovingPlayer = movingPlayer,
                 WaitingPlayer = waitingPlayer
             };
-            Result result = actionCard.Action(actionWay, state);
+            MoveResult moveResult = actionCard.Action(actionWay, state);
 
-            ShowActionResult(result, waitingPlayer);
+            ShowActionResult(moveResult, waitingPlayer);
         }
 
         public abstract void ShowInfo(Player current, Player another);
@@ -108,12 +99,12 @@ namespace Domain
 
         public abstract IEnumerable<Card> GetTargetCards(Player targetPlayer);
 
-        public abstract ActionEnum GetAttackWay();
+        public abstract CardActionEnum GetAttackWay();
 
         public abstract void InformAboutAttack(
-            Card actionCard, IEnumerable<Card> targetCards, ActionEnum actionWay);
+            Card actionCard, IEnumerable<Card> targetCards, CardActionEnum actionWay);
 
-        public abstract void ShowActionResult(Result result, Player targetPlayer);
+        public abstract void ShowActionResult(MoveResult moveResult, Player targetPlayer);
 
         public abstract void ShowWinner(Player winner);
     }

@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Infrastructure;
+using Domain.Cards;
+using Infrastructure.Cloneable;
+using Infrastructure.Loop;
 
-namespace Domain
+namespace Domain.Process
 {
     /// <summary>
+    /// Контроллер зоны игрока.
     /// Immutable.
     /// </summary>
     public class Player : ICloneable<Player>
@@ -84,36 +87,36 @@ namespace Domain
             }
         }
 
-        /// <summary>
-        /// Добавляет игроку денег и возращает его копию.
-        /// Количество добавленных денег зависит от правил.
-        /// Если количество денег максимально, то оно не увеличится.
-        /// Максимальное количество денег зависит от правил.
-        /// </summary>
-        public Player AddMoney()
-        {
-            return this.Clone(player =>
-            {
-                if (_rules.PlayerMaxMoneyAmount < Money)
-                    player.Money += _rules.PlayerAddMoneyAmount;
-            });
-        }
-
-        /// <summary>
-        /// Добавляет игроку карт и возращает его копию.
-        /// Количество добавленных карт зависит от правил.
-        /// </summary>
-        public Player AddCards()
-        {
-            return this.Clone(player =>
-            {
-                _rules.PlayerAddMoneyAmount.ForLoop(i =>
-                {
-                    var card = player._fullDeck.PullTop();
-                    player._activeDeck.PushTop(card);
-                });
-            });
-        }
+//        /// <summary>
+//        /// Добавляет игроку денег и возращает его копию.
+//        /// Количество добавленных денег зависит от правил.
+//        /// Если количество денег максимально, то оно не увеличится.
+//        /// Максимальное количество денег зависит от правил.
+//        /// </summary>
+//        private Player AddMoney()
+//        {
+//            return this.Clone(player =>
+//            {
+//                if (_rules.PlayerMaxMoneyAmount < Money)
+//                    player.Money += _rules.PlayerAddMoneyAmount;
+//            });
+//        }
+//
+//        /// <summary>
+//        /// Добавляет игроку карт и возращает его копию.
+//        /// Количество добавленных карт зависит от правил.
+//        /// </summary>
+//        private Player AddCards()
+//        {
+//            return this.Clone(player =>
+//            {
+//                _rules.PlayerAddMoneyAmount.ForLoop(i =>
+//                {
+//                    var card = player._fullDeck.PullTop();
+//                    player._activeDeck.PushTop(card);
+//                });
+//            });
+//        }
 
         /// <summary>
         /// Заменяет карты с указанными индексами в активной колоде,
@@ -143,6 +146,25 @@ namespace Domain
                 if (Money < 0) return this;
                 player._cardsInGame.AddRange(cards);
                 return player;
+            });
+        }
+
+        public Player AfterMove()
+        {
+            return this.Clone(player =>
+            {
+                var dead = player._cardsInGame.FindAll(x => x.IsAlive() == false);
+                _cardsInGame.RemoveRange(dead);
+                _cemetery.PushTop(dead);
+
+                _rules.PlayerAddMoneyAmount.ForLoop(i =>
+                {
+                    var card = player._fullDeck.PullTop();
+                    player._activeDeck.PushTop(card);
+                });
+
+                if (_rules.PlayerMaxMoneyAmount < Money)
+                    player.Money += _rules.PlayerAddMoneyAmount;
             });
         }
 

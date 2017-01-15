@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using Domain;
+using Domain.Cards;
+using Domain.Process;
 
 namespace Plugin
 {
@@ -11,27 +13,27 @@ namespace Plugin
             Id = 95453;
             Type = CardTypeEnum.Creature;
             Name = "Авантюристка";
-            Element = ElementEnum.Neutral;
+            Element = CardElementEnum.Neutral;
             Desriprion = "Направленный удар. Опыт в атаке. Первый удар(-). Рывок.";
             Cost = 4;
             Power = 2;
             Health = 2;
             Attack = DoAttack;
-            Feature = x => Result.GetError("Нет особенности");
+            Feature = x => MoveResult.GetError("Нет особенности");
         }
 
-        private static Result DoAttack(GameState state)
+        private static MoveResult DoAttack(GameState state)
         {
             Card actionCard = state.ActionCard;
             if (actionCard.Closed)
-                return Result.GetSuccess();
+                return MoveResult.GetSuccess();
 
             Card targetCard = state.TargetCards.FirstOrDefault();
             if (targetCard == null)
-                return Result.GetError("Нужно выбрать цель");
+                return MoveResult.GetError("Нужно выбрать цель");
 
             targetCard.Hurt(actionCard.Power);
-            return Result.GetSuccess();
+            return MoveResult.GetSuccess();
         }
     }
 }

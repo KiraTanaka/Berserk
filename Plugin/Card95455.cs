@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using Domain;
+using Domain.Cards;
+using Domain.Process;
 
 namespace Plugin
 {
@@ -11,14 +13,14 @@ namespace Plugin
             Id = 95455;
             Type = CardTypeEnum.Creature;
             Name = "Авгур";
-            Element = ElementEnum.Neutral;
+            Element = CardElementEnum.Neutral;
             Desriprion =
                 "Найм: Заплатите 2 Монеты, при этом замешайте 2 выбранные карты с любых кладбищ в колоды владельцев.";
             Cost = 2;
             Power = 2;
             Health = 2;
             Attack = Helper.StandartAttack;
-            Feature = state => Result.GetSuccess();
+            Feature = state => MoveResult.GetSuccess();
         }
     }
 }

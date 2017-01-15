@@ -1,20 +1,22 @@
 using System;
+using Domain.Process;
 using Infrastructure;
+using Infrastructure.Cloneable;
 
-namespace Domain
+namespace Domain.Cards
 {
     public class Card : ICloneable<Card>
     {
         public int Id { get; set; }
         public CardTypeEnum Type { get; protected set; }
         public string Name { get; protected set; }
-        public ElementEnum Element { get; protected set; }
+        public CardElementEnum Element { get; protected set; }
         public string Desriprion { get; protected set; }
         public int Cost { get; protected set; }
         public int Power { get; protected set; }
         public int Health { get; protected set; }
-        public Func<GameState, Result> Attack  { get; protected set; }
-        public Func<GameState, Result> Feature { get; protected set; }
+        public Func<GameState, MoveResult> Attack  { get; protected set; }
+        public Func<GameState, MoveResult> Feature { get; protected set; }
         public string EquipementType { get; protected set; }
         public bool Closed { get; protected set; }
 
@@ -53,10 +55,10 @@ namespace Domain
             return Health > 0;
         }
 
-        public Result Action(ActionEnum actionOption, GameState state)
+        public MoveResult Action(CardActionEnum actionOption, GameState state)
         {
-            if (actionOption == ActionEnum.Simple) return Attack(state);
-            if (actionOption == ActionEnum.Feature) return Feature(state);
+            if (actionOption == CardActionEnum.Simple) return Attack(state);
+            if (actionOption == CardActionEnum.Feature) return Feature(state);
             throw new NotImplementedException($"State {state} is not implemented");
         }
 

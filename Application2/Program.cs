@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Domain;
+using Domain.Cards;
+using Domain.Process;
 
 namespace Application2
 {

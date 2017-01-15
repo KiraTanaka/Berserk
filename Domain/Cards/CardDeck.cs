@@ -3,9 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Infrastructure;
+using Infrastructure.Loop;
+using Infrastructure.Random;
 
-namespace Domain
+namespace Domain.Cards
 {
     /// <summary>
     /// Колода карт.

@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Web;
 using Application.Controllers;
 using Domain;
+using Domain.Cards;
+using Domain.Process;
 
 namespace Application.Models
 {

@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using Domain;
+using Domain.Cards;
+using Domain.Process;
 
 namespace Plugin
 {
@@ -9,7 +11,7 @@ namespace Plugin
         {
             Id = 87299;
             Name = "Адепт Белого ордена";
-            Element = ElementEnum.Neutral;
+            Element = CardElementEnum.Neutral;
             Desriprion = "Излечить выбранное открытое существо или " +
                          "выбранного открытого героя на 4, закройте это существо или героя.";
             Cost = 2;
@@ -20,17 +22,17 @@ namespace Plugin
             {
                 Card actionCard = state.ActionCard;
                 if (actionCard.Closed)
-                    return Result.GetSuccess();
+                    return MoveResult.GetSuccess();
 
                 Card targetCard = state.TargetCards.FirstOrDefault();
                 if (targetCard == null)
-                    return Result.GetError("Нужно выбрать цель");
+                    return MoveResult.GetError("Нужно выбрать цель");
 
                 targetCard.Heal(4);
                 targetCard.Close();
                 actionCard.Close();
 
-                return Result.GetSuccess();
+                return MoveResult.GetSuccess();
             };
         }
     }

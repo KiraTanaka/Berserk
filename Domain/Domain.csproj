@@ -44,19 +44,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionEnum.cs" />
-    <Compile Include="CardDeck.cs" />
-    <Compile Include="CardTypeEnum.cs" />
-    <Compile Include="ElementEnum.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="GameState.cs" />
-    <Compile Include="Card.cs" />
-    <Compile Include="IRules.cs" />
-    <Compile Include="IStorage.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="Cards\CardActionEnum.cs" />
+    <Compile Include="Cards\CardDeck.cs" />
+    <Compile Include="Cards\CardTypeEnum.cs" />
+    <Compile Include="Cards\CardElementEnum.cs" />
+    <Compile Include="Process\Game.cs" />
+    <Compile Include="Process\GameState.cs" />
+    <Compile Include="Cards\Card.cs" />
+    <Compile Include="Process\IRules.cs" />
+    <Compile Include="Process\IStorage.cs" />
+    <Compile Include="Process\Player.cs" />
+    <Compile Include="Process\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Result.cs" />
+    <Compile Include="Process\MoveResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

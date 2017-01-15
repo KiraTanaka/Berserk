@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using Domain.Cards;
 
-namespace Domain
+namespace Domain.Process
 {
     public class GameState
     {
