@@ -9,10 +9,21 @@ namespace Domain
     /// <summary>
     /// Immutable.
     /// </summary>
-    public class Player
+    public class Player : ICloneable<Player>
     {
+        /// <summary>
+        /// Уникальный идентификатор игрока.
+        /// </summary>
         public Guid Id { get; private set; }
+
+        /// <summary>
+        /// Имя игрока.
+        /// </summary>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Деньги.
+        /// </summary>
         public int Money { get; private set; }
 
         /// <summary>
@@ -81,24 +92,27 @@ namespace Domain
         /// </summary>
         public Player AddMoney()
         {
-            var player = Clone();
-            if (_rules.PlayerMaxMoneyAmount < Money) player.Money += _rules.PlayerAddMoneyAmount;
-            return player;
+            return this.Clone(player =>
+            {
+                if (_rules.PlayerMaxMoneyAmount < Money)
+                    player.Money += _rules.PlayerAddMoneyAmount;
+            });
         }
 
         /// <summary>
         /// Добавляет игроку карт и возращает его копию.
         /// Количество добавленных карт зависит от правил.
         /// </summary>
-        public Player DealCard()
+        public Player AddCards()
         {
-            var player = Clone();
-            _rules.PlayerAddMoneyAmount.ForLoop(i =>
+            return this.Clone(player =>
             {
-                var card = player._fullDeck.PullTop();
-                player._activeDeck.PushTop(card);
+                _rules.PlayerAddMoneyAmount.ForLoop(i =>
+                {
+                    var card = player._fullDeck.PullTop();
+                    player._activeDeck.PushTop(card);
+                });
             });
-            return player;
         }
 
         /// <summary>
@@ -107,12 +121,13 @@ namespace Domain
         /// </summary>
         public Player RedealCards(int[] indexes)
         {
-            var player = Clone();
-            var removedCards = player._activeDeck.Pull(indexes);
-            player._fullDeck.PushBottom(removedCards);
-            var newCards = player._fullDeck.PullTop(indexes.Length);
-            player._activeDeck.PushTop(newCards);
-            return player;
+            return this.Clone(player =>
+            {
+                var removedCards = player._activeDeck.Pull(indexes);
+                player._fullDeck.PushBottom(removedCards);
+                var newCards = player._fullDeck.PullTop(indexes.Length);
+                player._activeDeck.PushTop(newCards);
+            });
         }
 
         /// <summary>
@@ -121,14 +136,19 @@ namespace Domain
         /// </summary>
         public Player Hire(int[] indexes)
         {
-            var player = Clone();
-            var cards = player._activeDeck.Pull(indexes).ToList();
-            cards.ForEach(x => Money -= x.Cost);
-            if (Money < 0) return this;
-            player._cardsInGame.AddRange(cards);
-            return player;
+            return this.Clone(player =>
+            {
+                var cards = player._activeDeck.Pull(indexes).ToList();
+                cards.ForEach(x => Money -= x.Cost);
+                if (Money < 0) return this;
+                player._cardsInGame.AddRange(cards);
+                return player;
+            });
         }
 
+        /// <summary>
+        /// Проверяет жив ли игрок.
+        /// </summary>
         public bool IsAlive()
         {
             return Hero.IsAlive();

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Domain;
+using Infrastructure;
 
-namespace Application2
+namespace Domain
 {
     public abstract class Game
     {
@@ -57,8 +57,7 @@ namespace Application2
             var players = new List<Player>();
             users.ForEach(user =>
             {
-                var playerCards = user.CardList
-                    .Select(id => _cards.FirstOrDefault(x => x.Id == id)?.Clone()).ToList();
+                var playerCards = user.CardList.Select(id => _cards.FirstOrDefault(x => x.Id == id)?.Clone()).ToList();
                 players.Add(new Player(user.Name, playerCards, _rules));
             });
             return players;
@@ -73,7 +72,7 @@ namespace Application2
             players.ForEach(x =>
             {
                 x.AddMoney();
-                x.DealCard();
+                x.AddCards();
             });
         }
 

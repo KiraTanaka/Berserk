@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Domain;
+using Infrastructure;
 
 namespace Application2
 {
@@ -148,11 +149,6 @@ namespace Application2
 
     public static class Extensions
     {
-        public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
-        {
-            foreach (var item in enumerable) action(item);
-        }
-
         public static string ToStringAsList(this IEnumerable<Card> deck, bool markers)
         {
             var deckStr = new StringBuilder();

@@ -1,8 +1,9 @@
 using System;
+using Infrastructure;
 
 namespace Domain
 {
-    public class Card
+    public class Card : ICloneable<Card>
     {
         public int Id { get; set; }
         public CardTypeEnum Type { get; protected set; }

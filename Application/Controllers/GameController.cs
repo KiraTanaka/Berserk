@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Web.Http;
 using Application.Models;
 using Domain;
+using IStorage = Application.Models.IStorage;
 
 namespace Application.Controllers
 {
