@@ -45,11 +45,13 @@
     <Compile Include="Cards\CardDeck.cs" />
     <Compile Include="Cards\CardTypeEnum.cs" />
     <Compile Include="Cards\CardElementEnum.cs" />
+    <Compile Include="Process\Coin.cs" />
     <Compile Include="Process\Game.cs" />
     <Compile Include="Process\GameState.cs" />
     <Compile Include="Cards\Card.cs" />
     <Compile Include="Process\IRules.cs" />
     <Compile Include="Process\IStorage.cs" />
+    <Compile Include="Process\Money.cs" />
     <Compile Include="Process\Player.cs" />
     <Compile Include="Process\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -50,7 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\CSharp vNext Support\Editor\UnitySchedulerEditor.cs" />
+    <None Include="Assets\Scripts\PositionsOfCoinsPlayer.txt" />
     <None Include="Assets\Scripts\PositionOfActiveCardsEnemy.txt" />
+    <None Include="Assets\Scripts\PositionsOfCoinsEnemy.txt" />
     <None Include="Assets\CSharp vNext Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.xml" />
     <None Include="Assets\Scripts\PositionOfActiveCardsPlayer.txt" />
@@ -112,13 +114,13 @@
       <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/CSharp vNext Support/Editor/CSharpVNextSupport.dll</HintPath>
     </Reference>
     <Reference Include="Domain">
-      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/dll/Domain.dll</HintPath>
+      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/DLL/Domain.dll</HintPath>
     </Reference>
     <Reference Include="Infrastructure">
-      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/dll/Infrastructure.dll</HintPath>
+      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/DLL/Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Plugin">
-      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/dll/Plugin.dll</HintPath>
+      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/DLL/Plugin.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.Graphs">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>

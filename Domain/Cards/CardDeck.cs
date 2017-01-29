@@ -86,7 +86,11 @@ namespace Domain.Cards
             _cards.Remove(card);
             return card;
         }
-
+        /// <summary>
+        /// Возвращает карту с указанным id.
+        /// </summary>
+        public Card GetCardById(int id) 
+            => _cards.FirstOrDefault(x => x.Id == id);
         /// <summary>
         /// Возвращает карты с указанными индексами и удаляет их из колоды.
         /// </summary>

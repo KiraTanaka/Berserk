@@ -27,7 +27,7 @@ namespace Domain.Process
         /// <summary>
         /// Деньги.
         /// </summary>
-        public int Money { get; private set; }
+        public Money Money { get; private set; } = new Money();
 
         /// <summary>
         /// Герой.
@@ -68,7 +68,7 @@ namespace Domain.Process
         {
             Id = Guid.NewGuid();
             Name = name;
-            Money = rules.PlayerStartMoneyAmount;
+            Money.AddMoney(rules.PlayerStartMoneyAmount);
 
             _rules = rules;
 
@@ -150,8 +150,8 @@ namespace Domain.Process
         }*///не нужно вроде
         public bool Hire(int id)
         {
-            var card = _activeDeck.FirstOrDefault(x => x.Id == id);
-            if (Money - card.Cost < 0) return false;
+            var card = _activeDeck.GetCardById(id);
+            if (Money.Count - card.Cost < 0) return false;
             Money -= card.Cost;
             _activeDeck.Pull(id);
             _cardsInGame.Add(card);
@@ -160,11 +160,13 @@ namespace Domain.Process
 
         public void AfterMove()
         {
-
             var dead = _cardsInGame.FindAll(x => x.IsAlive() == false);
-            dead.ForEach(x => _cardsInGame.Remove(x));
-            //_cardsInGame.RemoveRange(dead);
-            _cemetery.PushTop(dead);
+            dead.ForEach(x => _cardsInGame.Remove(x));            
+            _cemetery.PushTop(dead);     
+        }
+        public void StartStep()
+        {
+            OpenAll();
 
             if (_fullDeck.Count != 0)
             {
@@ -172,10 +174,15 @@ namespace Domain.Process
                 _activeDeck.PushTop(card);
             }
 
-            if (_rules.PlayerMaxMoneyAmount > Money)
+            if (_rules.PlayerMaxMoneyAmount > Money.Count)
                 Money += _rules.PlayerAddMoneyAmount;
         }
-
+        private void OpenAll()
+        {
+            Money.OpenAll();
+            CardsInGame.ForEach(card => card.Open());
+            Hero.Open();
+        }
         /// <summary>
         /// Проверяет жив ли игрок.
         /// </summary>

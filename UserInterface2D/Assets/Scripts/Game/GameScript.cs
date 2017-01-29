@@ -31,7 +31,6 @@ public class GameScript : MonoBehaviour {
             AttackWayPanel.SetActive(false);
             _attackWay = value;
             Move();
-            onAfterMove();
         }
     }
     GameUnity game;
@@ -42,10 +41,19 @@ public class GameScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
         var storage = new Storage();
-        var rules = new Rules();
-        var cards = new List<Card>() { new Card87242(), new Card92314(), new Card87065(), new Card95380(), new Card87693(),new Card87689() };
+        var types = ImportTypes();
+        var rules = types.SelectInstancesOf<IRules>()?.FirstOrDefault();
+        var cards = types.SelectInstancesOf<Card>().ToList();
+        CreateGame(storage, rules, cards);
+        CreatePlayers();
+    }
+    private void CreateGame(Storage storage, IRules rules, List<Card> cards)
+    {
         game = new GameUnity(GameObject.FindWithTag("Scripts").GetComponent<GameScript>(), storage, rules, cards);
         game.Connection();
+    }
+    private void CreatePlayers()
+    {
         CreatePlayer(GetComponent<Gamer>(), game.state.MovingPlayer);
         CreatePlayer(GetComponent<Enemy>(), game.state.WaitingPlayer);
     }
@@ -71,20 +79,21 @@ public class GameScript : MonoBehaviour {
     {
         return game.state;
     }
-    void Move()
+    private void Move()
     {
         game.Move();
         SetToZeroCards();
+        onAfterMove();
     }
     public void CompleteStep()
     {
         game.CompleteStep();
     }
-    /* private static IEnumerable<Type> ImportTypes()
-     {
-         /*const string dllFolderPath = @"C:\Users\Akira\Berserk\UserInterface2D\Assets\Plugins";
-         var dllPaths = Directory.GetFiles(dllFolderPath, "*.dll");
-         return dllPaths.Select(Assembly.LoadFrom).SelectMany(x => x.ExportedTypes);*/
-    // }*/
+    private IEnumerable<Type> ImportTypes()
+    {
+        string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets\\Scripts\\DLL");
+        var dllPaths = Directory.GetFiles(path, "*.dll");
+        return dllPaths.Select(Assembly.LoadFrom).SelectMany(x => x.GetExportedTypes());
+    }
 
 }

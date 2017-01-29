@@ -11,7 +11,6 @@ public abstract class Game
     private readonly IStorage _storage;
     private readonly IRules _rules;
     private readonly List<Card> _cards;
-    public List<Player> players;//изменение
     public GameState state = new GameState();
 
     protected Game(IStorage storage, IRules rules, List<Card> cards)
@@ -23,10 +22,10 @@ public abstract class Game
     public void Connection()//изменение
     {
         var users = ConnectUsers();
-        players = CreatePlayers(users).ToList();
-        SetStartState();
+        List<Player> players = CreatePlayers(users).ToList();
+        SetStartState(players);
     }
-    private void SetStartState()//изменение
+    private void SetStartState(IEnumerable<Player> players)//изменение
     {
         state.MovingPlayer = players.First();
         state.WaitingPlayer = players.Last();
@@ -81,8 +80,7 @@ public abstract class Game
     public abstract void OfferToChangeCards(IEnumerable<Player> players);
     public void StartStep()
     {
-        state.MovingPlayer.CardsInGame.ForEach(card => card.Open());
-        state.MovingPlayer.Hero.Open();
+        state.MovingPlayer.StartStep();   
     }
 
     public void Move(/*Guid currentId, IEnumerable<Player> players*/)
@@ -117,6 +115,7 @@ public abstract class Game
         MoveResult moveResult = state.ActionCard.Action(actionWay, state);
         ShowActionResult(moveResult);
 
+        AfterMove();
         return moveResult;
     }
     public void AfterMove()
@@ -126,7 +125,6 @@ public abstract class Game
     public void CompleteStep()
     {
         ChangeOfMovingPlayer();
-        AfterMove();
         StartStep();
     }
     public void ChangeOfMovingPlayer()//изменение
