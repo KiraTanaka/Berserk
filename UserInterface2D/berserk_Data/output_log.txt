@@ -1,0 +1,293 @@
+Initialize engine version: 5.5.0f3 (38b4efef76f0)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: AMD Radeon(TM) HD 6620G (ID=0x9641)
+    Vendor:   ATI
+    VRAM:     1491 MB
+    Driver:   8.901.3.0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\AsyncBridge.Net35.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\AsyncBridge.Net35.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Threading.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Threading.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Infrastructure.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Infrastructure.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll into Unity Child Domain
+- Completed reload, in  0.086 seconds
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.dll (this message is harmless)
+desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 2.858247 ms
+Enter player ID > Enter player ID > NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at FeatureButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+NullReferenceException: Object reference not set to an instance of an object
+  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
+  at Game.GetValue () [0x00000] in <filename unknown>:0 
+  at Game.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.Move () [0x00000] in <filename unknown>:0 
+  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
+  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
+UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
+UnityEngine.HitInfo:SendMessage(String)
+UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
+UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
+ 
+(Filename:  Line: -1)
+
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 1034 -> priority: 1 

@@ -19,7 +19,12 @@ namespace Domain.Cards
         public Func<GameState, MoveResult> Feature { get; protected set; }
         public string EquipementType { get; protected set; }
         public bool Closed { get; protected set; }
-
+        #region delegates and events
+        public delegate void OnChangeHealthHandler();
+        public delegate void OnChangeClosedHandler();
+        public event OnChangeHealthHandler onChangeHealth;
+        public event OnChangeClosedHandler onChangeClosed;
+        #endregion
         public void Hurt(int value)
         {
             AddHealth(-value);
@@ -33,6 +38,7 @@ namespace Domain.Cards
         private void AddHealth(int value)
         {
             Health = Health + value;
+            onChangeHealth?.Invoke();
         }
 
         public void Open()
@@ -48,6 +54,7 @@ namespace Domain.Cards
         private void SetClose(bool value)
         {
             Closed = value;
+            onChangeClosed?.Invoke();
         }
 
         public bool IsAlive()

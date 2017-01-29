@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+//using System.Collections.Immutable;
 using System.Linq;
 using Domain.Cards;
 using Infrastructure.Cloneable;
@@ -38,7 +38,7 @@ namespace Domain.Process
         /// Карты на столе.
         /// </summary>
         public Card[] CardsInGame => _cardsInGame.ToArray();
-        private ImmutableList<Card> _cardsInGame;
+        private List<Card> _cardsInGame;
 
         /// <summary>
         /// Полная колода игрока.
@@ -72,7 +72,7 @@ namespace Domain.Process
 
             _rules = rules;
 
-            _cardsInGame = ImmutableList<Card>.Empty;
+            _cardsInGame = new List<Card>();
             Hero = cards.FirstOrDefault(x => x.Type == CardTypeEnum.Hero);
             cards.Remove(Hero);
 
@@ -137,7 +137,7 @@ namespace Domain.Process
         /// Карты с указанными индексами перемещаются из активной колоды в
         /// игровую, и возращается копия игрока.
         /// </summary>
-        public Player Hire(int[] indexes)
+       /* public Player Hire(int[] indexes)
         {
             return this.Clone(player =>
             {
@@ -147,25 +147,33 @@ namespace Domain.Process
                 player._cardsInGame.AddRange(cards);
                 return player;
             });
+        }*///не нужно вроде
+        public bool Hire(int id)
+        {
+            var card = _activeDeck.FirstOrDefault(x => x.Id == id);
+            if (Money - card.Cost < 0) return false;
+            Money -= card.Cost;
+            _activeDeck.Pull(id);
+            _cardsInGame.Add(card);
+            return true;
         }
 
-        public Player AfterMove()
+        public void AfterMove()
         {
-            return this.Clone(player =>
+
+            var dead = _cardsInGame.FindAll(x => x.IsAlive() == false);
+            dead.ForEach(x => _cardsInGame.Remove(x));
+            //_cardsInGame.RemoveRange(dead);
+            _cemetery.PushTop(dead);
+
+            if (_fullDeck.Count != 0)
             {
-                var dead = player._cardsInGame.FindAll(x => x.IsAlive() == false);
-                _cardsInGame.RemoveRange(dead);
-                _cemetery.PushTop(dead);
+                var card = _fullDeck.PullTop();
+                _activeDeck.PushTop(card);
+            }
 
-                _rules.PlayerAddMoneyAmount.ForLoop(i =>
-                {
-                    var card = player._fullDeck.PullTop();
-                    player._activeDeck.PushTop(card);
-                });
-
-                if (_rules.PlayerMaxMoneyAmount < Money)
-                    player.Money += _rules.PlayerAddMoneyAmount;
-            });
+            if (_rules.PlayerMaxMoneyAmount > Money)
+                Money += _rules.PlayerAddMoneyAmount;
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace Application2
 
         private static IEnumerable<Type> ImportTypes()
         {
-            const string dllFolderPath = @"E:\Projects\kontur\Berserk\Plugins";
+            const string dllFolderPath = @"C:\Users\Akira\Berserk\Plugins";
             var dllPaths = Directory.GetFiles(dllFolderPath, "*.dll");
             return dllPaths.Select(Assembly.LoadFrom).SelectMany(x => x.ExportedTypes);
         }

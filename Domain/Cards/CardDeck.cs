@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
+//using System.Collections.Immutable;
 using System.Linq;
 using Infrastructure.Loop;
 using Infrastructure.Random;
@@ -13,16 +13,16 @@ namespace Domain.Cards
     /// </summary>
     public class CardDeck : IEnumerable<Card>
     {
-        private ImmutableList<Card> _cards;
+        private List<Card> _cards;
         
         public CardDeck()
         {
-            _cards = ImmutableList<Card>.Empty;
+            _cards = new List<Card>();
         }
 
         public CardDeck(IEnumerable<Card> cards)
         {
-            _cards = cards.Shuffle().ToImmutableList();
+            _cards = cards.Shuffle().ToList();
         }
 
         public Card this[int i] => _cards[i];
@@ -34,7 +34,7 @@ namespace Domain.Cards
         /// </summary>
         public void Push(Card card, int index)
         {
-            _cards = _cards.Insert(index, card);
+            _cards.Insert(index, card);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Domain.Cards
         /// </summary>
         public void PushTop(Card card)
         {
-            _cards = _cards.Add(card);
+            _cards.Add(card);
         }
 
         /// <summary>
@@ -78,12 +78,12 @@ namespace Domain.Cards
         }
 
         /// <summary>
-        /// Возвращает карту с указанным индексом и удаляет ее из колоды.
+        /// Возвращает карту с указанным id и удаляет ее из колоды.
         /// </summary>
-        public Card Pull(int index)
+        public Card Pull(int id)//изменила index на id
         {
-            var card = _cards[index];
-            _cards = _cards.RemoveAt(index);
+            var card = _cards.FirstOrDefault(x=>x.Id==id);
+            _cards.Remove(card);
             return card;
         }
 
@@ -93,7 +93,7 @@ namespace Domain.Cards
         public IEnumerable<Card> Pull(int[] indexes)
         {
             var result = indexes.Select(x => _cards[x]).ToList();
-            _cards = _cards.Where((val, i) => !indexes.Contains(i)).ToImmutableList();
+            _cards = _cards.Where((val, i) => !indexes.Contains(i)).ToList();
             return result;
         }
 
@@ -104,7 +104,7 @@ namespace Domain.Cards
         {
             if (Count == 0) throw new ArgumentException("Deck is empty");
             var card = _cards.Last();
-            _cards = _cards.RemoveAt(Count - 1); // List.Remove сортирует коллекцию
+            _cards.RemoveAt(Count - 1); // List.Remove сортирует коллекцию
             return card;
         }
 

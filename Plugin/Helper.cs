@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Domain;
 using Domain.Cards;
 using Domain.Process;
@@ -28,6 +27,7 @@ namespace Plugin
                 return MoveResult.GetSuccess();
 
             actionCard.Hurt(targetCard.Power);
+            targetCard.Close();
             return MoveResult.GetSuccess();
         }
     }
