@@ -23,7 +23,7 @@ namespace Domain.Process
         /// </summary>
         public static Money operator -(Money money, int count)
         {
-            if (count <= money.Count) return money;
+            if (count > money.Count) return money;
             money._coins.Where(x=>!x.Closed).Take(count).ToList().ForEach(x=>x.Close());
             return money;
         }
