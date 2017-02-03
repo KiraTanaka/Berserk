@@ -1,19 +1,19 @@
 ﻿using UnityEngine;
 using Domain.Cards;
+using System.Linq;
+using UnityEngine.Networking;
 
-public class AttackButton : MonoBehaviour {
-    GameScript game;
-    // Use this for initialization
+public class AttackButton : NetworkBehaviour
+{
+    Client client;
     void Start () {
-        game = GameObject.FindWithTag("Scripts").GetComponent<GameScript>();
+        if (!localPlayerAuthority) return;
+        client = GameObject.FindGameObjectsWithTag("Gamer").Select(x => x.GetComponent<Client>())
+            .FirstOrDefault(x => x.isLocalPlayer);
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
     void OnMouseDown()
     {
-        game.AttackWay = CardActionEnum.Simple;
+        if (!localPlayerAuthority) return;
+        client.SetAttackWay(CardActionEnum.Simple);
     }
 }

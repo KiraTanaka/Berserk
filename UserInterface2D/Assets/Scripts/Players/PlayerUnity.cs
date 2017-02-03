@@ -1,13 +1,16 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Domain.Cards;
 using Domain.Process;
 using System;
 using System.Linq;
+using UnityEngine.Networking;
 
-public class PlayerUnity : MonoBehaviour
+public class PlayerUnity : NetworkBehaviour
 {
+    public Guid Id { get; set; }
     public GameObject CardPrefab;
     public GameObject HeroPrefab;
     public GameObject ActiveCardPrefab;
@@ -17,21 +20,25 @@ public class PlayerUnity : MonoBehaviour
     private List<Vector3> _positionsCards;
     private CreationCardController _cardsController = new CreationCardController();
     private CreateCoinsController _coinsController = new CreateCoinsController();
+    private Client _client;
+    public List<int> CardsId;
     public Player player { get; set; }
-    public void Initialization(List<Vector3> positionsCards, Vector3 positionHero, 
-        string pathToCreaturePosition, string pathToCoinPosition)
+    public void Initialization(string playerId, List<Vector3> positionsCards, Vector3 positionHero, string namePlayer)
     {
-        _cardsController.Setting();
+        Id = new Guid(playerId);
+        SetClient();
+        _client.Settings(this);
+        ControllerSettings(namePlayer);
         SetPositionsCards(positionsCards,positionHero);
-        LoadPositions(pathToCreaturePosition, pathToCoinPosition);
-        _game = GameObject.FindWithTag("Scripts").GetComponent<GameScript>();
-        player.Money.onAddCoin += onAddCoin;
+        
     }
-    private void LoadPositions(string pathToCreaturePosition, string pathToCoinPosition)
+    public void ControllerSettings(string namePlayer)
     {
-        _cardsController.LoadPositionsActiveCards(pathToCreaturePosition);
-        _coinsController.LoadPositionsCoins(pathToCoinPosition);
+        _cardsController.Setting(namePlayer);
+        _coinsController.LoadPositionsCoins(namePlayer);
     }
+    public void SetClient() => _client = GameObject.FindGameObjectsWithTag("Gamer").Select(x => x.GetComponent<Client>())
+            .FirstOrDefault(x => x.isLocalPlayer);   
     public void SetPositionsCards(List<Vector3> positionsCards, Vector3 positionHero)
     {
         _positionsCards = positionsCards;
@@ -44,53 +51,38 @@ public class PlayerUnity : MonoBehaviour
         ActiveCardPrefab = activeCardPrefab;
         CoinPrefab = coinPrefab;
     }
-    public void LocateCards()
+    public void LocateCards(CardInfo heroInfo, int[] cardsId, int countCoin)
     {
-        Card[] activeCards = player.ActiveDeck;
-        CreateSpriteHero(HeroPrefab, player.Hero, _positionHero, 1);
-        
-        for (int i = 0; i < activeCards.Length; i++)
+        CardsId = cardsId.ToList();
+
+        CreateSpriteHero(HeroPrefab, heroInfo, _positionHero, 1);
+        CreateCardsInHand(CardPrefab, cardsId);
+        CreateCoins(CoinPrefab, countCoin);
+    }
+    public  void CreateCoins(GameObject CoinPrefab,int countCoin)
+    {
+        for (int i = 0; i < countCoin; i++)
         {
-            CreateCardInHand(CardPrefab, activeCards[i], _positionsCards[i],i);
+            _coinsController.CreateCoin(CoinPrefab, Id.ToString());
         }
-        player.Money.ForEach(coin=>_coinsController.CreateCoin(CoinPrefab,coin));
     }
-    void CreateCardInHand(GameObject prefab, Card card, Vector3 position, int sortingOrder)
+    public void CreateCardsInHand(GameObject prefab, int[] cardsId)
     {
-        GameObject sprite =  _cardsController.CreateCardInHand(CardPrefab, card, position, sortingOrder);
-        sprite.GetComponent<CardInHand>().onSelectCard += onSelectCard;
+        for (int i = 0; i < cardsId.Length; i++)
+        {
+            GameObject sprite = _cardsController.CreateCardInHand(CardPrefab, cardsId[i], _positionsCards[i], i);
+            _client.SubscribeToSelectCardInHand(sprite);           
+        }
     }
-    void CreateSpriteHero(GameObject prefab, Card card, Vector3 position, int sortingOrder)
+    public void CreateSpriteHero(GameObject prefab, CardInfo heroInfo, Vector3 position, int sortingOrder)
     {
-        GameObject sprite = _cardsController.CreateSpriteHero(prefab,card,position, sortingOrder);
-        sprite.GetComponent<Hero>().onSelectCard += onSelectActiveCard;
+        GameObject sprite = _cardsController.CreateSpriteHero(prefab, heroInfo, position, sortingOrder,Id.ToString());
+        _client.SubscribeToSelectHero(sprite);
     }
-    bool onSelectCard(Card card)
+    public void CreateActiveCard(CardInfo cardInfo)
     {
-        bool result = player.Hire(card.Id);//изменить логику в hire
-        if (result) CreateActiveCard(card);
-        return result;
+        GameObject sprite = _cardsController.CreateActiveCard(ActiveCardPrefab, cardInfo, 1, Id.ToString());
+        _client.SubscribeToActiveCard(sprite);
     }
-    void CreateActiveCard(Card card)
-    {
-        GameObject sprite = _cardsController.CreateActiveCard(ActiveCardPrefab, card, 1);
-        SubscribeToEvents(sprite);
-    }
-    void SubscribeToEvents(GameObject sprite)
-    {
-        CardUnity script = sprite.GetComponent<CardUnity>();
-        script.onSelectCard += onSelectActiveCard;
-        _game.onAfterMove += script.onAfterMove;
-    }
-    void onSelectActiveCard(Card card)
-    {
-        GameState state = _game.GetGameState();
-        if (player.Id == state.MovingPlayer.Id && _game.ActionCard == null && card.Type!=CardTypeEnum.Hero)//пока так
-            _game.ActionCard = card;
-        else if (_game.ActionCard != card && _game.ActionCard != null)
-            _game.TargetCard = card;
-        else
-            _game.SetToZeroCards();
-    }
-    void onAddCoin(Coin coin) => _coinsController.CreateCoin(CoinPrefab, coin); 
+    public void onAddCoin() => _coinsController.CreateCoin(CoinPrefab,Id.ToString()); 
 }

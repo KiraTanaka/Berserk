@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using Domain.Cards;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 
-public class CardUnity : MonoBehaviour
+public class CardUnity : NetworkBehaviour, IActiveCard
 {
-    private Card _card;
+    public int CardId { get; set; }
+    public string PlayerId { get; set; }
+    private bool _closed = false;
     private Text _power;
     private Text _health;
     private GameScript game;
     Vector3 selectScale = new Vector3(24, 24, 1);
     SelectionCreature selectionCreature;
-    Shader shaderOrigin;
-    Shader shaderClosing;
+    private Color colorOrigin;
+    private Color colorClosing;
     Renderer renderer;
     #region delegates and events
-    public delegate void OnSelectCardHandler(Card card);
+    public delegate bool OnSelectCardHandler(int cardId);
     public event OnSelectCardHandler onSelectCard;
     #endregion
     void Awake()
@@ -24,33 +27,41 @@ public class CardUnity : MonoBehaviour
         renderer = GetComponent<Renderer>();
         _power = transform.GetChild(0).GetComponent<Text>();
         _health = transform.GetChild(1).GetComponent<Text>();
-        game = GameObject.FindWithTag("Scripts").GetComponent<GameScript>();
         selectionCreature = GetComponent<SelectionCreature>();
         selectionCreature.SetTransformation(new Transformation(null, null, selectScale));
-        shaderOrigin = renderer.material.shader;
-        shaderClosing = Shader.Find("Mobile/Particles/Multiply");
+        colorOrigin = renderer.material.color;
+        colorClosing = new Color32(116,116,116,255);
     }
     void OnMouseDown()
     {
-        selectionCreature.IsSelected = (selectionCreature.IsSelected) ? false : true;
-        onSelectCard?.Invoke(_card);
+        if ((onSelectCard?.Invoke(CardId)).Value)
+            selectionCreature.IsSelected = (selectionCreature.IsSelected) ? false : true;
+        
     }
-    public void SetCard(Card card)
+    public void SetCard(CardInfo cardInfo)
     {
-        _card = card;
-        _card.onChangeClosed += onChangeClosed;
-        _card.onChangeHealth += onChangeHealth;
-        _power.text = card.Power.ToString();
-        _health.text = card.Health.ToString();
+        CardId = cardInfo._id;
+        _power.text = cardInfo._power.ToString();
+        _health.text = cardInfo._health.ToString();
     }
-    void onChangeClosed()
+    public void Close() => SetClose(true);
+    public void Open() => SetClose(false);
+    public void SetClose(bool value)
     {
-        renderer.material.shader = (_card.Closed) ? shaderClosing : shaderOrigin;
+        renderer.material.SetColor("_Color", (value) ? colorClosing : colorOrigin);
+        _closed = value;
     }
-    void onChangeHealth()
+    public bool IsClosed()
     {
-        if (_card.IsAlive())
-            _health.text = _card.Health.ToString();
+        return _closed;
+    }
+    public void ChangeHealth(int health)
+    {
+        if (health > 0)
+        {
+            _health.text = health.ToString();
+            selectionCreature.IsSelected = false;
+        }
         else
             IsDead();
     }
@@ -58,10 +69,6 @@ public class CardUnity : MonoBehaviour
     {
         GameObject.FindWithTag("BorderActiveCard").SetActive(false);
         Destroy(gameObject);        
-    }
-    public void onAfterMove()
-    {
-        selectionCreature.IsSelected =  false;
     }
 }
 

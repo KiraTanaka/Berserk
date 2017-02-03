@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class CompleteStep : MonoBehaviour
+public class CompleteStep : NetworkBehaviour
 {
-    GameScript game;
-    // Use this for initialization
+    Client client;
     void Start()
     {
-        game = GameObject.FindWithTag("Scripts").GetComponent<GameScript>();
+        if (!localPlayerAuthority) return;
+        client = GameObject.FindGameObjectsWithTag("Gamer").Select(x => x.GetComponent<Client>())
+            .FirstOrDefault(x => x.isLocalPlayer);
     }
     void OnMouseDown()
     {
-        game.CompleteStep();
+        if (!localPlayerAuthority) return;
+        client.CompleteStep();
     }
 }

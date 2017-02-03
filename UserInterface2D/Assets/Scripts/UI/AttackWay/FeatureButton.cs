@@ -1,14 +1,20 @@
 ﻿using UnityEngine;
 using Domain.Cards;
+using System.Linq;
+using UnityEngine.Networking;
 
-public class FeatureButton : MonoBehaviour {
-    GameScript game;
+public class FeatureButton : NetworkBehaviour
+{
+    Client client;
     void Start()
     {
-        game = GameObject.FindWithTag("Scripts").GetComponent<GameScript>();
+        if (!localPlayerAuthority) return;
+        client = GameObject.FindGameObjectsWithTag("Gamer").Select(x => x.GetComponent<Client>())
+            .FirstOrDefault(x => x.isLocalPlayer);
     }
     void OnMouseDown()
     {
-        game.AttackWay = CardActionEnum.Feature;
+        if (!localPlayerAuthority) return;
+        client.SetAttackWay(CardActionEnum.Feature);
     }
 }

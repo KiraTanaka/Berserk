@@ -4,40 +4,51 @@ using UnityEngine;
 using UnityEngine.UI;
 using Domain.Cards;
 
-public class Hero : MonoBehaviour {
-    private Card _card;
+public class Hero : MonoBehaviour,IActiveCard
+{
+    public int CardId { get; set; }
+    private bool _closed = false;
+    public string PlayerId { get; set; }
+    private Color colorOrigin;
+    private Color colorClosing;
+    Renderer renderer;
     Text _health;
     #region delegates and events
-    public delegate void OnSelectCardHandler(Card card);
+    public delegate bool OnSelectCardHandler(int _cardId);
     public event OnSelectCardHandler onSelectCard;
     #endregion
     void Awake() {
         _health = transform.GetChild(0).GetComponent<Text>();
+        renderer = GetComponent<Renderer>();
+        colorOrigin = renderer.material.color;
+        colorClosing = new Color32(116, 116, 116, 255);
     }
-    void Update()
+    public void SetCard(CardInfo heroInfo)
     {
-    }
-    public void SetCard(Card card)
-    {
-        _card = card;
-        _card.onChangeClosed += onChangeClosed;
-        _card.onChangeHealth += onChangeHealth;
-        _health.text = _card.Health.ToString();
+        CardId = heroInfo._id;
+        _health.text = heroInfo._health.ToString();
     }
     void OnMouseDown()
     {
-        onSelectCard?.Invoke(_card);
+        onSelectCard?.Invoke(CardId);
     }
-    void onChangeHealth()
+    public void ChangeHealth(int health)
     {
-        if (_card.IsAlive())
-            _health.text = _card.Health.ToString();
+        if (health>0)
+            _health.text = health.ToString();
         else
             IsDead();
     }
-    void onChangeClosed()
+    public void Close() => SetClose(true);
+    public void Open() => SetClose(false);
+    public void SetClose(bool value)
     {
-
+        renderer.material.SetColor("_Color", (value) ? colorClosing : colorOrigin);
+        _closed = value;
+    }
+    public bool IsClosed()
+    {
+        return _closed;
     }
     private void IsDead()
     {

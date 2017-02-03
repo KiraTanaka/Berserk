@@ -5,9 +5,9 @@ using System.Text;
 using Domain.Cards;
 using Domain.Process;
 
-interface IPlayer
+public interface IPlayer
 {
-    Player player { get; set; }
-    void LocateCards();
+    PlayerUnity _playerUnity { get; set; }
+    void LocateCards(int heroId, int heroHealth, int[] cardsId, int countCoin);
 }
 

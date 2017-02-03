@@ -9,7 +9,7 @@ namespace Domain.Process
     {
         private List<Coin> _coins;
         #region delegates and events
-        public delegate void OnAddCoinHandler(Coin coin);
+        public delegate void OnAddCoinHandler();
         public event OnAddCoinHandler onAddCoin;
         #endregion
         public Money()
@@ -46,7 +46,7 @@ namespace Domain.Process
             {
                 var coin = new Coin();
                 _coins.Add(coin);
-                onAddCoin?.Invoke(coin);
+                onAddCoin?.Invoke();
             }
         }
         public void ForEach(Action<Coin> action)

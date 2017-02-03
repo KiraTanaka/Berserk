@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Domain.Cards;
+using UnityEngine.Networking;
 
-public class CardInHand : MonoBehaviour {
-    Renderer renderer;
-    private Card _card;
+public class CardInHand : NetworkBehaviour
+{
+    new Renderer renderer;
+    public int CardId;
     float currentPositionY;
     float selectPositionY = 3;
     string currentLayer = "";
     Vector3 selectScale = new Vector3(1.2f, 1.2f, 1);
+    SelectionCreature selectionCreature;
     #region delegates and events
-    public delegate bool OnSelectCardHandler(Card card);
+    public delegate void OnSelectCardHandler(int _cardId);
     public event OnSelectCardHandler onSelectCard;
     #endregion
     // Use this for initialization
@@ -19,29 +22,22 @@ public class CardInHand : MonoBehaviour {
         renderer = GetComponent<Renderer>();
         currentPositionY = transform.position.y;
         Vector3 selectPosition = new Vector3(transform.position.x, transform.position.y + selectPositionY, transform.position.z);
-        GetComponent<SelectionCreature>().SetTransformation(new Transformation(selectPosition,selectScale));
+        selectionCreature = GetComponent<SelectionCreature>();
+        selectionCreature.SetTransformation(new Transformation(selectPosition,selectScale));
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public void SetCard(int cardId) => CardId = cardId;
     void OnMouseEnter()
     {
         currentLayer = renderer.sortingLayerName;
         renderer.sortingLayerName = "Selected";
     }
-    void OnMouseExit()
+    void OnMouseExit() =>renderer.sortingLayerName = currentLayer;
+    void OnMouseDown() => onSelectCard?.Invoke(CardId);         
+    public void DestroyCard()
     {
-        renderer.sortingLayerName = currentLayer;
+        selectionCreature.border.SetActive(false);
+        Destroy(gameObject);
     }
-    void OnMouseDown()
-    {
-        if ((onSelectCard?.Invoke(_card)).Value)
-            Destroy(gameObject);
-    }
-    public void SetCard(Card card)
-    {
-        _card = card;
-    }
+
+
 }

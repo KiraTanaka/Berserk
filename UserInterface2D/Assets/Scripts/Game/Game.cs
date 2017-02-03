@@ -31,28 +31,6 @@ public abstract class Game
         state.WaitingPlayer = players.Last();
         state.TargetCards = new List<Card>();
     }
-   
-   /* public void Run()
-    {
-        
-        //ShowPlayers(players);//изменение
-        // OfferToChangeCards(players);
-
-        while (true)
-        {
-            if (players.All(x => x.IsAlive()))
-            {
-                players.ForEach(x => Move(x.Id, players));
-            }
-            else
-            {
-                var winner = players.FirstOrDefault(x => x.IsAlive());
-                ShowWinner(winner);
-                break;
-            }
-        }
-    }*/
-
     private IEnumerable<User> ConnectUsers()
     {
         int id1 = ConnectUser();
@@ -78,55 +56,30 @@ public abstract class Game
     public abstract void ShowPlayers(IEnumerable<Player> players);
 
     public abstract void OfferToChangeCards(IEnumerable<Player> players);
-    public void StartStep()
+    public void Move()
     {
-        state.MovingPlayer.StartStep();   
-    }
-
-    public void Move(/*Guid currentId, IEnumerable<Player> players*/)
-    {
-        while (!GetValue(/*currentId, players*/).Success) { }
-    }
-
-    private MoveResult GetValue(/*Guid currentId, IEnumerable<Player> players*/)
-    {
-        /*var playersArr = players.ToArray();
-        Player movingPlayer = playersArr.First(x => x.Id == currentId);
-        Player waitingPlayer = playersArr.First(x => x.Id != currentId);*/
-
-       // ShowInfo(movingPlayer, waitingPlayer);
-
-       // Card actionCard = GetActionCard(movingPlayer);
-        //IEnumerable<Card> targetCards = GetTargetCards(waitingPlayer);
         CardActionEnum actionWay = GetAttackWay();
+        state.ActionCard.Action(actionWay, state);
+        //ShowActionResult(moveResult);
 
-        //if (actionCard == null || targetCards == null || actionWay == null)
-        //    return new MoveResult() { Success = false };
-
-        //InformAboutAttack(actionCard, targetCards, actionWay);
-
-        /*var state = new GameState
-        {
-            ActionCard = actionCard,
-            TargetCards = targetCards,
-            MovingPlayer = movingPlayer,
-            WaitingPlayer = waitingPlayer
-        };*/
+        AfterMove();
+    }
+    /*private MoveResult GetValue()
+    {
+        CardActionEnum actionWay = GetAttackWay();
         MoveResult moveResult = state.ActionCard.Action(actionWay, state);
         ShowActionResult(moveResult);
 
         AfterMove();
         return moveResult;
-    }
-    public void AfterMove()
-    {
-        state.MovingPlayer.AfterMove();
-    }
+    }*/
+    public void AfterMove() => state.MovingPlayer.AfterMove();
     public void CompleteStep()
     {
         ChangeOfMovingPlayer();
         StartStep();
     }
+    public void StartStep() => state.MovingPlayer.StartStep();
     public void ChangeOfMovingPlayer()//изменение
     {
         Player waitingPlayer = state.MovingPlayer;

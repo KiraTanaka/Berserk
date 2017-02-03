@@ -3,19 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class CreateCoinsController : MonoBehaviour {
     private List<Vector3> _positionsCoins;
     private CoordinateParser _parser = new CoordinateParser();
     string nameSprite = "Coin";
-    public void LoadPositionsCoins(string name)
+    public void LoadPositionsCoins(string namePlayer)
     {
-        _positionsCoins = _parser.Parse(name);
+        _positionsCoins = _parser.GetCoinPositions(namePlayer);
     }
-    public void CreateCoin(GameObject prefab, Coin coin)
+    [RPC]
+    public void CreateCoin(GameObject prefab, string playerId)//, Coin coin)
     {
         GameObject sprite = Instantiate(prefab, _positionsCoins.First(), Quaternion.identity);
-        sprite.GetComponent<CoinUnity>().SetCoin(coin);
+        sprite.GetComponent<CoinUnity>().PlayerId = playerId;
         sprite.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(nameSprite);
         _positionsCoins.RemoveAt(0);
     }

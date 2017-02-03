@@ -20,8 +20,8 @@ namespace Domain.Cards
         public string EquipementType { get; protected set; }
         public bool Closed { get; protected set; }
         #region delegates and events
-        public delegate void OnChangeHealthHandler();
-        public delegate void OnChangeClosedHandler();
+        public delegate void OnChangeHealthHandler(int cardId, int health);
+        public delegate void OnChangeClosedHandler(int cardId, bool closed);
         public event OnChangeHealthHandler onChangeHealth;
         public event OnChangeClosedHandler onChangeClosed;
         #endregion
@@ -38,7 +38,7 @@ namespace Domain.Cards
         private void AddHealth(int value)
         {
             Health = Health + value;
-            onChangeHealth?.Invoke();
+            onChangeHealth?.Invoke(Id, Health);
         }
 
         public void Open()
@@ -54,7 +54,7 @@ namespace Domain.Cards
         private void SetClose(bool value)
         {
             Closed = value;
-            onChangeClosed?.Invoke();
+            onChangeClosed?.Invoke(Id, Closed);
         }
 
         public bool IsAlive()
