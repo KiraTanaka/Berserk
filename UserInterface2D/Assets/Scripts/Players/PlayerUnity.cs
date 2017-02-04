@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Domain.Cards;
 using Domain.Process;
-using System;
 using System.Linq;
 using UnityEngine.Networking;
 
@@ -82,7 +81,7 @@ public class PlayerUnity : NetworkBehaviour
     public void CreateActiveCard(CardInfo cardInfo)
     {
         GameObject sprite = _cardsController.CreateActiveCard(ActiveCardPrefab, cardInfo, 1, Id.ToString());
-        _client.SubscribeToActiveCard(sprite);
+        _client.SubscribeToSelectActiveCard(sprite);
     }
     public void onAddCoin() => _coinsController.CreateCoin(CoinPrefab,Id.ToString()); 
 }

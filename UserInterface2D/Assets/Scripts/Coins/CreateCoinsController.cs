@@ -13,7 +13,6 @@ public class CreateCoinsController : MonoBehaviour {
     {
         _positionsCoins = _parser.GetCoinPositions(namePlayer);
     }
-    [RPC]
     public void CreateCoin(GameObject prefab, string playerId)//, Coin coin)
     {
         GameObject sprite = Instantiate(prefab, _positionsCoins.First(), Quaternion.identity);
