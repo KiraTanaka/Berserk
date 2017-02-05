@@ -244,9 +244,9 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 
-Application/bin/
-Application/obj/
-Domain/bin/
-Domain/obj/
-Infrastructure/bin/
-Infrastructure/obj/
+UserInterface2D/Application/bin/
+UserInterface2D/Application/obj/
+UserInterface2D/Domain/bin/
+UserInterface2D/Domain/obj/
+UserInterface2D/Infrastructure/bin/
+UserInterface2D/Infrastructure/obj/

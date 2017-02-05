@@ -1,1 +1,0 @@
-copy Plugin\bin\Debug\Plugin.dll Plugins\Plugin.dll

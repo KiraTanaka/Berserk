@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using Domain.Cards;
 using Domain.Process;
-using Infrastructure.Loop;
 
-public class GameUnity:Game
+public class GameUnity : Game
 {
     GameScript gamescript;
     public GameUnity(GameScript gamescript, IStorage storage, IRules rules, List<Card> cards)
@@ -65,14 +64,20 @@ public static class Extensions
     {
         var deckStr = new StringBuilder();
         var counter = 1;
-        deck.ForEach(x => deckStr.Append(markers ? $"{counter++} {x.Name}\n" : $"{x.Name}\n"));
+        foreach (var x in deck)
+        {
+            deckStr.Append(markers ? $"{counter++} {x.Name}\n" : $"{x.Name}\n");
+        }
         return deckStr.ToString();
     }
 
     public static string ToStringNames(this IEnumerable<Card> deck)
     {
         var deckStr = new StringBuilder();
-        deck.ForEach(x => deckStr.Append($"{x.Name}, "));
+        foreach (var x in deck)
+        {
+            deckStr.Append($"{x.Name}, ");
+        }
         return deckStr.ToString();
     }
 }

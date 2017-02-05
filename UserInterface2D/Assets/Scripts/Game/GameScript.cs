@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using Domain.Cards;
 using Domain.Process;
-using Plugin;//исправить
 using UnityEngine.Networking;
 
 public class GameScript : NetworkBehaviour
