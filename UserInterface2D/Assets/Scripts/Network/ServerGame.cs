@@ -18,7 +18,7 @@ public class ServerGame : NetworkBehaviour
     public void CmdSubscribeToSrartStep()
     {
         if (!isServer) return;
-        game.onStartStep += CmdonStartStep;
+        game.OnStartStep += CmdonStartStep;
     }
     void CmdonStartStep(string playerId) => GetClients().ForEach(x=>x.CmdonStartStep(playerId));
     #endregion

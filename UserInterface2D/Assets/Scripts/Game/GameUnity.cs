@@ -1,61 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
 using Domain.Cards;
 using Domain.Process;
 
 public class GameUnity : Game
 {
-    GameScript gamescript;
-    public GameUnity(GameScript gamescript, IStorage storage, IRules rules, List<Card> cards)
-            : base(storage, rules, cards)
-        {
-        this.gamescript = gamescript;
-    }
+    private readonly GameScript _gamescript;
 
-    private int _num = 1;
-    public override int ConnectUser()
+    public GameUnity(GameScript gamescript, IRules rules, IEnumerable<Card> cards, UserLimitedSet users)
+        : base(rules, cards, users)
     {
-        return _num++;// ReadNumber();
+        _gamescript = gamescript;
     }
-
-    public override void ShowPlayers(IEnumerable<Player> players) { }
-
-    public override void OfferToChangeCards(IEnumerable<Player> players) { }
-
-    public override void ShowInfo(Player current, Player another) { }
-
-    public override void ShowWinner(Player winner)
-    {
-       // Console.WriteLine($"Player {winner.Name} win");
-    }
-
-    public override Card GetActionCard(Player actionPlayer)//не используется
-    {
-        return null;
-    }
-
-    public override List<Card> GetTargetCards(Player targetPlayer)//не используется
-    {
-        return null;
-    }
-
+    
     public override CardActionEnum GetAttackWay()
     {
-        return gamescript.AttackWay;
+        return _gamescript.AttackWay;
     }
-
-    public override void ShowActionResult(MoveResult moveResult)
-    {
-        //Console.WriteLine($"Success: {moveResult.Success}, Message: {moveResult.Message}");
-    }
-
-    public override void InformAboutAttack(
-        Card actionCard, IEnumerable<Card> targetCards, CardActionEnum actionWay)
-    {
-       // Console.WriteLine($"You card {actionCard.Name} is going to attack {targetCards.ToStringNames()}");
-    }  
 }
 
 public static class Extensions

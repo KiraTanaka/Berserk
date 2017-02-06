@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,60 +9,87 @@ using UnityEngine.Networking;
 
 public class GameScript : NetworkBehaviour
 {
-    private int _playerCount = 0;
+    private int _playerCount;
+    
+    private GameUnity _game;
+
+    #region delegates and events
+    public delegate void OnAfterMoveHandler();
+
+    public delegate void OnStartStepHandler(string playerId);
+
+    public event OnStartStepHandler OnStartStep;
+
+    public event OnAfterMoveHandler OnAfterMove;
+    #endregion
+
+    // Use this for initialization
+    void Start()
+    {
+        var types = ImportTypes().ToList();
+        var rules = types.SelectInstancesOf<IRules>()?.FirstOrDefault();
+        var cards = types.SelectInstancesOf<Card>().ToList();
+        var users = GetUsers();
+
+        _game = new GameUnity(this, rules, cards, users);
+        _game.Run();
+    }
+
+    private static UserLimitedSet GetUsers()
+    {
+        var storage = new Storage();
+        var user1 = storage.FindById<User>(1).First();
+        var user2 = storage.FindById<User>(2).First();
+        return new UserLimitedSet {user1, user2};
+    }
+
     public int? ActionCardId
     {
-        get { return (game.state.ActionCard == null) ? null : (int?)game.state.ActionCard.Id; }
-        set {
-            Card card;
+        get { return _game.State.ActionCard?.Id; }
+        set
+        {
             if (value != null)
             {
-                card = SearchCardAtPlayers(value.Value);
-                game.state.ActionCard = (!card.Closed) ? card : null;
+                Card card = SearchCardAtPlayers(value.Value);
+                _game.State.ActionCard = card.Closed ? null : card;
             }
-            else game.state.ActionCard = null;
+            else
+            {
+                _game.State.ActionCard = null;
+            }
         }
     }
+
     public int? TargetCardId
     {
-        get { return (game.state.TargetCards == null) ? null : (int?)game.state.TargetCards.FirstOrDefault().Id; }
-        set { game.state.TargetCards = (value != null) ? new List<Card>() { SearchCardAtPlayers(value.Value) } : null; }
+        get { return _game.State.TargetCards?.FirstOrDefault()?.Id; }
+        set
+        {
+            _game.State.TargetCards = value == null
+                ? null
+                : new List<Card> { SearchCardAtPlayers(value.Value) };
+        }
     }
+
     private CardActionEnum _attackWay;
+
     public CardActionEnum AttackWay
     {
         get { return _attackWay; }
         set
-        { 
+        {
             _attackWay = value;
-            Move();
+            _game.Move();
+            SetToZeroCards();
+            OnAfterMove?.Invoke();
         }
     }
-    GameUnity game;
-    #region delegates and events
-    public delegate void OnAfterMoveHandler();
-    public delegate void OnStartStepHandler(string playerId);
-    public event OnStartStepHandler onStartStep;
-    public event OnAfterMoveHandler onAfterMove;
-    #endregion
-    // Use this for initialization
-    void Start () {
-        var storage = new Storage();
-        var types = ImportTypes();
-        var rules = types.SelectInstancesOf<IRules>()?.FirstOrDefault();
-        var cards = types.SelectInstancesOf<Card>().ToList();
-        CreateGame(storage, rules, cards);
-    }
-    private void CreateGame(Storage storage, IRules rules, List<Card> cards)
-    {
-        game = new GameUnity(this, storage, rules, cards);
-        game.Connection();
-    }
+
     public Player GetPlayer()
     {
         if (_playerCount >= 2) _playerCount = 0;
         
-        return (_playerCount++ == 0) ? game.state.MovingPlayer : game.state.WaitingPlayer;
+        return _playerCount++ == 0 ? _game.State.MovingPlayer : _game.State.WaitingPlayer;
     }
     
     public void SetToZeroCards()
@@ -71,36 +97,37 @@ public class GameScript : NetworkBehaviour
         ActionCardId = null;
         TargetCardId = null;
     }
-    public GameState GetGameState() => game.state;
-    private void Move()
+
+    public GameState GetGameState()
     {
-        game.Move();
-        SetToZeroCards();
-        onAfterMove?.Invoke();
+        return _game.State;
     }
+
     public void CompleteStep(string playerId)
     {
         if (GetGameState().MovingPlayer.Id.ToString() == playerId)
         {
-            game.CompleteStep();
-            onStartStep?.Invoke(GetGameState().MovingPlayer.Id.ToString());
+            _game.CompleteStep();
+            OnStartStep?.Invoke(GetGameState().MovingPlayer.Id.ToString());
         }
     }
+
     private Card SearchCardAtPlayers(int id)
     {
         var state = GetGameState();
-        return SearchCard(id, state.MovingPlayer) ?? SearchCard(id, state.WaitingPlayer);
+        return FindCard(id, state.MovingPlayer) ?? FindCard(id, state.WaitingPlayer);
     }
-    private Card SearchCard(int id, Player player)
+
+    private static Card FindCard(int id, Player player)
     {
         Card card = player.CardsInGame.FirstOrDefault(x => x.Id == id);
-        return (card == null) ? ((player.Hero.Id == id) ? player.Hero : null) : card;
+        return card ?? (player.Hero.Id == id ? player.Hero : null);
     }
-    private IEnumerable<Type> ImportTypes()
+
+    private static IEnumerable<Type> ImportTypes()
     {
         string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets\\Scripts\\DLL");
         var dllPaths = Directory.GetFiles(path, "*.dll");
         return dllPaths.Select(Assembly.LoadFrom).SelectMany(x => x.GetExportedTypes());
     }
-
 }
