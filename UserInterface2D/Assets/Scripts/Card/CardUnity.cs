@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 public class CardUnity : NetworkBehaviour, IActiveCard
 {
-    public int CardId { get; set; }
+    public string InstId { get; set; }
     public string PlayerId { get; set; }
     private bool _closed = false;
     private Text _power;
@@ -19,7 +19,7 @@ public class CardUnity : NetworkBehaviour, IActiveCard
     private Color colorClosing;
     Renderer renderer;
     #region delegates and events
-    public delegate bool OnSelectCardHandler(int cardId);
+    public delegate bool OnSelectCardHandler(string instId, string playerId);
     public event OnSelectCardHandler onSelectCard;
     #endregion
     void Awake()
@@ -34,13 +34,13 @@ public class CardUnity : NetworkBehaviour, IActiveCard
     }
     void OnMouseDown()
     {
-        if ((onSelectCard?.Invoke(CardId)).Value)
+        if ((onSelectCard?.Invoke(InstId,PlayerId)).Value)
             selectionCreature.IsSelected = (selectionCreature.IsSelected) ? false : true;
         
     }
     public void SetCard(CardInfo cardInfo)
     {
-        CardId = cardInfo._id;
+        InstId = cardInfo._instId;
         _power.text = cardInfo._power.ToString();
         _health.text = cardInfo._health.ToString();
     }

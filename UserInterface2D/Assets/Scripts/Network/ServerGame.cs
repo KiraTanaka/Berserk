@@ -1,5 +1,6 @@
 ﻿using Domain.Cards;
 using Domain.Process;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,7 +13,23 @@ public class ServerGame : NetworkBehaviour
     void Start()
     {
         game = GetComponent<GameScript>();
-    }  
+    }
+
+    public void CmdConnectPlayers(NetworkInstanceId networkId)
+    {
+        if (!isServer) return;
+
+        GameState state = game.GetGameState();
+        Player player = GameObject.FindWithTag("Scripts").GetComponent<GameScript>().GetPlayer();
+        Player enemy = (state.MovingPlayer.Id == player.Id) ? state.WaitingPlayer : state.MovingPlayer;
+
+        Client client = GetClient(networkId);
+        client.CmdPlayerInitialization(player.Id.ToString(), GetHeroInfo(player), player.ActiveDeck.Select(x =>
+         new CardInfo() { _instId = x.InstId.ToString(), _cardId = x.CardId }).ToArray(), player.Money.Count);
+        client.CmdEnemyInitialization(enemy.Id.ToString(), GetHeroInfo(enemy), enemy.ActiveDeck.Count(), enemy.Money.Count);
+    }
+    private CardInfo GetHeroInfo(Player player)
+        => new CardInfo() { _instId = player.Hero.InstId.ToString(), _cardId = player.Hero.CardId, _health = player.Hero.Health };
 
     #region event SrartStep
     public void CmdSubscribeToSrartStep()
@@ -44,62 +61,52 @@ public class ServerGame : NetworkBehaviour
     void CmdonAddEnemyCoin() => GetClients().ForEach(x => x.CmdonAddEnemyCoin());
     #endregion
 
-    #region SetEnemy
-    public void CmdSetEnemy(string playerId)
-    {
-        if (!isServer) return;
-        GameState state = game.GetGameState();
-        Player player = (state.MovingPlayer.Id.ToString() == playerId) ? state.WaitingPlayer : state.MovingPlayer;
-        CardInfo heroInfo = new CardInfo() { _id = player.Hero.Id, _health = player.Hero.Health };
-        GetClients().ForEach(x=>
-        x.CmdEnemyInitialization(player.Id.ToString(), heroInfo, player.ActiveDeck.Count(), player.Money.Count));
-    } 
-    #endregion
-
     #region event SelectCardInHand
-    public void CmdHire(string playerId, int cardId)
+    public void CmdHire(string playerId, string instId)
     {
         if (!isServer) return;
         Player movingPlayer = game.GetGameState().MovingPlayer;
         if (playerId != movingPlayer.Id.ToString())
             return;
-        bool result = movingPlayer.Hire(cardId);
+        bool result = movingPlayer.Hire(new Guid(instId));
         if (!result) return;
-        Card card = movingPlayer.CardsInGame.FirstOrDefault(x => x.Id == cardId);
+        Card card = movingPlayer.CardsInGame.FirstOrDefault(x => x.InstId.ToString() == instId);
         GetClients().ForEach(x=> {
-            x.CmdCreateActiveCard(new CardInfo() { _id = card.Id, _power = card.Power, _health = card.Health }, playerId);
+            x.CmdCreateActiveCard(new CardInfo() { _instId = card.InstId.ToString(), _cardId = card.CardId,
+                _power = card.Power, _health = card.Health }, playerId);
             x.CmdCloseCoins(card.Cost, playerId);
-            x.CmdDestroyCardInHand(cardId);
+            x.CmdDestroyCardInHand(instId,playerId);
         });
     }  
     #endregion
 
     #region event ChangeHealth,ChangeClosed and Select ActiveCard
-    public void CmdSubscribeToActiveCard(int cardId)
+    public void CmdSubscribeToActiveCard(string instId)
     {
         if (!isServer) return;
         GameState state = game.GetGameState();
-        Card card = FindCard(state.MovingPlayer, cardId);
-        card = card ?? FindCard(state.WaitingPlayer, cardId);
+        Card card = FindCard(state.MovingPlayer, instId);
+        card = card ?? FindCard(state.WaitingPlayer, instId);
         card.onChangeHealth += CmdonChangeHealth;
         card.onChangeClosed += CmdonChangeClosed;
     }
-    Card FindCard(Player player, int cardId)
-        => (player.Hero.Id == cardId) ? player.Hero : player.CardsInGame.FirstOrDefault(x => x.Id == cardId);
-    void CmdonChangeHealth(int cardId, int health) => GetClients().ForEach(x=>x.CmdonChangeHealth(cardId, health));
-    void CmdonChangeClosed(int cardId, bool closed) => GetClients().ForEach(x => x.CmdonChangeClosed(cardId, closed));   
-    public void CmdSaveActiveCards(string playerId, int cardId)
+    Card FindCard(Player player, string instId)
+        => (player.Hero.InstId.ToString() == instId) ? player.Hero : 
+        player.CardsInGame.FirstOrDefault(x => x.InstId.ToString() == instId);
+    void CmdonChangeHealth(Guid instId, int health) => GetClients().ForEach(x=>x.CmdonChangeHealth(instId.ToString(), health));
+    void CmdonChangeClosed(Guid instId, bool closed) => GetClients().ForEach(x => x.CmdonChangeClosed(instId.ToString(), closed));   
+    public void CmdSaveActiveCards(string playerId, string instId, NetworkInstanceId networkId)
     {
         if (!isServer) return;
         Player movingPlayer = game.GetGameState().MovingPlayer;
         if (playerId != movingPlayer.Id.ToString()) return;
 
-        if (game.ActionCardId == null)
-            game.ActionCardId = cardId;
-        else if (game.ActionCardId != cardId)
+        if (game.ActionCardId == "")
+            game.ActionCardId = instId;
+        else if (game.ActionCardId != instId)
         {
-            game.TargetCardId = cardId;
-            GetClients().ForEach(x => x.CmdActiveAttackWayPanel());
+            game.TargetCardId = instId;
+            GetClient(networkId).CmdActiveAttackWayPanel();
         }
         else
             game.SetToZeroCards();
@@ -114,8 +121,8 @@ public class ServerGame : NetworkBehaviour
     public void CmdCompleteStep(string playerId) => game.CompleteStep(playerId);
     #endregion
 
-    private Client GetClient() => GameObject.FindGameObjectsWithTag("Gamer")
-        .Select(x=>x.GetComponent<Client>()).FirstOrDefault(x=>x.isLocalPlayer);
+    private Client GetClient(NetworkInstanceId networkId) => GameObject.FindGameObjectsWithTag("Gamer")
+        .Select(x=>x.GetComponent<Client>()).FirstOrDefault(x => x.netId == networkId);
     private List<Client> GetClients() => GameObject.FindGameObjectsWithTag("Gamer")
         .Select(x => x.GetComponent<Client>()).ToList();
 }

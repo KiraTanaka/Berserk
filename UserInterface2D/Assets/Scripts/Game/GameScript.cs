@@ -43,14 +43,14 @@ public class GameScript : NetworkBehaviour
         return new UserLimitedSet {user1, user2};
     }
 
-    public int? ActionCardId
+    public string ActionCardId
     {
-        get { return _game.State.ActionCard?.Id; }
+        get { return _game.State.ActionCard?.InstId.ToString(); }
         set
         {
-            if (value != null)
+            if (value != "")
             {
-                Card card = SearchCardAtPlayers(value.Value);
+                Card card = SearchCardAtPlayers(value);
                 _game.State.ActionCard = card.Closed ? null : card;
             }
             else
@@ -60,14 +60,14 @@ public class GameScript : NetworkBehaviour
         }
     }
 
-    public int? TargetCardId
+    public string TargetCardId
     {
-        get { return _game.State.TargetCards?.FirstOrDefault()?.Id; }
+        get { return _game.State.TargetCards?.FirstOrDefault()?.InstId.ToString(); }
         set
         {
             _game.State.TargetCards = value == null
                 ? null
-                : new List<Card> { SearchCardAtPlayers(value.Value) };
+                : new List<Card> { SearchCardAtPlayers(value) };
         }
     }
 
@@ -112,16 +112,16 @@ public class GameScript : NetworkBehaviour
         }
     }
 
-    private Card SearchCardAtPlayers(int id)
+    private Card SearchCardAtPlayers(string instId)
     {
         var state = GetGameState();
-        return FindCard(id, state.MovingPlayer) ?? FindCard(id, state.WaitingPlayer);
+        return FindCard(instId, state.MovingPlayer) ?? FindCard(instId, state.WaitingPlayer);
     }
 
-    private static Card FindCard(int id, Player player)
+    private static Card FindCard(string instId, Player player)
     {
-        Card card = player.CardsInGame.FirstOrDefault(x => x.Id == id);
-        return card ?? (player.Hero.Id == id ? player.Hero : null);
+        Card card = player.CardsInGame.FirstOrDefault(x => x.InstId.ToString() == instId);
+        return card ?? (player.Hero.InstId.ToString() == instId ? player.Hero : null);
     }
 
     private static IEnumerable<Type> ImportTypes()

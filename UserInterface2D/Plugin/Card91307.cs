@@ -10,7 +10,7 @@ namespace Plugin
         // http://berserk.ru/?route=card/card&card_id=91307
         public Card91307()
         {
-            Id = 91307;
+            CardId = 91307;
             Name = "Азенаэль";
             Type = CardTypeEnum.Creature;
             Element = CardElementEnum.Neutral;

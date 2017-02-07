@@ -21,37 +21,48 @@ public class Gamer : NetworkBehaviour
                                                 new Vector3(1.12f, -5.5f, 0)
                                                 };    
     public PlayerUnity _playerUnity { get; set; } = new PlayerUnity();
-    public override void OnStartLocalPlayer()
-    {
-        if (!isLocalPlayer) return;
-        CmdConnectPlayer();
-    }
-    [Command]
-    void CmdConnectPlayer()
-    {
-        if (!isServer) return;
+    public string GetId() => _playerUnity.Id.ToString();
 
-        Player player = GameObject.FindWithTag("Scripts").GetComponent<GameScript>().GetPlayer();
-        CardInfo heroInfo = new CardInfo() { _id = player.Hero.Id, _health = player.Hero.Health };
-        RpcInitialization(player.Id.ToString(),heroInfo, player.ActiveDeck.Select(x => x.Id).ToArray(), player.Money.Count);
-    }
-    [ClientRpc]
-    void RpcInitialization(string playerId, CardInfo heroInfo, int[] cardsId, int countCoin)
+    public void Initialization(string playerId, CardInfo heroInfo, CardInfo[] cardsInfo, int countCoin)
     {
         if (!isLocalPlayer) return;
 
         _playerUnity.Initialization(playerId,_positionsCards, _positionHero, gameObject.tag);
+        _playerUnity.ClientSettings();
         _playerUnity.SetPrefab(CardPrefab, HeroPrefab, ActiveCardPrefab, CoinPrefab);
-        LocateCards(heroInfo, cardsId, countCoin);
+        LocateCards(heroInfo, cardsInfo, countCoin);
     }
-    public void LocateCards(CardInfo heroInfo, int[] cardsId, int countCoin)
+    public void LocateCards(CardInfo heroInfo, CardInfo[] cardsInfo, int countCoin)
     {
-        _playerUnity.LocateCards(heroInfo, cardsId, countCoin);
+        _playerUnity.LocateCards(heroInfo, cardsInfo, countCoin);
+    }
+    public void onAddCoin()
+    {
+        _playerUnity.onAddCoin();
     }
     public void CreateActiveCard(CardInfo cardInfo, string playerId)
     {
-        if (_playerUnity.Id.ToString() == playerId)
-            _playerUnity.CreateActiveCard(cardInfo);
+        _playerUnity.CreateActiveCard(cardInfo, playerId);
+    }
+    public void DestroyCardInHand(string instId, string playerId)
+    {
+        _playerUnity.DestroyCardInHand(instId, playerId);
+    }
+    public void CloseCoins(int count, string playerId)
+    {
+        _playerUnity.CloseCoins(count, playerId);
+    }
+    public void OnChangeHealth(string instId, int health)
+    {
+        _playerUnity.OnChangeHealth(instId, health);
+    }
+    public void OnChangeClosed(string instId, bool closed)
+    {
+        _playerUnity.OnChangeClosed(instId, closed);
+    }
+    public void OpenAll(string playerId)
+    {
+        _playerUnity.OpenAll(playerId);
     }
 }
 

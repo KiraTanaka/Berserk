@@ -20,17 +20,19 @@ public class PlayerUnity : NetworkBehaviour
     private CreationCardController _cardsController = new CreationCardController();
     private CreateCoinsController _coinsController = new CreateCoinsController();
     private Client _client;
-    public List<int> CardsId;
+    List<GameObject> _cardsInHand = new List<GameObject>();
+    List<GameObject> _cardsInGame = new List<GameObject>();
+    GameObject _hero;
+    List<GameObject> _coins = new List<GameObject>();
     public Player player { get; set; }
     public void Initialization(string playerId, List<Vector3> positionsCards, Vector3 positionHero, string namePlayer)
     {
         Id = new Guid(playerId);
-        SetClient();
-        _client.Settings(this);
+        SetClient();   
         ControllerSettings(namePlayer);
-        SetPositionsCards(positionsCards,positionHero);
-        
+        SetPositionsCards(positionsCards,positionHero);        
     }
+    public void ClientSettings() => _client.Settings(Id.ToString());
     public void ControllerSettings(string namePlayer)
     {
         _cardsController.Setting(namePlayer);
@@ -50,38 +52,79 @@ public class PlayerUnity : NetworkBehaviour
         ActiveCardPrefab = activeCardPrefab;
         CoinPrefab = coinPrefab;
     }
-    public void LocateCards(CardInfo heroInfo, int[] cardsId, int countCoin)
+    public void LocateCards(CardInfo heroInfo, CardInfo[] cardsInfo, int countCoin)
     {
-        CardsId = cardsId.ToList();
-
         CreateSpriteHero(HeroPrefab, heroInfo, _positionHero, 1);
-        CreateCardsInHand(CardPrefab, cardsId);
+        CreateCardsInHand(CardPrefab, cardsInfo);
         CreateCoins(CoinPrefab, countCoin);
     }
     public  void CreateCoins(GameObject CoinPrefab,int countCoin)
     {
         for (int i = 0; i < countCoin; i++)
         {
-            _coinsController.CreateCoin(CoinPrefab, Id.ToString());
+            _coins.Add(_coinsController.CreateCoin(CoinPrefab, Id.ToString()));
         }
     }
-    public void CreateCardsInHand(GameObject prefab, int[] cardsId)
+    public void CreateCardsInHand(GameObject prefab, CardInfo[] cardsInfo)
     {
-        for (int i = 0; i < cardsId.Length; i++)
+        for (int i = 0; i < cardsInfo.Length; i++)
         {
-            GameObject sprite = _cardsController.CreateCardInHand(CardPrefab, cardsId[i], _positionsCards[i], i);
-            _client.SubscribeToSelectCardInHand(sprite);           
+            GameObject sprite = _cardsController.CreateCardInHand(CardPrefab, cardsInfo[i], _positionsCards[i], i,Id.ToString());
+            _client.SubscribeToSelectCardInHand(sprite);
+            _cardsInHand.Add(sprite);           
         }
     }
     public void CreateSpriteHero(GameObject prefab, CardInfo heroInfo, Vector3 position, int sortingOrder)
     {
         GameObject sprite = _cardsController.CreateSpriteHero(prefab, heroInfo, position, sortingOrder,Id.ToString());
         _client.SubscribeToSelectHero(sprite);
+        _hero = sprite;
     }
-    public void CreateActiveCard(CardInfo cardInfo)
+    public void CreateActiveCard(CardInfo cardInfo, string playerId)
     {
+        if (playerId != Id.ToString()) return;
         GameObject sprite = _cardsController.CreateActiveCard(ActiveCardPrefab, cardInfo, 1, Id.ToString());
         _client.SubscribeToSelectActiveCard(sprite);
+        _cardsInGame.Add(sprite);
     }
-    public void onAddCoin() => _coinsController.CreateCoin(CoinPrefab,Id.ToString()); 
+    public void onAddCoin() => _coinsController.CreateCoin(CoinPrefab,Id.ToString());
+    public void DestroyCardInHand(string instId, string playerId)
+    {
+        if (playerId != Id.ToString()) return;
+        _cardsInHand.Select(x => x.GetComponent<CardInHand>()).FirstOrDefault(x => x.InstId == instId)?.DestroyCard();
+    }
+    public void CloseCoins(int count, string playerId)
+    {
+        if (playerId != Id.ToString()) return;
+        _coins.Select(x => x.GetComponent<CoinUnity>()).Where(x => !x.IsClosed()).Take(count).ToList().ForEach(x => x.Close());
+    }
+    public void OnChangeHealth(string instId, int health)
+    {
+        if (!SetHealth(_cardsInGame, instId, health))
+            SetHealth(new List<GameObject>() { _hero }, instId, health);
+    }
+    public void OnChangeClosed(string instId, bool closed)
+    {
+        if (!SetClosed(_cardsInGame, instId, closed))
+            SetClosed(new List<GameObject>() { _hero }, instId, closed);
+    }
+    bool SetHealth(List<GameObject> cards, string instId, int value)
+    {
+        IActiveCard script = cards.Select(x => x.GetComponent<IActiveCard>()).FirstOrDefault(x => x.InstId == instId);
+        script?.ChangeHealth(value);
+        return (script == null) ? false : true;
+    }
+    bool SetClosed(List<GameObject> cards, string instId, bool value)
+    {
+        IActiveCard script = cards.Select(x => x.GetComponent<IActiveCard>()).FirstOrDefault(x => x.InstId == instId);
+        script?.SetClose(value);
+        return (script == null) ? false : true;
+    }
+    public void OpenAll(string playerId)
+    {
+        if (playerId != Id.ToString()) return;
+        _cardsInGame.Select(x => x.GetComponent<CardUnity>()).ToList().ForEach(x => x.SetClose(false));
+        _hero.GetComponent<Hero>().SetClose(false);
+        _coins.Select(x => x.GetComponent<CoinUnity>()).ToList().ForEach(x => x.Open());
+    }
 }

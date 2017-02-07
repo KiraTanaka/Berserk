@@ -9,7 +9,7 @@ namespace Plugin
     {
         public Card87299()
         {
-            Id = 87299;
+            CardId = 87299;
             Name = "Адепт Белого ордена";
             Element = CardElementEnum.Neutral;
             Desriprion = "Излечить выбранное открытое существо или " +

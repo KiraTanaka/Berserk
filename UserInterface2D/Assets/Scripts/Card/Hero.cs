@@ -6,7 +6,7 @@ using Domain.Cards;
 
 public class Hero : MonoBehaviour,IActiveCard
 {
-    public int CardId { get; set; }
+    public string InstId { get; set; }
     private bool _closed = false;
     public string PlayerId { get; set; }
     private Color colorOrigin;
@@ -14,7 +14,7 @@ public class Hero : MonoBehaviour,IActiveCard
     Renderer renderer;
     Text _health;
     #region delegates and events
-    public delegate bool OnSelectCardHandler(int _cardId);
+    public delegate bool OnSelectCardHandler(string instId,string playerId);
     public event OnSelectCardHandler onSelectCard;
     #endregion
     void Awake() {
@@ -25,12 +25,12 @@ public class Hero : MonoBehaviour,IActiveCard
     }
     public void SetCard(CardInfo heroInfo)
     {
-        CardId = heroInfo._id;
+        InstId = heroInfo._instId;
         _health.text = heroInfo._health.ToString();
     }
     void OnMouseDown()
     {
-        onSelectCard?.Invoke(CardId);
+        onSelectCard?.Invoke(InstId,PlayerId);
     }
     public void ChangeHealth(int health)
     {

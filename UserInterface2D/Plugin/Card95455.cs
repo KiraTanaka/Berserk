@@ -10,7 +10,7 @@ namespace Plugin
     {
         public Card95455()
         {
-            Id = 95455;
+            CardId = 95455;
             Type = CardTypeEnum.Creature;
             Name = "Авгур";
             Element = CardElementEnum.Neutral;

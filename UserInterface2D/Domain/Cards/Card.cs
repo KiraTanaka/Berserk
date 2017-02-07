@@ -7,7 +7,8 @@ namespace Domain.Cards
 {
     public class Card : ICloneable<Card>
     {
-        public int Id { get; set; }
+        public Guid InstId { get; set; }
+        public int CardId { get; set; }
         public CardTypeEnum Type { get; protected set; }
         public string Name { get; protected set; }
         public CardElementEnum Element { get; protected set; }
@@ -20,11 +21,15 @@ namespace Domain.Cards
         public string EquipementType { get; protected set; }
         public bool Closed { get; protected set; }
         #region delegates and events
-        public delegate void OnChangeHealthHandler(int cardId, int health);
-        public delegate void OnChangeClosedHandler(int cardId, bool closed);
+        public delegate void OnChangeHealthHandler(Guid instId, int health);
+        public delegate void OnChangeClosedHandler(Guid instId, bool closed);
         public event OnChangeHealthHandler onChangeHealth;
         public event OnChangeClosedHandler onChangeClosed;
         #endregion
+        public Card()
+        {
+            InstId = Guid.NewGuid();
+        }
         public void Hurt(int value)
         {
             AddHealth(-value);
@@ -38,7 +43,7 @@ namespace Domain.Cards
         private void AddHealth(int value)
         {
             Health = Health + value;
-            onChangeHealth?.Invoke(Id, Health);
+            onChangeHealth?.Invoke(InstId, Health);
         }
 
         public void Open()
@@ -54,7 +59,7 @@ namespace Domain.Cards
         private void SetClose(bool value)
         {
             Closed = value;
-            onChangeClosed?.Invoke(Id, Closed);
+            onChangeClosed?.Invoke(InstId, Closed);
         }
 
         public bool IsAlive()
@@ -73,7 +78,8 @@ namespace Domain.Cards
         {
             return new Card
             {
-                Id = Id,
+                InstId = InstId,
+                CardId = CardId,
                 Name = Name,
                 Health = Health,
                 Attack = Attack,

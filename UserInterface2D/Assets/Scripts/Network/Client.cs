@@ -6,15 +6,28 @@ using UnityEngine.Networking;
 
 public class Client : NetworkBehaviour
 {
-    private PlayerUnity _player;
     public GameObject AttackWayPanel;
-    Enemy enemy;
-    public void Settings(PlayerUnity player)
+    public GameObject EnemyPrefab;
+    private Enemy _enemy;
+    private Gamer _gamer;
+    public override void OnStartLocalPlayer()
     {
-        _player = player;
+        if (!isLocalPlayer) return;
+        CreateEnemy();
+        _gamer = GetComponent<Gamer>();
+        CmdConnectPlayers(netId);
+    }
+    private void CreateEnemy()
+    {
+        GameObject enemy = Instantiate(EnemyPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        _enemy = enemy.GetComponent<Enemy>();
+    }
+    [Command]
+    void CmdConnectPlayers(NetworkInstanceId networkId) =>GetServer().CmdConnectPlayers(networkId);
+    public void Settings(string playerId)
+    {
         SubscribeToSrartStep();
-        SubscribeToAddCoins();        
-        SetEnemy();
+        SubscribeToAddCoins(playerId);               
     }
     #region event SrartStep
     void SubscribeToSrartStep() => CmdSubscribeToSrartStep();
@@ -26,17 +39,13 @@ public class Client : NetworkBehaviour
     private void OpenAll(string playerId)
     {
         if (!isLocalPlayer) return;
-        GetCards("Card").Select(x => x.GetComponent<CardUnity>()).Where(x => x.PlayerId == playerId)
-            .ToList().ForEach(x => x.SetClose(false));
-        GetCards("Hero").Select(x => x.GetComponent<Hero>()).Where(x => x.PlayerId == playerId)
-            .ToList().ForEach(x => x.SetClose(false));
-        GetCards("Coin").Select(x => x.GetComponent<CoinUnity>()).Where(x => x.PlayerId == playerId)
-            .ToList().ForEach(x => x.Open());
+        _gamer.OpenAll(playerId);
+        _enemy.OpenAll(playerId);
     }
     #endregion
 
     #region event AddCoins
-    public void SubscribeToAddCoins() => CmdSubscribeToAddCoins(_player.Id.ToString());
+    public void SubscribeToAddCoins(string playerId) => CmdSubscribeToAddCoins(playerId);
     [Command]
     void CmdSubscribeToAddCoins(string playerId) => GetServer().CmdSubscribeToAddCoin(playerId);
     public void CmdonAddCoin() => RpconAddCoin();
@@ -45,68 +54,71 @@ public class Client : NetworkBehaviour
     void RpconAddCoin()
     {
         if (!isLocalPlayer) return;
-        _player.onAddCoin();
+        _gamer.onAddCoin();
     }
     [ClientRpc]
     void RpconAddEnemyCoin()
     {
         if (!isLocalPlayer) return;
-        enemy.onAddCoin();
+        _enemy.onAddCoin();
     }
     #endregion
 
-    #region SetEnemy
-    private void SetEnemy() => CmdSetEnemy(_player.Id.ToString());
-    [Command]
-    private void CmdSetEnemy(string playerId) => GetServer().CmdSetEnemy(playerId);
+    #region ConnectPlayers
     public void CmdEnemyInitialization(string playerId, CardInfo heroInfo, int countCards, int countCoin)
        => RpcEnemyInitialization(playerId, heroInfo, countCards, countCoin);
+    public void CmdPlayerInitialization(string playerId, CardInfo heroInfo, CardInfo[] cardsInfo, int countCoin)
+       => RpcPlayerInitialization(playerId, heroInfo, cardsInfo, countCoin);
     [ClientRpc]
     void RpcEnemyInitialization(string playerId, CardInfo heroInfo, int countCards, int countCoin)
     {
         if (!isLocalPlayer) return;
 
-        enemy = GameObject.FindGameObjectsWithTag("Enemy").Select(x => x.GetComponent<Enemy>())
-          .FirstOrDefault(x => x.localPlayerAuthority);
-        enemy?.OnStartPlayer(playerId, heroInfo, countCards, countCoin);
+        
+        _enemy?.OnStartPlayer(playerId, heroInfo, countCards, countCoin);
+    }
+    [ClientRpc]
+    void RpcPlayerInitialization(string playerId, CardInfo heroInfo, CardInfo[] cardsInfo, int countCoin)
+    {
+        if (!isLocalPlayer) return;
+
+        _gamer.Initialization(playerId,heroInfo,cardsInfo,countCoin);
     }
     #endregion
 
     #region event SelectCardInHand
     public void SubscribeToSelectCardInHand(GameObject sprite)
        => sprite.GetComponent<CardInHand>().onSelectCard += onSelectCard;
-    void onSelectCard(int cardId)
+    void onSelectCard(string instId, string playerId)
     {
         if (!isLocalPlayer) return;
-        CmdHire(_player.Id.ToString(), cardId);
+        CmdHire(playerId, instId);
     }
     [Command]
-    void CmdHire(string playerId, int cardId) => GetServer().CmdHire(playerId, cardId);
+    void CmdHire(string playerId, string instId) => GetServer().CmdHire(playerId, instId);
     public void CmdCreateActiveCard(CardInfo cardInfo, string playerId) => RpcCreateActiveCard(cardInfo, playerId);
-    public void CmdCloseCoins(int count, string playerID) => RpcCloseCoins(count, playerID);
-    public void CmdDestroyCardInHand(int cardId) => RpcDestroyCardInHand(cardId);
+    public void CmdCloseCoins(int count, string playerId) => RpcCloseCoins(count, playerId);
+    public void CmdDestroyCardInHand(string instId, string playerId) => RpcDestroyCardInHand(instId, playerId);
     [ClientRpc]
     void RpcCreateActiveCard(CardInfo cardInfo, string playerId)
     {
         if (!isLocalPlayer) return;
-        GameObject.FindGameObjectsWithTag("Enemy").Select(x => x.GetComponent<Enemy>())
-          .FirstOrDefault(x => x.localPlayerAuthority)?.CreateActiveCard(cardInfo, playerId);
-        GameObject.FindGameObjectsWithTag("Gamer").Select(x => x.GetComponent<Gamer>())
-          .FirstOrDefault(x => x.isLocalPlayer)?.CreateActiveCard(cardInfo, playerId);
+        _gamer.CreateActiveCard(cardInfo, playerId);
+        _enemy.CreateActiveCard(cardInfo, playerId);
     }
     [ClientRpc]
-    void RpcCloseCoins(int count, string playerID)
+    void RpcCloseCoins(int count, string playerId)
     {
         if (!isLocalPlayer) return;
-        GetCards("Coin").Select(x => x.GetComponent<CoinUnity>()).Where(x => !x.IsClosed() && x.PlayerId == playerID)
-            .Take(count).ToList().ForEach(x => x.Close());
+        _gamer.CloseCoins(count, playerId);
+        _enemy.CloseCoins(count, playerId);
     }
     [ClientRpc]
-    void RpcDestroyCardInHand(int cardId)
+    void RpcDestroyCardInHand(string instId, string playerId)
     {
         if (!isLocalPlayer) return;
-        GetCards("CardInHand").Select(x => x.GetComponent<CardInHand>())
-            .FirstOrDefault(x => x.CardId == cardId).DestroyCard();
+        _gamer.DestroyCardInHand(instId, playerId);
+        _enemy.DestroyCardInHand(instId, playerId);
     }
     #endregion
 
@@ -115,51 +127,40 @@ public class Client : NetworkBehaviour
     {
         Hero hero = sprite.GetComponent<Hero>();
         hero.onSelectCard += onSelectActiveCard;
-        CmdSubscribeToActiveCard(hero.CardId);
+        CmdSubscribeToActiveCard(hero.InstId.ToString());
     }
     public void SubscribeToSelectActiveCard(GameObject sprite) 
     {
         CardUnity card = sprite.GetComponent<CardUnity>();
         card.onSelectCard += onSelectActiveCard;
-        CmdSubscribeToActiveCard(card.CardId);
+        CmdSubscribeToActiveCard(card.InstId);
     }
     [Command]
-    void CmdSubscribeToActiveCard(int cardId) => GetServer().CmdSubscribeToActiveCard(cardId);
-    bool onSelectActiveCard(int cardId)
+    void CmdSubscribeToActiveCard(string instId) => GetServer().CmdSubscribeToActiveCard(instId);
+    bool onSelectActiveCard(string instId, string playerId)
     {
         if (!isLocalPlayer) return false;
-        CmdSaveActiveCards(_player.Id.ToString(), cardId);
+        CmdSaveActiveCards(playerId, instId,netId);
         return true;
     }
     [Command]
-    void CmdSaveActiveCards(string playerId, int cardId) => GetServer().CmdSaveActiveCards(playerId, cardId);
-    public void CmdonChangeHealth(int cardId, int health) => RpconChangeHealth(cardId, health);
-    public void CmdonChangeClosed(int cardId, bool closed) => RpconChangeClosed(cardId, closed);
+    void CmdSaveActiveCards(string playerId, string instId, NetworkInstanceId networkId)
+        => GetServer().CmdSaveActiveCards(playerId, instId, networkId);
+    public void CmdonChangeHealth(string instId, int health) => RpconChangeHealth(instId, health);
+    public void CmdonChangeClosed(string instId, bool closed) => RpconChangeClosed(instId, closed);
     [ClientRpc]
-    void RpconChangeHealth(int cardId, int health)
+    void RpconChangeHealth(string instId, int health)
     {
         if (!isLocalPlayer) return;
-        if (!SetHealth(GetCards("Card"), cardId, health))
-            SetHealth(GetCards("Hero"), cardId, health);
+        _gamer.OnChangeHealth(instId, health);
+        _enemy.OnChangeHealth(instId, health);
     }
     [ClientRpc]
-    void RpconChangeClosed(int cardId, bool closed)
+    void RpconChangeClosed(string instId, bool closed)
     {
         if (!isLocalPlayer) return;
-        if (!SetClosed(GetCards("Card"), cardId, closed))
-            SetClosed(GetCards("Hero"), cardId, closed);
-    }
-    bool SetHealth(List<GameObject> cards, int cardId, int value)
-    {
-        IActiveCard script = cards.Select(x => x.GetComponent<IActiveCard>()).FirstOrDefault(x => x.CardId == cardId);
-        script?.ChangeHealth(value);
-        return (script == null) ? false : true;
-    }
-    bool SetClosed(List<GameObject> cards, int cardId, bool value)
-    {
-        IActiveCard script = cards.Select(x => x.GetComponent<IActiveCard>()).FirstOrDefault(x => x.CardId == cardId);
-        script?.SetClose(value);
-        return (script == null) ? false : true;
+        _gamer.OnChangeClosed(instId, closed);
+        _enemy.OnChangeClosed(instId, closed);
     }    
     public void CmdActiveAttackWayPanel() => RpcActiveAttackWayPanel();
     [ClientRpc]
@@ -182,12 +183,11 @@ public class Client : NetworkBehaviour
     #endregion
 
     #region CompleteStep
-    public void CompleteStep() => CmdCompleteStep(_player.Id.ToString());
+    public void CompleteStep() => CmdCompleteStep(_gamer.GetId());
     [Command]
     void CmdCompleteStep(string playerId) => GetServer().CmdCompleteStep(playerId);
     #endregion
 
     private ServerGame GetServer() => GameObject.FindWithTag("Scripts").GetComponent<ServerGame>();
-    private List<GameObject> GetCards(string tag) => GameObject.FindGameObjectsWithTag(tag).ToList();
 }
 

@@ -6,7 +6,7 @@ using System.Text;
 
 public interface IActiveCard
 {
-    int CardId { get; set; }
+    string InstId { get; set; }
     void ChangeHealth(int health);
     void Close();
     void Open();

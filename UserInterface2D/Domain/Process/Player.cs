@@ -148,12 +148,12 @@ namespace Domain.Process
                 return player;
             });
         }*///не нужно вроде
-        public bool Hire(int id)
+        public bool Hire(Guid instId)
         {
-            var card = _activeDeck.GetCardById(id);
+            var card = _activeDeck.GetCardById(instId);
             if (Money.Count - card.Cost < 0) return false;
             Money -= card.Cost;
-            _activeDeck.Pull(id);
+            _activeDeck.Pull(instId);
             _cardsInGame.Add(card);
             return true;
         }

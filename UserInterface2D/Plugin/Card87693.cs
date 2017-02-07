@@ -10,7 +10,7 @@ namespace Plugin
     {
         public Card87693()
         {
-            Id = 87693;
+            CardId = 87693;
             Name = "Дейла";
             Type = CardTypeEnum.Hero;
             Desriprion = "Посмотрите верхнюю карту любой колоды, вы можете положить её под низ этой колоды.";

@@ -6,7 +6,7 @@ namespace Plugin
     {
         public Card87665()
         {
-            Id = 87665;
+            CardId = 87665;
             Name = "Азатот";
             Type = CardTypeEnum.Hero;
             Desriprion = "Ранить выбранное ваше существо на 2, излечиться на 3. " +

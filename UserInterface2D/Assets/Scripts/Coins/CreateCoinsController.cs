@@ -13,12 +13,13 @@ public class CreateCoinsController : MonoBehaviour {
     {
         _positionsCoins = _parser.GetCoinPositions(namePlayer);
     }
-    public void CreateCoin(GameObject prefab, string playerId)//, Coin coin)
+    public GameObject CreateCoin(GameObject prefab, string playerId)//, Coin coin)
     {
         GameObject sprite = Instantiate(prefab, _positionsCoins.First(), Quaternion.identity);
         sprite.GetComponent<CoinUnity>().PlayerId = playerId;
         sprite.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(nameSprite);
         _positionsCoins.RemoveAt(0);
+        return sprite;
     }
     void LoadSprite(GameObject sprite, string name, int sortingOrder)
     {

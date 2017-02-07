@@ -23,14 +23,15 @@ public class CreationCardController: MonoBehaviour
         parentCard = GameObject.FindWithTag("Canvas").transform;
         LoadPositionsActiveCards(namePlayer);
     }
-    public void LoadPositionsActiveCards(string namePlayer)
+    private void LoadPositionsActiveCards(string namePlayer)
          => parser.GetActiveCardsPositions(namePlayer).ForEach(x => positionsActiveCards.Add(x, false));
-    public GameObject CreateCardInHand(GameObject prefab, int cardId, Vector3 position, int sortingOrder)
+    public GameObject CreateCardInHand(GameObject prefab, CardInfo cardInfo, Vector3 position, int sortingOrder, string playerId)
     {
         GameObject sprite = CreateCard(prefab,position);
-        sprite.GetComponent<CardInHand>().SetCard(cardId);
+        sprite.GetComponent<CardInHand>().SetCard(cardInfo._instId);
+        sprite.GetComponent<CardInHand>().PlayerId = playerId;
 
-        LoadSprite(sprite, cardId.ToString() + "_origin", sortingOrder);
+        LoadSprite(sprite, cardInfo._cardId.ToString() + "_origin", sortingOrder);
         sprite.GetComponent<SelectionCreature>().border = BorderCard;
         return sprite;
     }
@@ -40,7 +41,7 @@ public class CreationCardController: MonoBehaviour
         sprite.GetComponent<Hero>().SetCard(heroInfo);
         sprite.GetComponent<Hero>().PlayerId = playerId;
 
-        LoadSprite(sprite, heroInfo._id.ToString(), sortingOrder);
+        LoadSprite(sprite, heroInfo._cardId.ToString(), sortingOrder);
         SetParent(sprite,scaleHero);
         return sprite;
     }
@@ -52,7 +53,7 @@ public class CreationCardController: MonoBehaviour
         sprite.GetComponent<CardUnity>().SetCard(cardInfo);
         sprite.GetComponent<CardUnity>().PlayerId = playerId;
 
-        LoadSprite(sprite, cardInfo._id.ToString(), sortingOrder);
+        LoadSprite(sprite, cardInfo._cardId.ToString(), sortingOrder);
         SetParent(sprite, scaleActiveCard);
 
         sprite.GetComponent<SelectionCreature>().border = BorderActiveCard;

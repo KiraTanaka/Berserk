@@ -80,17 +80,17 @@ namespace Domain.Cards
         /// <summary>
         /// Возвращает карту с указанным id и удаляет ее из колоды.
         /// </summary>
-        public Card Pull(int id)//изменила index на id
+        public Card Pull(Guid instId)//изменила index на id
         {
-            var card = _cards.FirstOrDefault(x=>x.Id==id);
+            var card = _cards.FirstOrDefault(x=>x.InstId == instId);
             _cards.Remove(card);
             return card;
         }
         /// <summary>
         /// Возвращает карту с указанным id.
         /// </summary>
-        public Card GetCardById(int id) 
-            => _cards.FirstOrDefault(x => x.Id == id);
+        public Card GetCardById(Guid instId) 
+            => _cards.FirstOrDefault(x => x.InstId == instId);
         /// <summary>
         /// Возвращает карты с указанными индексами и удаляет их из колоды.
         /// </summary>
@@ -126,10 +126,10 @@ namespace Domain.Cards
         /// <summary>
         /// Возращает случайную карту и удаляет ее из колоды.
         /// </summary>
-        public Card PullRandom()
+       /* public Card PullRandom()
         {
             return Pull(RandomHelper.Next(Count));
-        }
+        }*/
 
         IEnumerator IEnumerable.GetEnumerator()
         {

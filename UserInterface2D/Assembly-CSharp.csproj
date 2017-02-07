@@ -63,7 +63,6 @@
     <Compile Include="Assets\Scripts\Coins\CoinUnity.cs" />
     <Compile Include="Assets\Scripts\Coins\CreateCoinsController.cs" />
     <Compile Include="Assets\Scripts\CreationCardController.cs" />
-    <Compile Include="Assets\Scripts\Game\Game.cs" />
     <Compile Include="Assets\Scripts\Game\GameScript.cs" />
     <Compile Include="Assets\Scripts\Game\GameUnity.cs" />
     <Compile Include="Assets\Scripts\Network\Client.cs" />
@@ -120,13 +119,13 @@
       <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/CSharp vNext Support/AsyncTools/Plugins/System.Threading.dll</HintPath>
     </Reference>
     <Reference Include="Domain">
-      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/DLL/Domain.dll</HintPath>
+      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/dll/Domain.dll</HintPath>
     </Reference>
     <Reference Include="Infrastructure">
-      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/DLL/Infrastructure.dll</HintPath>
+      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/dll/Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Plugin">
-      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/DLL/Plugin.dll</HintPath>
+      <HintPath>C:/Users/Akira/Berserk/UserInterface2D/Assets/Scripts/dll/Plugin.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

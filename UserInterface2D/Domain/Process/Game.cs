@@ -18,7 +18,7 @@ namespace Domain.Process
             _players = new List<Player>();
             users.ForEach(user =>
             {
-                var playerCards = user.CardList.Select(id => cards.FirstOrDefault(x => x.Id == id)?.Clone()).ToList();
+                var playerCards = user.CardList.Select(cardId => cards.FirstOrDefault(x => x.CardId == cardId)?.Clone()).ToList();
                 _players.Add(new Player(user.Name, playerCards, rules));
             });
         }

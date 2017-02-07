@@ -7,17 +7,17 @@ using UnityEngine.Networking;
 public class CardInHand : NetworkBehaviour
 {
     new Renderer renderer;
-    public int CardId;
+    public string InstId { get; set; }
+    public string PlayerId { get; set; }
     float currentPositionY;
     float selectPositionY = 3;
     string currentLayer = "";
     Vector3 selectScale = new Vector3(1.2f, 1.2f, 1);
     SelectionCreature selectionCreature;
     #region delegates and events
-    public delegate void OnSelectCardHandler(int _cardId);
+    public delegate void OnSelectCardHandler(string instId, string playerId);
     public event OnSelectCardHandler onSelectCard;
     #endregion
-    // Use this for initialization
     void Awake () {
         renderer = GetComponent<Renderer>();
         currentPositionY = transform.position.y;
@@ -25,14 +25,14 @@ public class CardInHand : NetworkBehaviour
         selectionCreature = GetComponent<SelectionCreature>();
         selectionCreature.SetTransformation(new Transformation(selectPosition,selectScale));
     }
-    public void SetCard(int cardId) => CardId = cardId;
+    public void SetCard(string instId) => InstId = instId;
     void OnMouseEnter()
     {
         currentLayer = renderer.sortingLayerName;
         renderer.sortingLayerName = "Selected";
     }
-    void OnMouseExit() =>renderer.sortingLayerName = currentLayer;
-    void OnMouseDown() => onSelectCard?.Invoke(CardId);         
+    void OnMouseExit() => renderer.sortingLayerName = currentLayer;
+    void OnMouseDown() => onSelectCard?.Invoke(InstId, PlayerId);  
     public void DestroyCard()
     {
         selectionCreature.border.SetActive(false);

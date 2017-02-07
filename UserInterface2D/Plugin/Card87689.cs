@@ -10,7 +10,7 @@ namespace Plugin
     {
         public Card87689()
         {
-            Id = 87689;
+            CardId = 87689;
             Name = "Свирепый Резак";
             Type = CardTypeEnum.Hero;
             Desriprion = "Выбранное существо получает Опыт в атаке и Рывок.";
