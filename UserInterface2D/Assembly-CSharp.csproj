@@ -72,7 +72,7 @@
     <Compile Include="Assets\Scripts\Players\Gamer.cs" />
     <Compile Include="Assets\Scripts\Players\IPlayer.cs" />
     <Compile Include="Assets\Scripts\Players\PlayerUnity.cs" />
-    <Compile Include="Assets\Scripts\SelectionCreature.cs" />
+    <Compile Include="Assets\Scripts\SelectionController.cs" />
     <Compile Include="Assets\Scripts\Storage.cs" />
     <Compile Include="Assets\Scripts\Transformation\Transformation.cs" />
     <Compile Include="Assets\Scripts\Transformation\TransformationControl.cs" />
@@ -88,9 +88,6 @@
     <None Include="Assets\Scripts\PositionOfActiveCardsGamer.txt" />
     <None Include="Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.xml" />
     <None Include="Assets\Scripts\PositionOfActiveCardsPlayer.txt" />
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -105,9 +102,6 @@
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>

@@ -27,51 +27,14 @@ Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\I
 Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Infrastructure.dll into Unity Child Domain
 Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll (this message is harmless)
 Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll into Unity Child Domain
-- Completed reload, in  0.137 seconds
+- Completed reload, in  0.113 seconds
 Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.dll (this message is harmless)
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
-Initialize engine version: 5.5.0f3 (38b4efef76f0)
-GfxDevice: creating device client; threaded=1
-Direct3D:
-    Version:  Direct3D 11.0 [level 11.0]
-    Renderer: AMD Radeon(TM) HD 6620G (ID=0x9641)
-    Vendor:   ATI
-    VRAM:     1491 MB
-    Driver:   8.901.3.0
 <RI> Initialized touch support.
-Begin MonoManager ReloadAssembly
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
-Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\AsyncBridge.Net35.dll (this message is harmless)
-Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\AsyncBridge.Net35.dll into Unity Child Domain
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Threading.dll (this message is harmless)
-Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Threading.dll into Unity Child Domain
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll (this message is harmless)
-Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll into Unity Child Domain
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Infrastructure.dll (this message is harmless)
-Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Infrastructure.dll into Unity Child Domain
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll (this message is harmless)
-Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll into Unity Child Domain
-- Completed reload, in  0.151 seconds
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.dll (this message is harmless)
-desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
-<RI> Initializing input.
-<RI> Input initialized.
-UnloadTime: 3.956537 ms
-<RI> Initialized touch support.
-UnloadTime: 4.092461 ms
+UnloadTime: 4.595764 ms
 Initialize engine version: 5.5.0f3 (38b4efef76f0)
 GfxDevice: creating device client; threaded=1
 Direct3D:
@@ -101,14 +64,51 @@ Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\I
 Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Infrastructure.dll into Unity Child Domain
 Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll (this message is harmless)
 Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll into Unity Child Domain
-- Completed reload, in  0.207 seconds
+- Completed reload, in  0.117 seconds
 Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.dll (this message is harmless)
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 3.846259 ms
+UnloadTime: 4.020652 ms
+Initialize engine version: 5.5.0f3 (38b4efef76f0)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: AMD Radeon(TM) HD 6620G (ID=0x9641)
+    Vendor:   ATI
+    VRAM:     1491 MB
+    Driver:   8.901.3.0
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\AsyncBridge.Net35.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\AsyncBridge.Net35.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Threading.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Threading.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Infrastructure.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Infrastructure.dll into Unity Child Domain
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll (this message is harmless)
+Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll into Unity Child Domain
+- Completed reload, in  0.146 seconds
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.dll (this message is harmless)
+desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 5.264484 ms
 Non platform assembly: C:\Users\Akira\Berserk\UserInterface2D\Assets\Scripts\DLL\Domain.dll (this message is harmless)
 Non platform assembly: C:\Users\Akira\Berserk\UserInterface2D\Assets\Scripts\DLL\Infrastructure.dll (this message is harmless)
 Non platform assembly: C:\Users\Akira\Berserk\UserInterface2D\Assets\Scripts\DLL\Plugin.dll (this message is harmless)
@@ -120,115 +120,49 @@ The prefab 'Gamer' has multiple NetworkIdentity components. There can only be on
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
-NullReferenceException
-  at (wrapper managed-to-native) UnityEngine.GameObject:GetComponentFastPath (System.Type,intptr)
-  at UnityEngine.GameObject.GetComponent[CardInHand] () [0x00000] in <filename unknown>:0 
-  at PlayerUnity+<>c.<DestroyCardInHand>b__34_0 (UnityEngine.GameObject x) [0x00000] in <filename unknown>:0 
-  at System.Linq.Enumerable+<CreateSelectIterator>c__Iterator10`2[UnityEngine.GameObject,CardInHand].MoveNext () [0x00000] in <filename unknown>:0 
-  at System.Linq.Enumerable.First[CardInHand] (IEnumerable`1 source, System.Func`2 predicate, Fallback fallback) [0x00000] in <filename unknown>:0 
-  at System.Linq.Enumerable.FirstOrDefault[CardInHand] (IEnumerable`1 source, System.Func`2 predicate) [0x00000] in <filename unknown>:0 
-  at PlayerUnity.DestroyCardInHand (System.String instId, System.String playerId) [0x00000] in <filename unknown>:0 
-  at Gamer.DestroyCardInHand (System.String instId, System.String playerId) [0x00000] in <filename unknown>:0 
-  at Client.RpcDestroyCardInHand (System.String instId, System.String playerId) [0x00000] in <filename unknown>:0 
-  at Client.InvokeRpcRpcDestroyCardInHand (UnityEngine.Networking.NetworkBehaviour obj, UnityEngine.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkIdentity.HandleRPC (Int32 cmdHash, UnityEngine.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.ClientScene.OnRPCMessage (UnityEngine.Networking.NetworkMessage netMsg) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.HandleReader (UnityEngine.Networking.NetworkReader reader, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.HandleBytes (System.Byte[] buffer, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.TransportRecieve (System.Byte[] bytes, Int32 numBytes, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkClient.Update () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkClient.UpdateClients () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkIdentity.UNetStaticUpdate () [0x00000] in <filename unknown>:0 
- 
-(Filename:  Line: -1)
-
 NullReferenceException: Object reference not set to an instance of an object
-  at Domain.Process.Game.Move () [0x00000] in <filename unknown>:0 
-  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
-  at ServerGame.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.InvokeCmdCmdSetAttackWay (UnityEngine.Networking.NetworkBehaviour obj, UnityEngine.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkIdentity.HandleCommand (Int32 cmdHash, UnityEngine.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.OnCommandMessage (UnityEngine.Networking.NetworkMessage netMsg) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.HandleReader (UnityEngine.Networking.NetworkReader reader, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.HandleBytes (System.Byte[] buffer, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.TransportRecieve (System.Byte[] bytes, Int32 numBytes, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.OnData (UnityEngine.Networking.NetworkConnection conn, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer+ServerSimpleWrapper.OnData (UnityEngine.Networking.NetworkConnection conn, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServerSimple.HandleData (Int32 connectionId, Int32 channelId, Int32 receivedSize, Byte error) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServerSimple.Update () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.InternalUpdate () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.Update () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkIdentity.UNetStaticUpdate () [0x00000] in <filename unknown>:0 
- 
-(Filename:  Line: -1)
+  at CardUnity.IsDead () [0x00000] in <filename unknown>:0 
+  at CardUnity.ChangeHealth (Int32 health) [0x00000] in <filename unknown>:0 
+  at PlayerUnity.SetHealth (System.Collections.Generic.List`1 cards, System.String instId, Int32 value) [0x00000] in <filename unknown>:0 
+  at PlayerUnity.OnChangeHealth (System.String instId, Int32 health) [0x00000] in <filename unknown>:0 
+  at Gamer.OnChangeHealth (System.String NnstId, Int3ullReferehealnh) [xcept00on]  Ob <ecile rameefereonn>e n 
+  set to an instonCce of aealobh ect
+  at PlayeSUnitem.OnChangeHealth (System.String instId, Int32 health) [0x00000] in <filename unknown>:0 
+  at Gamer.OnC.String inst(Sdy Int32 trinlth) [0x00 Int] 2 healilename unknown>:0 
+  at Client.Invokth) [pcx00han0]eHinal<fh (UnamtyEngine.n>:0wor
+  int ClientrkBpchonChangeHealthur obj, U.String instId,Engine. hetalorh) [0x0et00or] in <fr reader) [0x00000wn>in <f
+i atnaClientknInvn>ke0 
+ R conChnityeHeine.Netwnrking.Negint.NetkIdentit.NetworkBePCav(Int32 cj, Hanih, UnityE.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
+  at UnityEngine.Networknngine.Nerkworking.NetworkeReaC (r ntea2 ermd [asx00000] ity <fgine.Net unrkingn>:0 
+  kReaUnidyEr gieae.eret o0xking.Cliin tScene.OnRPCMessage 0 Un
+  ayE Unine.Networkietg.Norkirkg.esliege netMsg)nR[0Cxessa00e  iUn <tyilngnanee Netknorwnking.
+N at UnrkMEnginee netwosgki [0xNe00wo0]kCinnn<fctlenameanulnkeadwn (:0ni
+t at UnityEe.Networking.kienworkRtwadreroreectio IntndlereeaeivedSinityzne, In.32etchorking.NnelIdrkR[0xd00er rin <fier, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknowen>me unk0 
+wn>:0 
+  ityEUgine.NetwoginerNetiornin.NeNetworkConnnection.Handction.taendleB (ey (Systeem.ByBtey] tufeer[]Int32breceiveffeSi Ize, I2t32rchecnelIve) Si0ze, I000] 2 in <anilenId)e unknown> i0  <
+f at UametyEngine.Netwo
+rkatngUnNetywongkCne.Nectworkinrg.NetworkConne (Syn.tera.Bspte[] bytevs, (Int32 numBytes, Ints,  channelId) [0, 00000] in <filename unkn0000] i0 n
+ <at fnityEngin u.Nknowon>ki0 g.
+N atw UnkCliengt.Ue.dattw ()o[0x0king.000t0or Clin nt.lename unk)n[0x00:000] i
+n at Uniilennmin u.Nknowon>ki0 g.
+N at UnitliEnntinUedateCwientrkin) [Net0orkC0] in .Updatname unknown>:0x0
+  00] Uni <fityEnginun.Neown>r:ing.
+N at UorikIdentity.UNwotrtatngcUNetwte kId ntity.UN[0x000icUpdan e<() [e0ame unknown>:0 
+0 
+(Filenilename unnenown1):0
 
-NullReferenceException: Object reference not set to an instance of an object
-  at Domain.Process.Game.Move () [0x00000] in <filename unknown>:0 
-  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
-  at ServerGame.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.InvokeCmdCmdSetAttackWay (UnityEngine.Networking.NetworkBehaviour obj, UnityEngine.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkIdentity.HandleCommand (Int32 cmdHash, UnityEngine.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.OnCommandMessage (UnityEngine.Networking.NetworkMessage netMsg) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.HandleReader (UnityEngine.Networking.NetworkReader reader, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.HandleBytes (System.Byte[] buffer, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.TransportRecieve (System.Byte[] bytes, Int32 numBytes, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.OnData (UnityEngine.Networking.NetworkConnection conn, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer+ServerSimpleWrapper.OnData (UnityEngine.Networking.NetworkConnection conn, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServerSimple.HandleData (Int32 connectionId, Int32 channelId, Int32 receivedSize, Byte error) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServerSimple.Update () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.InternalUpdate () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.Update () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkIdentity.UNetStaticUpdate () [0x00000] in <filename unknown>:0 
  
-(Filename:  Line: -1)
-
-NullReferenceException: Object reference not set to an instance of an object
-  at Domain.Process.Game.Move () [0x00000] in <filename unknown>:0 
-  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
-  at ServerGame.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.InvokeCmdCmdSetAttackWay (UnityEngine.Networking.NetworkBehaviour obj, UnityEngine.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkIdentity.HandleCommand (Int32 cmdHash, UnityEngine.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.OnCommandMessage (UnityEngine.Networking.NetworkMessage netMsg) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.HandleReader (UnityEngine.Networking.NetworkReader reader, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.HandleBytes (System.Byte[] buffer, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.TransportRecieve (System.Byte[] bytes, Int32 numBytes, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.OnData (UnityEngine.Networking.NetworkConnection conn, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer+ServerSimpleWrapper.OnData (UnityEngine.Networking.NetworkConnection conn, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServerSimple.HandleData (Int32 connectionId, Int32 channelId, Int32 receivedSize, Byte error) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServerSimple.Update () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.InternalUpdate () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.Update () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkIdentity.UNetStaticUpdate () [0x00000] in <filename unknown>:0 
- 
-(Filename:  Line: -1)
-
-NullReferenceException: Object reference not set to an instance of an object
-  at Domain.Process.Game.Move () [0x00000] in <filename unknown>:0 
-  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
-  at ServerGame.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.InvokeCmdCmdSetAttackWay (UnityEngine.Networking.NetworkBehaviour obj, UnityEngine.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkIdentity.HandleCommand (Int32 cmdHash, UnityEngine.Networking.NetworkReader reader) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.OnCommandMessage (UnityEngine.Networking.NetworkMessage netMsg) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.HandleReader (UnityEngine.Networking.NetworkReader reader, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.HandleBytes (System.Byte[] buffer, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkConnection.TransportRecieve (System.Byte[] bytes, Int32 numBytes, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.OnData (UnityEngine.Networking.NetworkConnection conn, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer+ServerSimpleWrapper.OnData (UnityEngine.Networking.NetworkConnection conn, Int32 receivedSize, Int32 channelId) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServerSimple.HandleData (Int32 connectionId, Int32 channelId, Int32 receivedSize, Byte error) [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServerSimple.Update () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.InternalUpdate () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkServer.Update () [0x00000] in <filename unknown>:0 
-  at UnityEngine.Networking.NetworkIdentity.UNetStaticUpdate () [0x00000] in <filename unknown>:0 
  
 (Filename:  Line: -1)
 
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 6fc -> priority: 1 
+  Thread -> id: b64 -> priority: 1 
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 1350 -> priority: 1 
+  Thread -> id: 1fc4 -> priority: 1 
+Log: connection {2} has been disconnected by timeout; address {::ffff:127.0.0.1:54146}
+ServerDisconnected due to error: Timeout
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 24a8 -> priority: 1 
+  Thread -> id: 1c14 -> priority: 1 

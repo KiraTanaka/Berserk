@@ -45,10 +45,10 @@ public class GameScript : NetworkBehaviour
 
     public string ActionCardId
     {
-        get { return _game.State.ActionCard?.InstId.ToString(); }
+        get { return _game.State.ActionCard?.InstId.ToString() ?? ""; }
         set
         {
-            if (value != "")
+            if (value != null)
             {
                 Card card = SearchCardAtPlayers(value);
                 _game.State.ActionCard = card.Closed ? null : card;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectionCreature : MonoBehaviour {
+public class SelectionController : MonoBehaviour {
     public GameObject border;
     TransformationControl transformControl;
     public Vector3 selectPosition;

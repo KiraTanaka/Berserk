@@ -9,17 +9,18 @@ public class CardUnity : NetworkBehaviour, IActiveCard
 {
     public string InstId { get; set; }
     public string PlayerId { get; set; }
+    public GameObject GameObject { get { return gameObject; }  }
     private bool _closed = false;
     private Text _power;
     private Text _health;
     private GameScript game;
     Vector3 selectScale = new Vector3(24, 24, 1);
-    SelectionCreature selectionCreature;
+    SelectionController selectionCreature;
     private Color colorOrigin;
     private Color colorClosing;
     Renderer renderer;
     #region delegates and events
-    public delegate bool OnSelectCardHandler(string instId, string playerId);
+    public delegate bool OnSelectCardHandler(string instId);
     public event OnSelectCardHandler onSelectCard;
     #endregion
     void Awake()
@@ -27,14 +28,14 @@ public class CardUnity : NetworkBehaviour, IActiveCard
         renderer = GetComponent<Renderer>();
         _power = transform.GetChild(0).GetComponent<Text>();
         _health = transform.GetChild(1).GetComponent<Text>();
-        selectionCreature = GetComponent<SelectionCreature>();
+        selectionCreature = GetComponent<SelectionController>();
         selectionCreature.SetTransformation(new Transformation(null, null, selectScale));
         colorOrigin = renderer.material.color;
         colorClosing = new Color32(116,116,116,255);
     }
     void OnMouseDown()
     {
-        if ((onSelectCard?.Invoke(InstId,PlayerId)).Value)
+        if ((onSelectCard?.Invoke(InstId)).Value)
             selectionCreature.IsSelected = (selectionCreature.IsSelected) ? false : true;
         
     }

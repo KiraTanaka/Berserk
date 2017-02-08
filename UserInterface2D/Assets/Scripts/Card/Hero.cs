@@ -9,12 +9,13 @@ public class Hero : MonoBehaviour,IActiveCard
     public string InstId { get; set; }
     private bool _closed = false;
     public string PlayerId { get; set; }
+    public GameObject GameObject { get { return gameObject; } }
     private Color colorOrigin;
     private Color colorClosing;
     Renderer renderer;
     Text _health;
     #region delegates and events
-    public delegate bool OnSelectCardHandler(string instId,string playerId);
+    public delegate bool OnSelectCardHandler(string instId);
     public event OnSelectCardHandler onSelectCard;
     #endregion
     void Awake() {
@@ -30,7 +31,7 @@ public class Hero : MonoBehaviour,IActiveCard
     }
     void OnMouseDown()
     {
-        onSelectCard?.Invoke(InstId,PlayerId);
+        onSelectCard?.Invoke(InstId);
     }
     public void ChangeHealth(int health)
     {

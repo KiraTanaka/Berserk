@@ -37,7 +37,19 @@ public class ServerGame : NetworkBehaviour
         if (!isServer) return;
         game.OnStartStep += CmdonStartStep;
     }
-    void CmdonStartStep(string playerId) => GetClients().ForEach(x=>x.CmdonStartStep(playerId));
+    void CmdonStartStep(string playerId)
+    {
+        var state = game.GetGameState();
+        var movingplayer = state.MovingPlayer;
+        var watingplayer = state.WaitingPlayer;
+        GetClients().ForEach(x =>
+        {
+            x.CmdonStartStep(playerId);
+            x.CmdUpdateCountCoins(
+            new string[] { movingplayer.Id.ToString(), watingplayer.Id.ToString() },
+            new int[] { movingplayer.Money.Count, watingplayer.Money.Count });
+        });
+    }
     #endregion
 
     #region event AddCoin
@@ -118,7 +130,10 @@ public class ServerGame : NetworkBehaviour
     #endregion
 
     #region CompleteStep
-    public void CmdCompleteStep(string playerId) => game.CompleteStep(playerId);
+    public void CmdCompleteStep(string playerId)
+    {
+        game.CompleteStep(playerId);
+    }
     #endregion
 
     private Client GetClient(NetworkInstanceId networkId) => GameObject.FindGameObjectsWithTag("Gamer")

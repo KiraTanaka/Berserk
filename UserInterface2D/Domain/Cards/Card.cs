@@ -78,7 +78,7 @@ namespace Domain.Cards
         {
             return new Card
             {
-                InstId = InstId,
+                InstId = Guid.NewGuid(),
                 CardId = CardId,
                 Name = Name,
                 Health = Health,

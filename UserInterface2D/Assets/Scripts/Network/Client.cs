@@ -27,7 +27,7 @@ public class Client : NetworkBehaviour
     public void Settings(string playerId)
     {
         SubscribeToSrartStep();
-        SubscribeToAddCoins(playerId);               
+        //SubscribeToAddCoins(playerId);               
     }
     #region event SrartStep
     void SubscribeToSrartStep() => CmdSubscribeToSrartStep();
@@ -89,10 +89,10 @@ public class Client : NetworkBehaviour
     #region event SelectCardInHand
     public void SubscribeToSelectCardInHand(GameObject sprite)
        => sprite.GetComponent<CardInHand>().onSelectCard += onSelectCard;
-    void onSelectCard(string instId, string playerId)
+    void onSelectCard(string instId)
     {
         if (!isLocalPlayer) return;
-        CmdHire(playerId, instId);
+        CmdHire(_gamer.GetId(), instId);
     }
     [Command]
     void CmdHire(string playerId, string instId) => GetServer().CmdHire(playerId, instId);
@@ -123,13 +123,13 @@ public class Client : NetworkBehaviour
     #endregion
 
     #region event ChangeHealth,ChangeClosed and Select ActiveCard
-    public void SubscribeToSelectHero(GameObject sprite)
+    public void SubscribeToEventsHero(GameObject sprite)
     {
         Hero hero = sprite.GetComponent<Hero>();
         hero.onSelectCard += onSelectActiveCard;
         CmdSubscribeToActiveCard(hero.InstId.ToString());
     }
-    public void SubscribeToSelectActiveCard(GameObject sprite) 
+    public void SubscribeToEventsActiveCard(GameObject sprite) 
     {
         CardUnity card = sprite.GetComponent<CardUnity>();
         card.onSelectCard += onSelectActiveCard;
@@ -137,10 +137,10 @@ public class Client : NetworkBehaviour
     }
     [Command]
     void CmdSubscribeToActiveCard(string instId) => GetServer().CmdSubscribeToActiveCard(instId);
-    bool onSelectActiveCard(string instId, string playerId)
+    bool onSelectActiveCard(string instId)
     {
         if (!isLocalPlayer) return false;
-        CmdSaveActiveCards(playerId, instId,netId);
+        CmdSaveActiveCards(_gamer.GetId(), instId,netId);
         return true;
     }
     [Command]
@@ -186,6 +186,15 @@ public class Client : NetworkBehaviour
     public void CompleteStep() => CmdCompleteStep(_gamer.GetId());
     [Command]
     void CmdCompleteStep(string playerId) => GetServer().CmdCompleteStep(playerId);
+    public void CmdUpdateCountCoins(string[] playersId, int[] countCoinsPlayers) 
+        => RpcUpdateCountCoins(playersId, countCoinsPlayers);
+    [ClientRpc]
+    void RpcUpdateCountCoins(string[] playersId, int[] countCoinsPlayers)
+    {
+        if (!isLocalPlayer) return;
+        _gamer.UpdateCountCoins(playersId, countCoinsPlayers);
+        _enemy.UpdateCountCoins(playersId, countCoinsPlayers);
+    }
     #endregion
 
     private ServerGame GetServer() => GameObject.FindWithTag("Scripts").GetComponent<ServerGame>();

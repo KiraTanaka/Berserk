@@ -32,37 +32,16 @@ public class Gamer : NetworkBehaviour
         _playerUnity.SetPrefab(CardPrefab, HeroPrefab, ActiveCardPrefab, CoinPrefab);
         LocateCards(heroInfo, cardsInfo, countCoin);
     }
-    public void LocateCards(CardInfo heroInfo, CardInfo[] cardsInfo, int countCoin)
-    {
-        _playerUnity.LocateCards(heroInfo, cardsInfo, countCoin);
-    }
-    public void onAddCoin()
-    {
-        _playerUnity.onAddCoin();
-    }
-    public void CreateActiveCard(CardInfo cardInfo, string playerId)
-    {
-        _playerUnity.CreateActiveCard(cardInfo, playerId);
-    }
-    public void DestroyCardInHand(string instId, string playerId)
-    {
-        _playerUnity.DestroyCardInHand(instId, playerId);
-    }
-    public void CloseCoins(int count, string playerId)
-    {
-        _playerUnity.CloseCoins(count, playerId);
-    }
-    public void OnChangeHealth(string instId, int health)
-    {
-        _playerUnity.OnChangeHealth(instId, health);
-    }
-    public void OnChangeClosed(string instId, bool closed)
-    {
-        _playerUnity.OnChangeClosed(instId, closed);
-    }
-    public void OpenAll(string playerId)
-    {
-        _playerUnity.OpenAll(playerId);
-    }
+    public void LocateCards(CardInfo heroInfo, CardInfo[] cardsInfo, int countCoin) 
+        => _playerUnity.LocateCards(heroInfo, cardsInfo, countCoin);
+    public void onAddCoin() => _playerUnity.onAddCoin();
+    public void CreateActiveCard(CardInfo cardInfo, string playerId) => _playerUnity.CreateActiveCard(cardInfo, playerId);
+    public void DestroyCardInHand(string instId, string playerId) => _playerUnity.DestroyCardInHand(instId, playerId);
+    public void CloseCoins(int count, string playerId) => _playerUnity.CloseCoins(count, playerId);
+    public void OnChangeHealth(string instId, int health) => _playerUnity.OnChangeHealth(instId, health);
+    public void OnChangeClosed(string instId, bool closed) => _playerUnity.OnChangeClosed(instId, closed);
+    public void OpenAll(string playerId) => _playerUnity.OpenAll(playerId);
+    public void UpdateCountCoins(string[] playersId, int[] countCoinsPlayers)
+        => _playerUnity.UpdateCountCoins(playersId, countCoinsPlayers);
 }
 

@@ -32,7 +32,7 @@ public class CreationCardController: MonoBehaviour
         sprite.GetComponent<CardInHand>().PlayerId = playerId;
 
         LoadSprite(sprite, cardInfo._cardId.ToString() + "_origin", sortingOrder);
-        sprite.GetComponent<SelectionCreature>().border = BorderCard;
+        sprite.GetComponent<SelectionController>().border = BorderCard;
         return sprite;
     }
     public GameObject CreateSpriteHero(GameObject prefab, CardInfo heroInfo, Vector3 position, int sortingOrder, string playerId)
@@ -56,7 +56,7 @@ public class CreationCardController: MonoBehaviour
         LoadSprite(sprite, cardInfo._cardId.ToString(), sortingOrder);
         SetParent(sprite, scaleActiveCard);
 
-        sprite.GetComponent<SelectionCreature>().border = BorderActiveCard;
+        sprite.GetComponent<SelectionController>().border = BorderActiveCard;
         BorderCard.SetActive(false);
         
         positionsActiveCards[position] = true;
