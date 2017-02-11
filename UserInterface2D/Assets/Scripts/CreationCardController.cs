@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Application;
+using Assets.Scripts.Application.Cards;
 using UnityEngine;
 using Domain.Cards;
 using Domain.Process;
@@ -28,11 +30,11 @@ public class CreationCardController: MonoBehaviour
     public GameObject CreateCardInHand(GameObject prefab, CardInfo cardInfo, Vector3 position, int sortingOrder, string playerId)
     {
         GameObject sprite = CreateCard(prefab,position);
-        sprite.GetComponent<CardInHand>().SetCard(cardInfo._instId);
+        sprite.GetComponent<CardInHand>().SetCard(cardInfo.InstId);
         sprite.GetComponent<CardInHand>().PlayerId = playerId;
 
-        LoadSprite(sprite, cardInfo._cardId.ToString() + "_origin", sortingOrder);
-        sprite.GetComponent<SelectionController>().border = BorderCard;
+        LoadSprite(sprite, cardInfo.CardId.ToString() + "_origin", sortingOrder);
+        sprite.GetComponent<SelectionController>().Border = BorderCard;
         return sprite;
     }
     public GameObject CreateSpriteHero(GameObject prefab, CardInfo heroInfo, Vector3 position, int sortingOrder, string playerId)
@@ -41,7 +43,7 @@ public class CreationCardController: MonoBehaviour
         sprite.GetComponent<Hero>().SetCard(heroInfo);
         sprite.GetComponent<Hero>().PlayerId = playerId;
 
-        LoadSprite(sprite, heroInfo._cardId.ToString(), sortingOrder);
+        LoadSprite(sprite, heroInfo.CardId.ToString(), sortingOrder);
         SetParent(sprite,scaleHero);
         return sprite;
     }
@@ -53,10 +55,10 @@ public class CreationCardController: MonoBehaviour
         sprite.GetComponent<CardUnity>().SetCard(cardInfo);
         sprite.GetComponent<CardUnity>().PlayerId = playerId;
 
-        LoadSprite(sprite, cardInfo._cardId.ToString(), sortingOrder);
+        LoadSprite(sprite, cardInfo.CardId.ToString(), sortingOrder);
         SetParent(sprite, scaleActiveCard);
 
-        sprite.GetComponent<SelectionController>().border = BorderActiveCard;
+        sprite.GetComponent<SelectionController>().Border = BorderActiveCard;
         BorderCard.SetActive(false);
         
         positionsActiveCards[position] = true;

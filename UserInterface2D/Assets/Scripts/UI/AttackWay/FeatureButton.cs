@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Domain.Cards;
 using System.Linq;
+using Assets.Scripts.Infrastructure;
 using UnityEngine.Networking;
 
 public class FeatureButton : NetworkBehaviour

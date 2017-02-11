@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.Infrastructure;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
