@@ -125,9 +125,6 @@
     <Reference Include="Domain">
       <HintPath>Assets\Scripts\dll\Domain.dll</HintPath>
     </Reference>
-    <Reference Include="Infrastructure">
-      <HintPath>Assets\Scripts\dll\Infrastructure.dll</HintPath>
-    </Reference>
     <Reference Include="Plugin">
       <HintPath>Assets\Scripts\dll\Plugin.dll</HintPath>
     </Reference>
@@ -144,12 +141,12 @@
   <ItemGroup>
     <None Include="Assets\CSharp vNext Support\AsyncTools\Plugins\AsyncBridge.Net35.xml" />
     <None Include="Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.xml" />
-    <None Include="Assets\Scripts\Application\Coordinates\PositionOfActiveCardsEnemy.txt" />
-    <None Include="Assets\Scripts\Application\Coordinates\PositionOfActiveCardsGamer.txt" />
-    <None Include="Assets\Scripts\Application\Coordinates\PositionOfActiveCardsPlayer.txt" />
-    <None Include="Assets\Scripts\Application\Coordinates\PositionsOfCoinsEnemy.txt" />
-    <None Include="Assets\Scripts\Application\Coordinates\PositionsOfCoinsGamer.txt" />
-    <None Include="Assets\Scripts\Application\Coordinates\PositionsOfCoinsPlayer.txt" />
+    <None Include="Assets\Scripts\UI\Coordinates\PositionOfActiveCardsEnemy.txt" />
+    <None Include="Assets\Scripts\UI\Coordinates\PositionOfActiveCardsGamer.txt" />
+    <None Include="Assets\Scripts\UI\Coordinates\PositionOfActiveCardsPlayer.txt" />
+    <None Include="Assets\Scripts\UI\Coordinates\PositionsOfCoinsEnemy.txt" />
+    <None Include="Assets\Scripts\UI\Coordinates\PositionsOfCoinsGamer.txt" />
+    <None Include="Assets\Scripts\UI\Coordinates\PositionsOfCoinsPlayer.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

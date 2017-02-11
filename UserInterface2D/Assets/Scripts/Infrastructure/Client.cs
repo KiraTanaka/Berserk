@@ -1,5 +1,5 @@
-﻿using Assets.Scripts.Application.Cards;
-using Assets.Scripts.Application.Players;
+﻿using Assets.Scripts.UI.Cards;
+using Assets.Scripts.UI.Players;
 using Domain.Cards;
 using UnityEngine;
 using UnityEngine.Networking;

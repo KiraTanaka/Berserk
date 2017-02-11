@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Application.Cards;
-using Assets.Scripts.Application.Game;
+using Assets.Scripts.UI.Cards;
+using Assets.Scripts.UI.Game;
 using Domain.Cards;
-using Domain.Process;
+using Domain.Coins;
+using Domain.GameProcess;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -71,7 +72,7 @@ namespace Assets.Scripts.Infrastructure
             SubscribePlayerToAddCoin(playerEnemy, CmdonAddEnemyCoin);
         }
         private void SubscribePlayerToAddCoin(Player player, Money.OnAddCoinHandler method)
-            => player.Money.onAddCoin += method;
+            => player.Money.OnAddCoin += method;
         void CmdonAddCoin() => GetClients().ForEach(x => x.CmdonAddCoin());
         void CmdonAddEnemyCoin() => GetClients().ForEach(x => x.CmdonAddEnemyCoin());
         #endregion
@@ -85,7 +86,7 @@ namespace Assets.Scripts.Infrastructure
                 return;
             bool result = movingPlayer.Hire(new Guid(instId));
             if (!result) return;
-            Card card = movingPlayer.CardsInGame.FirstOrDefault(x => x.InstId.ToString() == instId);
+            Card card = movingPlayer.CardOnField.FirstOrDefault(x => x.InstId.ToString() == instId);
             GetClients().ForEach(x=> {
                 x.CmdCreateActiveCard(new CardInfo() { InstId = card.InstId.ToString(), CardId = card.CardId,
                     Power = card.Power, Health = card.Health }, playerId);
@@ -102,12 +103,12 @@ namespace Assets.Scripts.Infrastructure
             GameState state = game.GetGameState();
             Card card = FindCard(state.MovingPlayer, instId);
             card = card ?? FindCard(state.WaitingPlayer, instId);
-            card.onChangeHealth += CmdonChangeHealth;
-            card.onChangeClosed += CmdonChangeClosed;
+            card.OnChangeHealth += CmdonChangeHealth;
+            card.OnChangeClosed += CmdonChangeClosed;
         }
         Card FindCard(Player player, string instId)
             => (player.Hero.InstId.ToString() == instId) ? player.Hero : 
-                player.CardsInGame.FirstOrDefault(x => x.InstId.ToString() == instId);
+                player.CardOnField.FirstOrDefault(x => x.InstId.ToString() == instId);
         void CmdonChangeHealth(Guid instId, int health) => GetClients().ForEach(x=>x.CmdonChangeHealth(instId.ToString(), health));
         void CmdonChangeClosed(Guid instId, bool closed) => GetClients().ForEach(x => x.CmdonChangeClosed(instId.ToString(), closed));   
         public void CmdSaveActiveCards(string playerId, string instId, NetworkInstanceId networkId)

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-//using System.Collections.Immutable;
 using System.Linq;
-using Infrastructure.Loop;
-using Infrastructure.Random;
+using Domain.Tools;
 
 namespace Domain.Cards
 {
@@ -86,11 +84,15 @@ namespace Domain.Cards
             _cards.Remove(card);
             return card;
         }
+
         /// <summary>
         /// Возвращает карту с указанным id.
         /// </summary>
-        public Card GetCardById(Guid instId) 
-            => _cards.FirstOrDefault(x => x.InstId == instId);
+        public Card GetCardById(Guid instId)
+        {
+            return _cards.FirstOrDefault(x => x.InstId == instId);
+        }
+
         /// <summary>
         /// Возвращает карты с указанными индексами и удаляет их из колоды.
         /// </summary>
@@ -123,14 +125,6 @@ namespace Domain.Cards
             return result;
         }
 
-        /// <summary>
-        /// Возращает случайную карту и удаляет ее из колоды.
-        /// </summary>
-       /* public Card PullRandom()
-        {
-            return Pull(RandomHelper.Next(Count));
-        }*/
-
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -140,11 +134,6 @@ namespace Domain.Cards
         {
             foreach (var card in _cards)
                 yield return card;
-        }
-
-        public CardDeck Clone()
-        {
-            return new CardDeck {_cards = _cards};
         }
     }
 }

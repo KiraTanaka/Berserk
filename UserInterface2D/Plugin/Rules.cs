@@ -1,5 +1,5 @@
 ﻿using Domain;
-using Domain.Process;
+using Domain.GameProcess;
 
 namespace Plugin
 {

@@ -1,37 +1,48 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
 using Assets.Scripts.Infrastructure;
+using Assets.Scripts.UI.AttackWay;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class CompleteStep : NetworkBehaviour
+namespace Assets.Scripts.UI
 {
-    Client client;
-    private Color32 colorSelect;
-    private Color32 colorOrigin;
-    Image image;
-    void Start()
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    public class CompleteStep : NetworkBehaviour
     {
-        if (!localPlayerAuthority) return;
-        client = GameObject.FindGameObjectsWithTag("Gamer").Select(x => x.GetComponent<Client>())
-            .FirstOrDefault(x => x.isLocalPlayer);
-        image = GetComponent<Image>();
-        colorOrigin = image.color;
-        colorSelect = new Color32(225, 225, 225, 255);
-    }
-    void OnMouseDown()
-    {
-        if (!localPlayerAuthority) return;
-        client.CompleteStep();
-    }
-    void OnMouseEnter()
-    {
-        image.color = colorSelect;
-    }
-    void OnMouseExit()
-    {
-        image.color = colorOrigin;
+        private Client _client;
+
+        private Color32 _colorSelect;
+
+        private Color32 _colorOrigin;
+
+        private Image _image;
+
+
+        void Start()
+        {
+            if (!localPlayerAuthority) return;
+            _client = GameObjectHelper.FindGamerClient();
+
+            _image = GetComponent<Image>();
+            _colorOrigin = _image.color;
+            _colorSelect = new Color32(225, 225, 225, 255);
+        }
+
+        void OnMouseDown()
+        {
+            if (!localPlayerAuthority) return;
+            _client.CompleteStep();
+        }
+
+        void OnMouseEnter()
+        {
+            _image.color = _colorSelect;
+        }
+
+        void OnMouseExit()
+        {
+            _image.color = _colorOrigin;
+        }
     }
 }

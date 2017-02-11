@@ -1,20 +1,25 @@
-﻿using UnityEngine;
-using Domain.Cards;
-using System.Linq;
+﻿using System.Diagnostics.CodeAnalysis;
 using Assets.Scripts.Infrastructure;
+using Domain.Cards;
 using UnityEngine.Networking;
 
-public class AttackButton : NetworkBehaviour
+namespace Assets.Scripts.UI.AttackWay
 {
-    Client client;
-    void Start () {
-        if (!localPlayerAuthority) return;
-        client = GameObject.FindGameObjectsWithTag("Gamer").Select(x => x.GetComponent<Client>())
-            .FirstOrDefault(x => x.isLocalPlayer);
-    }
-    void OnMouseDown()
+    [SuppressMessage("ReSharper", "UnusedMember.Local")]
+    public class AttackButton : NetworkBehaviour
     {
-        if (!localPlayerAuthority) return;
-        client.SetAttackWay(CardActionEnum.Simple);
+        private Client _client;
+
+        void Start()
+        {
+            if (!localPlayerAuthority) return;
+            _client = GameObjectHelper.FindGamerClient();
+        }
+
+        void OnMouseDown()
+        {
+            if (!localPlayerAuthority) return;
+            _client.SetAttackWay(CardActionEnum.Simple);
+        }
     }
 }

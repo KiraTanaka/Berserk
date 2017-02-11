@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Domain;
 using Domain.Cards;
-using Domain.Process;
+using Domain.GameProcess;
 
 namespace Plugin
 {
