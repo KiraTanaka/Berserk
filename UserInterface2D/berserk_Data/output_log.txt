@@ -1,4 +1,4 @@
-Initialize engine version: 5.5.0f3 (38b4efef76f0)
+Initialize engine version: 5.5.1f1 (88d00a7498cd)
 GfxDevice: creating device client; threaded=1
 Direct3D:
     Version:  Direct3D 11.0 [level 11.0]
@@ -21,90 +21,13 @@ Platform assembly: E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\Asyn
 Loading E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\AsyncBridge.Net35.dll into Unity Child Domain
 Platform assembly: E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\System.Threading.dll (this message is harmless)
 Loading E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\System.Threading.dll into Unity Child Domain
-Platform assembly: E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll (this message is harmless)
-Loading E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll into Unity Child Domain
-Platform assembly: E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\Infrastructure.dll (this message is harmless)
-Loading E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\Infrastructure.dll into Unity Child Domain
 Platform assembly: E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll (this message is harmless)
 Loading E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll into Unity Child Domain
-- Completed reload, in  0.048 seconds
+Platform assembly: E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll (this message is harmless)
+Loading E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll into Unity Child Domain
+- Completed reload, in  0.149 seconds
 Platform assembly: E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: E:\Projects\Berserk\UserInterface2D\berserk_Data\Managed\System.dll (this message is harmless)
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
-<RI> Initialized touch support.
-UnloadTime: 1.511755 ms
-The prefab 'Gamer' has multiple NetworkIdentity components. There can only be one NetworkIdentity on a prefab, and it must be on the root object.
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
-
-Non platform assembly: E:\Projects\Berserk\UserInterface2D\Assets\Scripts\DLL\Domain.dll (this message is harmless)
-Non platform assembly: E:\Projects\Berserk\UserInterface2D\Assets\Scripts\DLL\Infrastructure.dll (this message is harmless)
-Non platform assembly: E:\Projects\Berserk\UserInterface2D\Assets\Scripts\DLL\Plugin.dll (this message is harmless)
-NullReferenceException: Object reference not set to an instance of an object
-  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
-  at Domain.Process.Game.Move () [0x00000] in <filename unknown>:0 
-  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
-  at ServerGame.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CallCmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.SetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
-UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
-UnityEngine.HitInfo:SendMessage(String)
-UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
-UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
- 
-(Filename:  Line: -1)
-
-NullReferenceException: Object reference not set to an instance of an object
-  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
-  at Domain.Process.Game.Move () [0x00000] in <filename unknown>:0 
-  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
-  at ServerGame.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CallCmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.SetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
-UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
-UnityEngine.HitInfo:SendMessage(String)
-UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
-UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
- 
-(Filename:  Line: -1)
-
-NullReferenceException: Object reference not set to an instance of an object
-  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
-  at Domain.Process.Game.Move () [0x00000] in <filename unknown>:0 
-  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
-  at ServerGame.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CallCmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.SetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at FeatureButton.OnMouseDown () [0x00000] in <filename unknown>:0 
-UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
-UnityEngine.HitInfo:SendMessage(String)
-UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
-UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
- 
-(Filename:  Line: -1)
-
-NullReferenceException: Object reference not set to an instance of an object
-  at Domain.Cards.Card.Action (CardActionEnum actionOption, Domain.Process.GameState state) [0x00000] in <filename unknown>:0 
-  at Domain.Process.Game.Move () [0x00000] in <filename unknown>:0 
-  at GameScript.set_AttackWay (CardActionEnum value) [0x00000] in <filename unknown>:0 
-  at ServerGame.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.CallCmdSetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at Client.SetAttackWay (CardActionEnum attackWay) [0x00000] in <filename unknown>:0 
-  at AttackButton.OnMouseDown () [0x00000] in <filename unknown>:0 
-UnityEngine.GameObject:SendMessage(String, Object, SendMessageOptions)
-UnityEngine.HitInfo:SendMessage(String)
-UnityEngine.SendMouseEvents:SendEvents(Int32, HitInfo)
-UnityEngine.SendMouseEvents:DoSendMouseEvents(Int32)
- 
-(Filename:  Line: -1)
-
-Setting up 1 worker threads for Enlighten.
-  Thread -> id: 1a60 -> priority: 1 

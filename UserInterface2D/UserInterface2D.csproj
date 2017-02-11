@@ -80,11 +80,11 @@
     <Reference Include="System.Threading">
       <HintPath>Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="Plugin">
+      <HintPath>Assets\Resources\Plugin.dll</HintPath>
+    </Reference>
     <Reference Include="Domain">
       <HintPath>Assets\Scripts\dll\Domain.dll</HintPath>
-    </Reference>
-    <Reference Include="Plugin">
-      <HintPath>Assets\Scripts\dll\Plugin.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -33,7 +33,7 @@ namespace Assets.Scripts.UI.Game
 
         private static IEnumerable<Type> ImportTypes()
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets\\Scripts\\DLL");
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "Assets\\Resources");
             var dllPaths = Directory.GetFiles(path, "*.dll");
             return dllPaths.Select(Assembly.LoadFrom).SelectMany(x => x.GetExportedTypes());
         }
