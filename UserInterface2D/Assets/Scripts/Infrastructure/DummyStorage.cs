@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Domain.GameProcess;
 
@@ -11,21 +12,24 @@ namespace Assets.Scripts.Infrastructure
 
         public DummyStorage()
         {
-            _players = new List<User>
+            var lines = File.ReadAllLines("DummyStorage.txt"); // temporary code
+            _players = new List<User>();
+            foreach (var line in lines)
             {
-                new User
+                var splitted = line.Split(',');
+                var cardList = new List<int>();
+                for (var i = 2; i < splitted.Length; i++)
                 {
-                    Id = 1,
-                    Name = "User_1",
-                    CardList = new[] { 87242, 92314, 87065, 95380, 87693 }
-                },
-                new User
-                {
-                    Id = 2,
-                    Name = "User_2",
-                    CardList = new[] { 87242, 92314, 87065, 95380, 87689 }
+                    cardList.Add(int.Parse(splitted[i]));
                 }
-            };
+                var player = new User
+                {
+                    Id = int.Parse(splitted[0]),
+                    Name = splitted[1],
+                    CardList = cardList
+                };
+                _players.Add(player);
+            }
         }
 
         public IEnumerable<T> FindById<T>(int id)
