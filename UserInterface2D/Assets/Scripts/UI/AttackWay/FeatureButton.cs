@@ -8,7 +8,7 @@ namespace Assets.Scripts.UI.AttackWay
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     public class FeatureButton : NetworkBehaviour
     {
-        private Client _client;
+        private ClientController _client;
 
         void Start()
         {

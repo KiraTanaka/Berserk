@@ -10,7 +10,7 @@ namespace Assets.Scripts.UI
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     public class CompleteStep : NetworkBehaviour
     {
-        private Client _client;
+        private ClientController _client;
 
         private Color32 _colorSelect;
 

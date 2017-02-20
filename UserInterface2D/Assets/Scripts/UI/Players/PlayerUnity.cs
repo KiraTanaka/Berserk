@@ -28,7 +28,7 @@ namespace Assets.Scripts.UI.Players
 
         private GameObject _hero;
 
-        private Client _client;
+        private ClientController _client;
 
         private Vector3 _positionHero;
 
@@ -66,7 +66,7 @@ namespace Assets.Scripts.UI.Players
         {
             _client = GameObject
                 .FindGameObjectsWithTag("Gamer")
-                .Select(x => x.GetComponent<Client>())
+                .Select(x => x.GetComponent<ClientController>())
                 .FirstOrDefault(x => x.isLocalPlayer);
         }
 
