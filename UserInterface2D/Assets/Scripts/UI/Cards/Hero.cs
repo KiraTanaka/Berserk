@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Assets.Scripts.UI.Transformations;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,65 +8,42 @@ namespace Assets.Scripts.UI.Cards
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     public class Hero : MonoBehaviour, IActiveCard
     {
-        public string InstId { get; set; }
-
-        public string PlayerId { get; set; }
-
         public GameObject GameObject => gameObject;
 
-        public bool IsClosed { get; private set; }
+        public bool IsClosed { get { return _activeCard.IsClosed; } }
+        public string InstId { get { return _activeCard.InstId; } set { _activeCard.InstId = value; } }
 
+        private ActiveCard _activeCard;
 
-        private Color _colorOrigin;
+        private SelectionController _selectionCreature;
 
-        private Color _colorClosing;
+        private readonly Vector3 _selectScale = new Vector3(36, 36, 1);
 
-        private Renderer _renderer;
-
-        private Text _health;
-        
-
-        public void SetCard(CardInfo heroInfo)
-        {
-            InstId = heroInfo.InstId;
-            _health.text = heroInfo.Health.ToString();
-        }
-
-        public void ChangeHealth(int health)
-        {
-            _health.text = health.ToString();
-        }
-
-        public void Close() => SetClose(true);
-
-        public void Open() => SetClose(false);
-
-        public void SetClose(bool value)
-        {
-            _renderer.material.SetColor("_Color", value ? _colorClosing : _colorOrigin);
-            IsClosed = value;
-        }
-
+        public event OnSelectCardHandler OnSelectCard;
 
         void Awake()
         {
-            _health = transform.GetChild(0).GetComponent<Text>();
-            _renderer = GetComponent<Renderer>();
-            _colorOrigin = _renderer.material.color;
-            _colorClosing = new Color32(116, 116, 116, 255);
+            _selectionCreature = GetComponent<SelectionController>();
+            _activeCard = new ActiveCard(gameObject, _selectScale, _selectionCreature);
         }
+        public void SetCard(CardInfo heroInfo) => _activeCard.SetCard(heroInfo);
 
-        void OnMouseDown()
+        public void ChangeHealth(int health) => _activeCard.ChangeHealth(health);
+
+        public void Close() => _activeCard.Close();
+
+        public void Open() => _activeCard.Open();
+
+        public void OnMouseDown()
         {
-            OnSelectCard?.Invoke(InstId);
+            var invoke = OnSelectCard?.Invoke(InstId);
+            if (invoke != null && invoke.Value)
+                _selectionCreature.IsSelected = !_selectionCreature.IsSelected;
         }
         public void DestroyCard()
         {
+            _selectionCreature.Border.SetActive(false);
             Destroy(gameObject);
         }
-        #region delegates and events
-        public delegate bool OnSelectCardHandler(string instId);
-        public event OnSelectCardHandler OnSelectCard;
-        #endregion
     }
 }

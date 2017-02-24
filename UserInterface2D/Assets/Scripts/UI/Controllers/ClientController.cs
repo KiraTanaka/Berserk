@@ -114,14 +114,9 @@ namespace Assets.Scripts.UI.Controllers
         #endregion
 
         #region event ChangeHealth,ChangeClosed and Select ActiveCard
-        public void SubscribeToEventsHero(GameObject sprite)
-        {
-            Hero hero = sprite.GetComponent<Hero>();
-            hero.OnSelectCard += onSelectActiveCard;
-        }
         public void SubscribeToEventsActiveCard(GameObject sprite) 
         {
-            CardUnity card = sprite.GetComponent<CardUnity>();
+            var card = sprite.GetComponent<IActiveCard>();
             card.OnSelectCard += onSelectActiveCard;
         }
         bool onSelectActiveCard(string instId)

@@ -98,20 +98,20 @@ namespace Assets.Scripts.UI.Players
         {
             cardsInfo.ToList().ForEach(x => CreateCardInHand(x));
         }
+
         public void CreateCardInHand(CardInfo cardInfo)
         {
-            GameObject sprite = _cardsController.CreateCardInHand(
-                CardPrefab, cardInfo, Id.ToString());
+            GameObject sprite = _cardsController.CreateCardInHand(CardPrefab, cardInfo);
 
             _client.SubscribeToSelectCardInHand(sprite);
             _cardsInHand.Add(sprite);
         }
+
         public void CreateSpriteHero(GameObject prefab, CardInfo heroInfo, Vector3 position, int sortingOrder)
         {
-            GameObject sprite = _cardsController.CreateSpriteHero(
-                prefab, heroInfo, position, sortingOrder,Id.ToString());
+            GameObject sprite = _cardsController.CreateHero(prefab, heroInfo, position);
 
-            _client.SubscribeToEventsHero(sprite);
+            _client.SubscribeToEventsActiveCard(sprite);
             _hero = sprite;
         }
 
@@ -119,8 +119,7 @@ namespace Assets.Scripts.UI.Players
         {
             if (playerId != Id.ToString()) return;
 
-            GameObject sprite = _cardsController.CreateActiveCard(
-                ActiveCardPrefab, cardInfo, 1, Id.ToString());
+            GameObject sprite = _cardsController.CreateEntity(ActiveCardPrefab, cardInfo);
 
             _client.SubscribeToEventsActiveCard(sprite);
             _cardsInGame.Add(sprite);
@@ -174,15 +173,14 @@ namespace Assets.Scripts.UI.Players
         private IActiveCard SetClosed(List<GameObject> cards, string instId, bool value)
         {
             var script = cards.Select(x => x.GetComponent<IActiveCard>()).FirstOrDefault(x => x.InstId == instId);
-            script?.SetClose(value);
+            if (value) script?.Close();
+            else script?.Open();
             return script;
         }
 
         public void OpenAll(string playerId)
         {
             if (playerId != Id.ToString()) return;
-            _cardsInGame.Select(x => x.GetComponent<CardUnity>()).ToList().ForEach(x => x.SetClose(false));
-            _hero.GetComponent<Hero>().SetClose(false);
             _coins.Select(x => x.GetComponent<CoinUnity>()).ToList().ForEach(x => x.Open());
         }
 

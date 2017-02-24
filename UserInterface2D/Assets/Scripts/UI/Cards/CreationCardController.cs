@@ -9,11 +9,10 @@ namespace Assets.Scripts.UI.Cards
 {
     public class CreationCardController: MonoBehaviour
     {
-        private GameObject _borderCard;
-
-        private GameObject _borderActiveCard;
-
         private Transform _parentCard;
+
+        private readonly Dictionary<BorderEnum, GameObject> borders =
+            new Dictionary<BorderEnum, GameObject>();
 
         private readonly CoordinateParser _parser = new CoordinateParser();
 
@@ -27,11 +26,13 @@ namespace Assets.Scripts.UI.Cards
 
         private readonly Vector2 _scaleHero = new Vector2(31.92f, 31.92f);
 
+        private readonly int sortingOrderActiveCard = 1;
 
         public void LoadSetting(string namePlayer)
         {
-            _borderCard = GameObject.FindWithTag("BorderCard");
-            _borderActiveCard = GameObject.FindWithTag("BorderActiveCard");
+            borders.Add(BorderEnum.BorderCard, GameObject.FindWithTag(BorderEnum.BorderCard.ToString()));
+            borders.Add(BorderEnum.BorderHero, GameObject.FindWithTag(BorderEnum.BorderHero.ToString()));
+            borders.Add(BorderEnum.BorderActiveCard, GameObject.FindWithTag(BorderEnum.BorderActiveCard.ToString()));
 
             _parentCard = GameObject.FindWithTag("Canvas").transform;
             LoadPositionsActiveCards(namePlayer);
@@ -39,70 +40,56 @@ namespace Assets.Scripts.UI.Cards
         }
 
         private void LoadPositionsActiveCards(string namePlayer)
-        {
-            _parser.GetActiveCardsPositions(namePlayer)
-                .ForEach(x => _positionsActiveCards.Add(x, false));
-        }
+            => _parser.GetActiveCardsPositions(namePlayer).ForEach(x => _positionsActiveCards.Add(x, false));
 
         private void LoadPositionsCardsInHand(string namePlayer)
-        {
-            _parser.GetCardsInHandPositions(namePlayer)
-                .ForEach(x => _positionsCardsInHand.Add(x, false));
-        }
+            =>_parser.GetCardsInHandPositions(namePlayer) .ForEach(x => _positionsCardsInHand.Add(x, false));
 
-        public GameObject CreateCardInHand(GameObject prefab, CardInfo cardInfo, 
-             string playerId)
+        public GameObject CreateCardInHand(GameObject prefab, CardInfo cardInfo)
         {
             Vector3 position = _positionsCardsInHand.FirstOrDefault(x => !x.Value).Key;
 
-            GameObject sprite = CreateCard(prefab,position);
-            sprite.GetComponent<CardInHand>().SetCard(cardInfo.InstId);
-            sprite.GetComponent<CardInHand>().PlayerId = playerId;
-
-            LoadSprite(sprite, cardInfo.CardId.ToString() + "_origin", _positionsCardsInHand.Keys.ToList().IndexOf(position));
-            sprite.GetComponent<SelectionController>().Border = _borderCard;
+            GameObject sprite = CreateCard(prefab, cardInfo, position, BorderEnum.BorderCard, 
+                cardInfo.CardId.ToString() + "_origin", _positionsCardsInHand.Keys.ToList().IndexOf(position));
             _positionsCardsInHand[position] = true;
             return sprite;
         }
 
-        public GameObject CreateSpriteHero(GameObject prefab, CardInfo heroInfo, 
-            Vector3 position, int sortingOrder, string playerId)
+        public GameObject CreateHero(GameObject prefab, CardInfo heroInfo, Vector3 position)
         {
-            GameObject sprite = CreateCard(prefab, position);
-            sprite.GetComponent<Hero>().SetCard(heroInfo);
-            sprite.GetComponent<Hero>().PlayerId = playerId;
-
-            LoadSprite(sprite, heroInfo.CardId.ToString(), sortingOrder);
-            SetParent(sprite,_scaleHero);
+            GameObject sprite = CreateCard(prefab, heroInfo, position, 
+                BorderEnum.BorderHero, heroInfo.CardId.ToString(), sortingOrderActiveCard);
+            SetParent(sprite, _scaleHero);
             return sprite;
         }
 
-        public GameObject CreateActiveCard(GameObject prefab, CardInfo cardInfo, 
-            int sortingOrder, string playerId)
+        public GameObject CreateEntity(GameObject prefab, CardInfo cardInfo)
         {
             Vector3 position = _positionsActiveCards.FirstOrDefault(x => !x.Value).Key;
-
-            GameObject sprite = CreateCard(prefab, position);
-            sprite.GetComponent<CardUnity>().SetCard(cardInfo);
-            sprite.GetComponent<CardUnity>().PlayerId = playerId;
-
-            LoadSprite(sprite, cardInfo.CardId.ToString(), sortingOrder);
+            GameObject sprite = CreateCard(prefab, cardInfo, position, 
+                BorderEnum.BorderActiveCard, cardInfo.CardId.ToString(), sortingOrderActiveCard);
             SetParent(sprite, _scaleActiveCard);
-
-            sprite.GetComponent<SelectionController>().Border = _borderActiveCard;
-            _borderCard.SetActive(false);
-        
             _positionsActiveCards[position] = true;
             return sprite;
         }
 
-        private static GameObject CreateCard(GameObject prefab, Vector3 position)
+        private GameObject CreateCard(GameObject prefab, CardInfo cardInfo, Vector3 position, 
+            BorderEnum border, string nameSprite, int sortingOrder)
         {
-            GameObject sprite = Instantiate(prefab, position, Quaternion.identity);
+            GameObject sprite = InstantiateCard(prefab, position, cardInfo);
+            LoadSprite(sprite, nameSprite, sortingOrder);            
+            SetBorder(sprite, borders[border]);
             return sprite;
         }
 
-        private static void LoadSprite(GameObject sprite, string name, int sortingOrder)
+        private GameObject InstantiateCard(GameObject prefab, Vector3 position, CardInfo cardInfo)
+        {
+            GameObject sprite = Instantiate(prefab, position, Quaternion.identity);
+            sprite.GetComponent<ICard>().SetCard(cardInfo);
+            return sprite;
+        }
+
+        private void LoadSprite(GameObject sprite, string name, int sortingOrder)
         {
             SpriteRenderer renderer = sprite.GetComponent<SpriteRenderer>();
             renderer.sprite = Resources.Load<Sprite>(name);
@@ -114,6 +101,9 @@ namespace Assets.Scripts.UI.Cards
             sprite.transform.localScale = localScale;
             sprite.transform.SetParent(_parentCard, false);
         }
+        private void SetBorder(GameObject sprite, GameObject border)
+            => sprite.GetComponent<SelectionController>().Border = border;
+
         public void ClearPositionCardInHand(CardInHand card)
         {
             _positionsCardsInHand[card.transform.position] = false;

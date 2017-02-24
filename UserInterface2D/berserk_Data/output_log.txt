@@ -32,7 +32,7 @@ desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 2.641538 ms
+UnloadTime: 3.521837 ms
 Non platform assembly: C:\Users\Akira\Berserk\UserInterface2D\Assets\Resources\Plugin.dll (this message is harmless)
 Initialize engine version: 5.5.0f3 (38b4efef76f0)
 GfxDevice: creating device client; threaded=1
@@ -61,24 +61,24 @@ Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\P
 Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Plugin.dll into Unity Child Domain
 Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll (this message is harmless)
 Loading C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\Domain.dll into Unity Child Domain
-- Completed reload, in  0.075 seconds
+- Completed reload, in  0.076 seconds
 Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Akira\Berserk\UserInterface2D\berserk_Data\Managed\System.dll (this message is harmless)
 desktop: 1366x768 60Hz; virtual: 1366x768 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 3.102525 ms
+UnloadTime: 3.426947 ms
 The prefab 'Gamer' has multiple NetworkIdentity components. There can only be one NetworkIdentity on a prefab, and it must be on the root object.
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 1474 -> priority: 1 
-Log: connection {1} has been disconnected by timeout; address {::ffff:127.0.0.1:55239}
+  Thread -> id: 2524 -> priority: 1 
+Log: connection {2} has been disconnected by timeout; address {::ffff:127.0.0.1:54245}
 ServerDisconnected due to error: Timeout
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
 
 Setting up 1 worker threads for Enlighten.
-  Thread -> id: 23d0 -> priority: 1 
+  Thread -> id: 2ec4 -> priority: 1 

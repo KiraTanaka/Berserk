@@ -9,7 +9,6 @@ namespace Assets.Scripts.UI.Game
 {
     public class GameUnity : Domain.GameProcess.Game
     {
-
         public Guid? ActionCardId
         {
             get { return State.ActionCard?.InstId; }
@@ -68,6 +67,11 @@ namespace Assets.Scripts.UI.Game
         {
             Move(attackWay);
             SetToZeroCards();
+        }
+        public void SetToZeroCards()
+        {
+            ActionCardId = null;
+            TargetCardId = null;
         }
         #region delegates and events
 

@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.UI.Cards
 {
-    public interface IActiveCard
+    public delegate bool OnSelectCardHandler(string instId);
+    public interface IActiveCard : ICard
     {
         string InstId { get; set; }
 
@@ -14,10 +16,11 @@ namespace Assets.Scripts.UI.Cards
 
         void Open();
 
-        void SetClose(bool value);
-
         bool IsClosed { get; }
+
         void DestroyCard();
+
+        event OnSelectCardHandler OnSelectCard;
     }
 }
 

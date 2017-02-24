@@ -9,62 +9,39 @@ namespace Assets.Scripts.UI.Cards
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
     public class CardUnity : NetworkBehaviour, IActiveCard
     {
-        public string InstId { get; set; }
-
-        public string PlayerId { get; set; }
-        
         public GameObject GameObject => gameObject;
 
-        public bool IsClosed { get; private set; }
-
+        public bool IsClosed { get { return _activeCard.IsClosed; } }
+        public string InstId { get { return _activeCard.InstId; } set { _activeCard.InstId = value; } }
 
         private Text _power;
 
-        private Text _health;
-        
+        private ActiveCard _activeCard;
+
         private SelectionController _selectionCreature;
-
-        private Color _colorOrigin;
-
-        private Color _colorClosing;
-
-        private Renderer _renderer;
         
         private readonly Vector3 _selectScale = new Vector3(24, 24, 1);
 
+        public event OnSelectCardHandler OnSelectCard;
+
         void Awake()
         {
-            _renderer = GetComponent<Renderer>();
-            _power = transform.GetChild(0).GetComponent<Text>();
-            _health = transform.GetChild(1).GetComponent<Text>();
+            _power = transform.GetChild(1).GetComponent<Text>();
             _selectionCreature = GetComponent<SelectionController>();
-            _selectionCreature.SetTransformation(new Transformation(null, null, _selectScale));
-            _colorOrigin = _renderer.material.color;
-            _colorClosing = new Color32(116, 116, 116, 255);
+            _activeCard = new ActiveCard(gameObject, _selectScale, _selectionCreature);            
         }
 
         public void SetCard(CardInfo cardInfo)
         {
-            InstId = cardInfo.InstId;
+            _activeCard.SetCard(cardInfo);
             _power.text = cardInfo.Power.ToString();
-            _health.text = cardInfo.Health.ToString();
         }
 
-        public void Close() => SetClose(true);
+        public void Close() => _activeCard.Close();
 
-        public void Open() => SetClose(false);
+        public void Open() => _activeCard.Open();
 
-        public void SetClose(bool value)
-        {
-            _renderer.material.SetColor("_Color", value ? _colorClosing : _colorOrigin);
-            IsClosed = value;
-        }
-
-        public void ChangeHealth(int health)
-        {
-            _health.text = health.ToString();
-            _selectionCreature.IsSelected = false;
-        }
+        public void ChangeHealth(int health) => _activeCard.ChangeHealth(health);
 
         void OnMouseDown()
         {
@@ -72,16 +49,11 @@ namespace Assets.Scripts.UI.Cards
             if (invoke != null && invoke.Value)
                 _selectionCreature.IsSelected = !_selectionCreature.IsSelected;
         }
-
         public void DestroyCard()
         {
-            GameObject.FindWithTag("BorderActiveCard").SetActive(false);
+            _selectionCreature.Border.SetActive(false);
             Destroy(gameObject);
         }
-        #region delegates and events
-        public delegate bool OnSelectCardHandler(string instId);
-        public event OnSelectCardHandler OnSelectCard;
-        #endregion
     }
 }
 

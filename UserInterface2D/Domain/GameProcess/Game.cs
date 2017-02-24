@@ -96,11 +96,7 @@ namespace Domain.GameProcess
         }
         private void ChangeHealthCard(Guid instId, int health) => onChangeHealthCard?.Invoke(instId, health);
         private void ChangeClosedCard(Guid instId, bool closed) => onChangeClosedCard?.Invoke(instId, closed);
-        public void SetToZeroCards()
-        {
-            State.ActionCard = null;
-            State.TargetCards = null;
-        }
+
         #region delegates and events
 
         public delegate void OnOpenAll(Guid playerId);       

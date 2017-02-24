@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 namespace Assets.Scripts.UI.Cards
 {
     [SuppressMessage("ReSharper", "UnusedMember.Local")]
-    public class CardInHand : NetworkBehaviour
+    public class CardInHand : NetworkBehaviour, ICard
     {
         public string InstId { get; set; }
 
@@ -34,10 +34,7 @@ namespace Assets.Scripts.UI.Cards
             _selectionCreature.SetTransformation(new Transformation(selectPosition, _selectScale));
         }
 
-        public void SetCard(string instId)
-        {
-            InstId = instId;
-        }
+        public void SetCard(CardInfo cardInfo) => InstId = cardInfo.InstId;
         
         void OnMouseEnter()
         {
@@ -45,24 +42,15 @@ namespace Assets.Scripts.UI.Cards
             _renderer.sortingLayerName = "Selected";
         }
 
-        void OnMouseExit()
-        {
-            _renderer.sortingLayerName = _currentLayer;
-        }
+        void OnMouseExit() => _renderer.sortingLayerName = _currentLayer;
 
-        void OnMouseDown()
-        {
-            OnSelectCard?.Invoke(InstId);
-        }
+        void OnMouseDown() => OnSelectCard?.Invoke(InstId);
         public void DestroyCard()
         {
             _selectionCreature.Border.SetActive(false);
             Destroy(gameObject);
         }
-        public void SetOriginalPosition()
-        {
-            _selectionCreature.SetOriginalPosition();
-        }
+        public void SetOriginalPosition() => _selectionCreature.SetOriginalPosition();
         #region delegates and events
         public delegate void OnSelectCardHandler(string instId);
         public event OnSelectCardHandler OnSelectCard;

@@ -61,12 +61,15 @@
     <Compile Include="Assets\Scripts\UI\AttackWay\AttackButton.cs" />
     <Compile Include="Assets\Scripts\UI\AttackWay\FeatureButton.cs" />
     <Compile Include="Assets\Scripts\UI\AttackWay\GameObjectHelper.cs" />
+    <Compile Include="Assets\Scripts\UI\Cards\ActiveCard.cs" />
+    <Compile Include="Assets\Scripts\UI\Cards\BorderEnum.cs" />
     <Compile Include="Assets\Scripts\UI\Cards\CardInHand.cs" />
     <Compile Include="Assets\Scripts\UI\Cards\CardInfo.cs" />
     <Compile Include="Assets\Scripts\UI\Cards\CardUnity.cs" />
     <Compile Include="Assets\Scripts\UI\Cards\CreationCardController.cs" />
     <Compile Include="Assets\Scripts\UI\Cards\Hero.cs" />
     <Compile Include="Assets\Scripts\UI\Cards\IActiveCard.cs" />
+    <Compile Include="Assets\Scripts\UI\Cards\ICard.cs" />
     <Compile Include="Assets\Scripts\UI\Coins\CoinUnity.cs" />
     <Compile Include="Assets\Scripts\UI\Coins\CreateCoinsController.cs" />
     <Compile Include="Assets\Scripts\UI\CompleteStep.cs" />
@@ -89,9 +92,6 @@
     <None Include="Assets\Scripts\Infrastructure\Coordinates\PositionsOfCoinsEnemy.txt" />
     <None Include="Assets\CSharp vNext Support\AsyncTools\Plugins\System.Threading.xml" />
     <None Include="Assets\Scripts\Infrastructure\Coordinates\PositionsOfCoinsGamer.txt" />
-    <Reference Include="UnityEngine.Advertisements">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -106,9 +106,6 @@
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Purchasing">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VR">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
