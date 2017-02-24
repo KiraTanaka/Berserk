@@ -7,13 +7,13 @@ namespace Assets.Scripts.Infrastructure.Coordinates
     public class CoordinateParser
     {
         private const string PathToActiveCardsPositions =
-            @"Assets\Scripts\UI\Coordinates\PositionOfActiveCards";
+            @"Assets\Scripts\Infrastructure\Coordinates\PositionOfActiveCards";
 
         private const string PathToCardsInHandPositions =
-            @"Assets\Scripts\UI\Coordinates\PositionOfCardsInHand";
+            @"Assets\Scripts\Infrastructure\Coordinates\PositionOfCardsInHand";
 
-        private const string PathToCoinsPositions = 
-            @"Assets\Scripts\UI\Coordinates\PositionsOfCoins";
+        private const string PathToCoinsPositions =
+            @"Assets\Scripts\Infrastructure\Coordinates\PositionsOfCoins";
 
         public List<Vector3> GetActiveCardsPositions(string namePlayer)
             => Parse(GetFullPath(PathToActiveCardsPositions, namePlayer));
