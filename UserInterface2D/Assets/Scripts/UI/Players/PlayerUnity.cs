@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Infrastructure;
+using Assets.Scripts.UI.Controllers;
 using Assets.Scripts.UI.Cards;
 using Assets.Scripts.UI.Coins;
 using Domain.GameProcess;
@@ -32,8 +32,6 @@ namespace Assets.Scripts.UI.Players
 
         private Vector3 _positionHero;
 
-        private List<Vector3> _positionsCards;
-
 
         private readonly CreationCardController _cardsController = new CreationCardController();
 
@@ -46,15 +44,13 @@ namespace Assets.Scripts.UI.Players
         private readonly List<GameObject> _coins = new List<GameObject>();
 
         
-        public void Initialize(string playerId, List<Vector3> positionsCards, Vector3 positionHero, string namePlayer)
+        public void Initialize(string playerId, Vector3 positionHero, string namePlayer)
         {
             Id = new Guid(playerId);
             SetClient();   
             ControllerSettings(namePlayer);
-            SetPositionsCards(positionsCards,positionHero);        
+            SetPositionHero(positionHero);        
         }
-
-        public void ClientSettings() => _client.Settings(Id.ToString());
 
         public void ControllerSettings(string namePlayer)
         {
@@ -70,9 +66,8 @@ namespace Assets.Scripts.UI.Players
                 .FirstOrDefault(x => x.isLocalPlayer);
         }
 
-        public void SetPositionsCards(List<Vector3> positionsCards, Vector3 positionHero)
+        public void SetPositionHero(Vector3 positionHero)
         {
-            _positionsCards = positionsCards;
             _positionHero = positionHero;
         }
 
@@ -101,16 +96,16 @@ namespace Assets.Scripts.UI.Players
 
         public void CreateCardsInHand( CardInfo[] cardsInfo)
         {
-            for (int i = 0; i < cardsInfo.Length; i++)
-            {
-                GameObject sprite = _cardsController.CreateCardInHand(
-                    CardPrefab, cardsInfo[i], _positionsCards[i], i,Id.ToString());
-
-                _client.SubscribeToSelectCardInHand(sprite);
-                _cardsInHand.Add(sprite);           
-            }
+            cardsInfo.ToList().ForEach(x => CreateCardInHand(x));
         }
+        public void CreateCardInHand(CardInfo cardInfo)
+        {
+            GameObject sprite = _cardsController.CreateCardInHand(
+                CardPrefab, cardInfo, Id.ToString());
 
+            _client.SubscribeToSelectCardInHand(sprite);
+            _cardsInHand.Add(sprite);
+        }
         public void CreateSpriteHero(GameObject prefab, CardInfo heroInfo, Vector3 position, int sortingOrder)
         {
             GameObject sprite = _cardsController.CreateSpriteHero(
@@ -131,11 +126,6 @@ namespace Assets.Scripts.UI.Players
             _cardsInGame.Add(sprite);
         }
 
-        public void OnAddCoin()
-        {
-            _coinsController.CreateCoin(CoinPrefab, Id.ToString());
-        } 
-        
         public void DestroyCardInHand(string instId, string playerId)
         {
             if (playerId != Id.ToString()) return;
@@ -160,8 +150,7 @@ namespace Assets.Scripts.UI.Players
         public void OnChangeHealth(string instId, int health)
         {
             var card = SetHealth(_cardsInGame, instId, health);
-            card = card ?? SetHealth(new List<GameObject>() { _hero }, instId, health);
-            if (health <= 0) _cardsInGame.Remove(card.GameObject);
+            card = card ?? SetHealth(new List<GameObject>() { _hero }, instId, health);                     
         }
 
         public void OnChangeClosed(string instId, bool closed)
@@ -171,16 +160,19 @@ namespace Assets.Scripts.UI.Players
             // TODO а куда карта идет дальше?
         }
 
-        private static IActiveCard SetHealth(List<GameObject> cards, string instId, int value)
+        private IActiveCard SetHealth(List<GameObject> cards, string instId, int value)
         {
             var script = cards
                 .Select(x => x.GetComponent<IActiveCard>())
                 .FirstOrDefault(x => x.InstId == instId);
             script?.ChangeHealth(value);
+            if (value > 0 || script==null) return script;
+            cards.Remove(script.GameObject);
+            script.IsDead();
             return script;
         }
 
-        private static IActiveCard SetClosed(List<GameObject> cards, string instId, bool value)
+        private IActiveCard SetClosed(List<GameObject> cards, string instId, bool value)
         {
             var script = cards.Select(x => x.GetComponent<IActiveCard>()).FirstOrDefault(x => x.InstId == instId);
             script?.SetClose(value);
@@ -195,12 +187,23 @@ namespace Assets.Scripts.UI.Players
             _coins.Select(x => x.GetComponent<CoinUnity>()).ToList().ForEach(x => x.Open());
         }
 
-        public void UpdateCountCoins(string[] playersId, int[] countCoinsPlayers)
+        public void UpdateCountCoins(string playerId, int countCoinsPlayer)
         {
-            for (int i = 0; i < playersId.Length; i++)
+            if (playerId != Id.ToString()) return;
+            CreateCoins(countCoinsPlayer - _coins.Count);
+        }
+        public void UpdateCardsInHand(string playerId, CardInfo[] cardsInfo)
+        {
+            if (playerId != Id.ToString()) return;
+            
+            for (int i = 0; i < cardsInfo.Length; i++)
             {
-                if (playersId[i] == Id.ToString())
-                    CreateCoins(countCoinsPlayers[i] - _coins.Count);
+                cardsInfo.ToList().ForEach(x =>
+                {
+                    if (_cardsInHand.Select(card
+                        => card.GetComponent<CardInHand>()).FirstOrDefault(card => card.InstId == x.InstId) == null)
+                        CreateCardInHand(x);
+                });
             }
         }
     }

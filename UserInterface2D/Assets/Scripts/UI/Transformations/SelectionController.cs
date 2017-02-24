@@ -20,7 +20,6 @@ namespace Assets.Scripts.UI.Transformations
             _transformControl = new TransformationControl(gameObject, transformation);
         }
 
-
         void OnMouseEnter()
         {
             if (IsSelected) return;

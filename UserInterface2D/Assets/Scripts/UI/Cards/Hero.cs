@@ -33,8 +33,7 @@ namespace Assets.Scripts.UI.Cards
 
         public void ChangeHealth(int health)
         {
-            if (health > 0) _health.text = health.ToString();
-            else Destroy(gameObject);
+            _health.text = health.ToString();
         }
 
         public void Close() => SetClose(true);
@@ -60,7 +59,10 @@ namespace Assets.Scripts.UI.Cards
         {
             OnSelectCard?.Invoke(InstId);
         }
-
+        public void IsDead()
+        {
+            Destroy(gameObject);
+        }
         #region delegates and events
         public delegate bool OnSelectCardHandler(string instId);
         public event OnSelectCardHandler OnSelectCard;

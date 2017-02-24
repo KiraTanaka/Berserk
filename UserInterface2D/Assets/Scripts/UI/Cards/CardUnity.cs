@@ -32,6 +32,16 @@ namespace Assets.Scripts.UI.Cards
         
         private readonly Vector3 _selectScale = new Vector3(24, 24, 1);
 
+        void Awake()
+        {
+            _renderer = GetComponent<Renderer>();
+            _power = transform.GetChild(0).GetComponent<Text>();
+            _health = transform.GetChild(1).GetComponent<Text>();
+            _selectionCreature = GetComponent<SelectionController>();
+            _selectionCreature.SetTransformation(new Transformation(null, null, _selectScale));
+            _colorOrigin = _renderer.material.color;
+            _colorClosing = new Color32(116, 116, 116, 255);
+        }
 
         public void SetCard(CardInfo cardInfo)
         {
@@ -52,28 +62,8 @@ namespace Assets.Scripts.UI.Cards
 
         public void ChangeHealth(int health)
         {
-            if (health > 0)
-            {
-                _health.text = health.ToString();
-                _selectionCreature.IsSelected = false;
-            }
-            else
-            {
-                GameObject.FindWithTag("BorderActiveCard").SetActive(false);
-                Destroy(gameObject);
-            }
-        }
-
-        
-        void Awake()
-        {
-            _renderer = GetComponent<Renderer>();
-            _power = transform.GetChild(0).GetComponent<Text>();
-            _health = transform.GetChild(1).GetComponent<Text>();
-            _selectionCreature = GetComponent<SelectionController>();
-            _selectionCreature.SetTransformation(new Transformation(_selectScale));
-            _colorOrigin = _renderer.material.color;
-            _colorClosing = new Color32(116, 116, 116, 255);
+            _health.text = health.ToString();
+            _selectionCreature.IsSelected = false;
         }
 
         void OnMouseDown()
@@ -83,6 +73,11 @@ namespace Assets.Scripts.UI.Cards
                 _selectionCreature.IsSelected = !_selectionCreature.IsSelected;
         }
 
+        public void IsDead()
+        {
+            GameObject.FindWithTag("BorderActiveCard").SetActive(false);
+            Destroy(gameObject);
+        }
         #region delegates and events
         public delegate bool OnSelectCardHandler(string instId);
         public event OnSelectCardHandler OnSelectCard;

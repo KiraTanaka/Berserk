@@ -10,20 +10,18 @@ namespace Assets.Scripts.UI.Players
 
         void LocateCards(CardInfo heroInfo, CardInfo[] cardsInfo, int countCoin);
 
-        void OnAddCoin();
-
         void CreateActiveCard(CardInfo cardInfo, string playerId);
 
         void DestroyCardInHand(string instId, string playerId);
 
         void CloseCoins(int count, string playerId);
 
-        void OnChangeHealth(string instId, int health);
+        void OnChangeHealthCard(string instId, int health);
 
-        void OnChangeClosed(string instId, bool closed);
+        void OnChangeClosedCard(string instId, bool closed);
 
         void OpenAll(string playerId);
 
-        void UpdateCountCoins(string[] playersId, int[] countCoinsPlayers);
+        void UpdateCountCoins(string playerId, int countCoinsPlayer);
     }
 }

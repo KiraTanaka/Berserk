@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Assets.Scripts.Infrastructure;
-using Assets.Scripts.Tools;
+using Assets.Scripts.UI.Controllers;
 using Domain.Cards;
 using Domain.GameProcess;
 using UnityEngine.Networking;
@@ -20,14 +20,14 @@ namespace Assets.Scripts.UI.Game
         
         // Use this for initialization
         // ReSharper disable once UnusedMember.Local
-        void Start()
+        void Awake()
         {
             var types = ImportTypes().ToList();
             var rules = types.SelectInstancesOf<IRules>()?.FirstOrDefault();
             var cards = types.SelectInstancesOf<Card>().ToList();
             var users = GetUsers();
 
-            _game = new GameUnity(rules, cards, users, () => AttackWay);
+            _game = new GameUnity(rules, cards, users);
             _game.Run();
         }
 
@@ -46,95 +46,24 @@ namespace Assets.Scripts.UI.Game
             return new UserLimitedSet { user1, user2 };
         }
 
-        public string ActionCardId
-        {
-            get { return _game.State.ActionCard?.InstId.ToString() ?? ""; }
-            set
-            {
-                if (value != null)
-                {
-                    Card card = SearchCardAtPlayers(value);
-                    _game.State.ActionCard = card.Closed ? null : card;
-                }
-                else
-                {
-                    _game.State.ActionCard = null;
-                }
-            }
-        }
-
-        public string TargetCardId
-        {
-            get { return _game.State.TargetCards?.FirstOrDefault()?.InstId.ToString(); }
-            set
-            {
-                _game.State.TargetCards = value == null
-                    ? null
-                    : new List<Card> { SearchCardAtPlayers(value) };
-            }
-        }
-
-        private CardActionEnum _attackWay;
-
-        public CardActionEnum AttackWay
-        {
-            get { return _attackWay; }
-            set
-            {
-                _attackWay = value;
-                _game.Move();
-                SetToZeroCards();
-                OnAfterMove?.Invoke();
-            }
-        }
-
         public Player GetPlayer()
         {
             if (_playerCount >= 2) _playerCount = 0;
 
             return _playerCount++ == 0 ? _game.State.MovingPlayer : _game.State.WaitingPlayer;
         }
-
-        public void SetToZeroCards()
+        public void ConnectPlayer(NetworkInstanceId networkId)
         {
-            ActionCardId = null;
-            TargetCardId = null;
+            var state = _game.State;
+            Player player = GetPlayer();           
+            var serverController = GetComponent<ServerController>();
+            serverController.PlayerInitialization(player, networkId);            
+            serverController.EnemyInitialization(
+                (state.MovingPlayer.Id == player.Id) ? state.WaitingPlayer : state.MovingPlayer, networkId);
         }
-
-        public GameState GetGameState()
+        public GameUnity GetGame()
         {
-            return _game.State;
+            return _game;
         }
-
-        public void CompleteStep(string playerId)
-        {
-            if (GetGameState().MovingPlayer.Id.ToString() == playerId)
-            {
-                _game.CompleteStep();
-                OnStartStep?.Invoke(GetGameState().MovingPlayer.Id.ToString());
-            }
-        }
-
-        private Card SearchCardAtPlayers(string instId)
-        {
-            var state = GetGameState();
-            return FindCard(instId, state.MovingPlayer) ?? FindCard(instId, state.WaitingPlayer);
-        }
-
-        private static Card FindCard(string instId, Player player)
-        {
-            Card card = player.CardOnField.FirstOrDefault(x => x.InstId.ToString() == instId);
-            return card ?? (player.Hero.InstId.ToString() == instId ? player.Hero : null);
-        }
-
-        #region delegates and events
-        public delegate void OnAfterMoveHandler();
-
-        public delegate void OnStartStepHandler(string playerId);
-
-        public event OnStartStepHandler OnStartStep;
-
-        public event OnAfterMoveHandler OnAfterMove;
-        #endregion
     }
 }

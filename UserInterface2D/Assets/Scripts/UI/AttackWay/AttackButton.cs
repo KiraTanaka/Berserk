@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Assets.Scripts.Infrastructure;
+using Assets.Scripts.UI.Controllers;
 using Domain.Cards;
 using UnityEngine.Networking;
 

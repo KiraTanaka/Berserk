@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Assets.Scripts.Infrastructure;
+using Assets.Scripts.UI.Controllers;
 using Assets.Scripts.UI.AttackWay;
 using UnityEngine;
 using UnityEngine.Networking;

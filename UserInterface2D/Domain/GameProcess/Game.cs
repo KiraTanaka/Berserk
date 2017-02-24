@@ -2,7 +2,7 @@
 using System.Linq;
 using Domain.Cards;
 using Domain.Tools;
-
+using System;
 
 namespace Domain.GameProcess
 {
@@ -36,9 +36,8 @@ namespace Domain.GameProcess
             State.TargetCards = new List<Card>();
         }
         
-        public void Move()
+        public void Move(CardActionEnum actionWay)
         {
-            CardActionEnum actionWay = GetAttackWay();
             State.ActionCard.Action(actionWay, State);
             AfterMove();
         }
@@ -50,11 +49,18 @@ namespace Domain.GameProcess
 
         public void StartStep()
         {
-            State.MovingPlayer.StartStep();
+            var movingPlayer = State.MovingPlayer;
+            var waitingPlayer = State.WaitingPlayer;
+
+            movingPlayer.StartStep();
+            onOpenAll?.Invoke(State.MovingPlayer.Id);
+            onUpdateCountCoins?.Invoke(movingPlayer.Id, movingPlayer.Money.Count);
+            onUpdateCardsInHand?.Invoke(movingPlayer.Id, movingPlayer.ActiveDeck.ToList());
         }
 
-        public void CompleteStep()
+        public void CompleteStep(Guid playerId)
         {
+            if (State.MovingPlayer.Id != playerId) return;
             ChangeOfMovingPlayer();
             StartStep();
         }
@@ -66,6 +72,51 @@ namespace Domain.GameProcess
             State.WaitingPlayer = waitingPlayer;
         }
 
-        public abstract CardActionEnum GetAttackWay();
+        public void HireEntity(Guid playerId, Guid instId)
+        {
+            var movingPlayer = State.MovingPlayer;
+            if (playerId != movingPlayer.Id) return;
+            bool result = State.MovingPlayer.Hire(instId);
+            if(!result) return;
+            var card = movingPlayer.CardOnField.FirstOrDefault(x => x.InstId == instId);
+            
+            onCloseCoins?.Invoke(card.Cost, movingPlayer.Id);
+            onCreateActiveCard?.Invoke(card, movingPlayer.Id);
+            onDestroyCardInHand?.Invoke(instId, movingPlayer.Id);
+
+            SubscribeToEventsOfActiveCard(card);
+        }
+        private void SubscribeToEventsOfActiveCard(Card card)
+        {
+            card.OnChangeHealth += ChangeHealthCard;
+            card.OnChangeClosed += ChangeClosedCard;
+        }
+        private void ChangeHealthCard(Guid instId, int health) => onChangeHealthCard?.Invoke(instId, health);
+        private void ChangeClosedCard(Guid instId, bool closed) => onChangeClosedCard?.Invoke(instId, closed);
+        public void SetToZeroCards()
+        {
+            State.ActionCard = null;
+            State.TargetCards = null;
+        }
+        #region delegates and events
+
+        public delegate void OnOpenAll(Guid playerId);       
+        public delegate void OnCloseCoins(int count, Guid playerId);
+        public delegate void OnChangeHealthCard(Guid instId, int health);
+        public delegate void OnCreateActiveCard(Card card, Guid playerId);
+        public delegate void OnChangeClosedCard(Guid instId, bool closed);
+        public delegate void OnDestroyCardInHand(Guid instId, Guid playerId);         
+        public delegate void OnUpdateCardsInHand(Guid playerId, List<Card> cards);
+        public delegate void OnUpdateCountCoins(Guid playerId, int countCoinsPlayer);
+        public event OnOpenAll onOpenAll;
+        public event OnCloseCoins onCloseCoins;
+        public event OnCreateActiveCard onCreateActiveCard;                       
+        public event OnUpdateCountCoins onUpdateCountCoins;
+        public event OnChangeHealthCard onChangeHealthCard;
+        public event OnChangeClosedCard onChangeClosedCard;
+        public event OnDestroyCardInHand onDestroyCardInHand;
+        public event OnUpdateCardsInHand onUpdateCardsInHand;
+
+        #endregion
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.UI.Coordinates;
+using Assets.Scripts.Infrastructure.Coordinates;
 using UnityEngine;
 
 namespace Assets.Scripts.UI.Coins
