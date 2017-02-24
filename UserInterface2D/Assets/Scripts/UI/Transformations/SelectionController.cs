@@ -33,5 +33,9 @@ namespace Assets.Scripts.UI.Transformations
             _transformControl.TransformToOriginalPosition();
             Border.SetActive(false);
         }
+        public void SetOriginalPosition()
+        {
+            OnMouseExit();
+        }
     }
 }

@@ -25,25 +25,18 @@ namespace Assets.Scripts.UI.Cards
 
         private SelectionController _selectionCreature;
 
-
-        public void SetCard(string instId)
-        {
-            InstId = instId;
-        }
-
-        public void DestroyCard()
-        {
-            _selectionCreature.Border.SetActive(false);
-            Destroy(gameObject);
-        }
-        
-        void Awake ()
+        void Awake()
         {
             _renderer = GetComponent<Renderer>();
             _currentPositionY = transform.position.y;
             var selectPosition = new Vector3(transform.position.x, transform.position.y + _selectPositionY, transform.position.z);
             _selectionCreature = GetComponent<SelectionController>();
-            _selectionCreature.SetTransformation(new Transformation(selectPosition,_selectScale));
+            _selectionCreature.SetTransformation(new Transformation(selectPosition, _selectScale));
+        }
+
+        public void SetCard(string instId)
+        {
+            InstId = instId;
         }
         
         void OnMouseEnter()
@@ -61,7 +54,15 @@ namespace Assets.Scripts.UI.Cards
         {
             OnSelectCard?.Invoke(InstId);
         }
-
+        public void DestroyCard()
+        {
+            _selectionCreature.Border.SetActive(false);
+            Destroy(gameObject);
+        }
+        public void SetOriginalPosition()
+        {
+            _selectionCreature.SetOriginalPosition();
+        }
         #region delegates and events
         public delegate void OnSelectCardHandler(string instId);
         public event OnSelectCardHandler OnSelectCard;

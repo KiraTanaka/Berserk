@@ -114,6 +114,10 @@ namespace Assets.Scripts.UI.Cards
             sprite.transform.localScale = localScale;
             sprite.transform.SetParent(_parentCard, false);
         }
+        public void ClearPositionCardInHand(CardInHand card)
+        {
+            _positionsCardsInHand[card.transform.position] = false;
+        }
     }
 }
 

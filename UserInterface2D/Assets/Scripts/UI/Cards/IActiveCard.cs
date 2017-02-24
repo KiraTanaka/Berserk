@@ -17,7 +17,7 @@ namespace Assets.Scripts.UI.Cards
         void SetClose(bool value);
 
         bool IsClosed { get; }
-        void IsDead();
+        void DestroyCard();
     }
 }
 

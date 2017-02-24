@@ -59,7 +59,7 @@ namespace Assets.Scripts.UI.Cards
         {
             OnSelectCard?.Invoke(InstId);
         }
-        public void IsDead()
+        public void DestroyCard()
         {
             Destroy(gameObject);
         }

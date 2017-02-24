@@ -128,16 +128,15 @@ namespace Assets.Scripts.UI.Players
 
         public void DestroyCardInHand(string instId, string playerId)
         {
-            if (playerId != Id.ToString()) return;
-            if (_cardsInHand.Count == 0) return;
+            if (playerId != Id.ToString() || _cardsInHand.Count == 0) return;
 
-            var card = _cardsInHand
-                .Select(x => x.GetComponent<CardInHand>())
-                .FirstOrDefault(x => x.InstId == instId);
+            var card = _cardsInHand.Select(x => x.GetComponent<CardInHand>()).FirstOrDefault(x => x.InstId == instId);
 
             if(card == null) return;
 
             _cardsInHand.Remove(card.gameObject);
+            card.SetOriginalPosition();
+            _cardsController.ClearPositionCardInHand(card);
             card.DestroyCard();
         }
 
@@ -168,7 +167,7 @@ namespace Assets.Scripts.UI.Players
             script?.ChangeHealth(value);
             if (value > 0 || script==null) return script;
             cards.Remove(script.GameObject);
-            script.IsDead();
+            script.DestroyCard();
             return script;
         }
 
@@ -195,16 +194,13 @@ namespace Assets.Scripts.UI.Players
         public void UpdateCardsInHand(string playerId, CardInfo[] cardsInfo)
         {
             if (playerId != Id.ToString()) return;
-            
-            for (int i = 0; i < cardsInfo.Length; i++)
+
+            cardsInfo.ToList().ForEach(x =>
             {
-                cardsInfo.ToList().ForEach(x =>
-                {
-                    if (_cardsInHand.Select(card
-                        => card.GetComponent<CardInHand>()).FirstOrDefault(card => card.InstId == x.InstId) == null)
-                        CreateCardInHand(x);
-                });
-            }
+                if (_cardsInHand.Select(card
+                    => card.GetComponent<CardInHand>()).FirstOrDefault(card => card.InstId == x.InstId) == null)
+                    CreateCardInHand(x);
+            });
         }
     }
 }

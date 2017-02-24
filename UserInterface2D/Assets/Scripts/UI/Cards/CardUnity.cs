@@ -73,7 +73,7 @@ namespace Assets.Scripts.UI.Cards
                 _selectionCreature.IsSelected = !_selectionCreature.IsSelected;
         }
 
-        public void IsDead()
+        public void DestroyCard()
         {
             GameObject.FindWithTag("BorderActiveCard").SetActive(false);
             Destroy(gameObject);

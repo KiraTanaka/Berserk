@@ -34,6 +34,9 @@ namespace Domain.GameProcess
             State.MovingPlayer = _players.First();
             State.WaitingPlayer = _players.Last();
             State.TargetCards = new List<Card>();
+
+            SubscribeToEventsOfActiveCard(State.MovingPlayer.Hero);
+            SubscribeToEventsOfActiveCard(State.WaitingPlayer.Hero);
         }
         
         public void Move(CardActionEnum actionWay)

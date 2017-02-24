@@ -110,7 +110,6 @@ namespace Assets.Scripts.UI.Controllers
         {
             if (!isLocalPlayer) return;
             _gamer.DestroyCardInHand(instId, playerId);
-            _enemy.DestroyCardInHand(instId, playerId);
         }
         #endregion
 
