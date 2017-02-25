@@ -13,7 +13,7 @@ namespace Assets.Scripts.UI.AttackWay
         void Start()
         {
             if (!localPlayerAuthority) return;
-            _client = GameObjectHelper.FindGamerClient();
+            _client = ControllerContainer.LocalPlayerController;
         }
 
         void OnMouseDown()

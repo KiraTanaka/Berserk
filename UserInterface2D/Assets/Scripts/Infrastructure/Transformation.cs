@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts.UI.Transformations
+namespace Assets.Scripts.Infrastructure
 {
     public class Transformation
     {

@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Assets.Scripts.UI.Controllers;
-using Assets.Scripts.UI.AttackWay;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -22,7 +21,7 @@ namespace Assets.Scripts.UI
         void Start()
         {
             if (!localPlayerAuthority) return;
-            _client = GameObjectHelper.FindGamerClient();
+            _client = ControllerContainer.LocalPlayerController;
 
             _image = GetComponent<Image>();
             _colorOrigin = _image.color;

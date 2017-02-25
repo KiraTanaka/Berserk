@@ -1,36 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.UI.AttackWay;
 using Assets.Scripts.UI.Cards;
 using Assets.Scripts.UI.Game;
 using Domain.Cards;
-using Domain.Coins;
 using Domain.GameProcess;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace Assets.Scripts.UI.Controllers
 {
     public class ServerController : NetworkBehaviour
     {
-        private GameUnity game;
+        private GameUnity _game;
+
         void Start()
         {
-            game = GetComponent<GameScript>().GetGame();
+            _game = GetComponent<GameScript>().GetGame();
             SubscribeToEvents();
         }
-        void SubscribeToEvents()
+
+        private void SubscribeToEvents()
         {
-            game.onOpenAll += OnOpenAll;           
-            game.onCloseCoins += OnCloseCoins;
-            game.onUpdateCountCoins += OnUpdateCountCoins;
-            game.onCreateActiveCard += OnCreateActiveCard;            
-            game.onChangeHealthCard += OnChangeHealthCard;
-            game.onChangeClosedCard += OnChangeClosedCard;
-            game.onDestroyCardInHand += OnDestroyCardInHand;
-            game.onUpdateCardsInHand += OnUpdateCardsInHand;
-            game.onSelectionAttackWay += OnSelectionAttackWay;
+            _game.onOpenAll += OnOpenAll;           
+            _game.onCloseCoins += OnCloseCoins;
+            _game.onUpdateCountCoins += OnUpdateCountCoins;
+            _game.onCreateActiveCard += OnCreateActiveCard;            
+            _game.onChangeHealthCard += OnChangeHealthCard;
+            _game.onChangeClosedCard += OnChangeClosedCard;
+            _game.onDestroyCardInHand += OnDestroyCardInHand;
+            _game.onUpdateCardsInHand += OnUpdateCardsInHand;
+            _game.onSelectionAttackWay += OnSelectionAttackWay;
         }
+
         #region event ConnectPlayer
         public void CmdConnectPlayers(NetworkInstanceId networkId)
         {
@@ -68,7 +70,7 @@ namespace Assets.Scripts.UI.Controllers
         public void CmdHire(string playerId, string instId)
         {
             if (!isServer) return;
-            game.HireEntity(new Guid(playerId), new Guid(instId));
+            _game.HireEntity(new Guid(playerId), new Guid(instId));
         }
         private void OnCreateActiveCard(Card card, Guid playerId)
             => GetClients().ForEach(x => x.CmdCreateActiveCard(new CardInfo()
@@ -93,23 +95,27 @@ namespace Assets.Scripts.UI.Controllers
         public void CmdSaveSelectActiveCards(string playerId, string instId, NetworkInstanceId networkId)
         {
             if (!isServer) return;
-            game.SaveSelectActiveCards(new Guid(playerId), new Guid(instId), networkId);
+            _game.SaveSelectActiveCards(new Guid(playerId), new Guid(instId), networkId);
         }
         #endregion
 
         #region SetAttackWay
         private void OnSelectionAttackWay(NetworkInstanceId networkId) => GetClient(networkId).CmdActiveAttackWayPanel();
-        public void CmdSetAttackWay(CardActionEnum attackWay) => game.SetAttackWay(attackWay);
+        public void CmdSetAttackWay(CardActionEnum attackWay) => _game.SetAttackWay(attackWay);
         #endregion
 
         #region CompleteStep
-        public void CmdCompleteStep(string playerId) => game.CompleteStep(new Guid(playerId));
+        public void CmdCompleteStep(string playerId) 
+            => _game.CompleteStep(new Guid(playerId));
         #endregion
 
-        private ClientController GetClient(NetworkInstanceId networkId) => GameObject.FindGameObjectsWithTag("Gamer")
-            .Select(x=>x.GetComponent<ClientController>()).FirstOrDefault(x => x.netId == networkId);
-        private List<ClientController> GetClients() => GameObject.FindGameObjectsWithTag("Gamer")
-            .Select(x => x.GetComponent<ClientController>()).ToList();
+        private static ClientController GetClient(NetworkInstanceId networkId)
+            => ControllerContainer.GameClientControllers
+                .Select(x => x.GetComponent<ClientController>())
+                .FirstOrDefault(x => x.netId == networkId);
+
+        private static List<ClientController> GetClients() 
+            => ControllerContainer.GameClientControllers;
     }
 }
 

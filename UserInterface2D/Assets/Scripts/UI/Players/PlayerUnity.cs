@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.UI.AttackWay;
 using Assets.Scripts.UI.Controllers;
 using Assets.Scripts.UI.Cards;
 using Assets.Scripts.UI.Coins;
@@ -60,10 +61,7 @@ namespace Assets.Scripts.UI.Players
 
         public void SetClient()
         {
-            _client = GameObject
-                .FindGameObjectsWithTag("Gamer")
-                .Select(x => x.GetComponent<ClientController>())
-                .FirstOrDefault(x => x.isLocalPlayer);
+            _client = ControllerContainer.LocalPlayerController;
         }
 
         public void SetPositionHero(Vector3 positionHero)
